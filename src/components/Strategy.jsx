@@ -26,8 +26,7 @@ export default function Strategy() {
     { name: 'RAMCOCEM', candleHighLow: '826.15', longshort: 'LONG', status: 'EXECUTED', pnl: '+200', cancel: 'CANCEL', exit: 'EXIT' },
     { name: 'EXIDEIND', candleHighLow: '504.90', longshort: 'SHORT', status: 'PENDING', pnl: '', cancel: 'CANCEL', exit: 'EXIT' },
     { name: 'HINDALCO', candleHighLow: '687.01', longshort: 'SHORT', status: 'CANCELLED', pnl: '', cancel: 'CANCEL', exit: 'EXIT' },
-    { name: 'BALKRISIND', candleHighLow: '2865.04', longshort: 'LONG', status: 'REJECTED', pnl: '', cancel: 'CANCEL', exit: 'EXIT' },
-    { name: 'AMBUJACE', candleHighLow: '630.32', longshort: 'LONG', status: 'EXECUTED', pnl: '+300', cancel: 'CANCEL', exit: 'EXIT' },
+
   ]
 
   return (
@@ -51,31 +50,45 @@ export default function Strategy() {
         </div>
       </div>
 
-      <div className="h-[10%]">
+      <div className="h-[60%] border border-emerald-900">
         <div className=" w-full border border-white rounded-sm h-[10%] p-2 text-xs text-white">
-        <table className="w-[] border-collapse border border-gray-300 ">
+          <div className=" border border-sky-600 w-full flex justify-evenly" >
+            <div className="border border-green-600 h-32 w-72 ">
+
+            </div>
+            <div className="border border-green-600 h-32 w-72 ">
+
+            </div>
+            <div className="border border-green-600 h-32 w-72 ">
+
+            </div>
+          </div>
+          <div className=" overflow-y-scroll w-full h-28">
+        <table className="w-full border-collapse border border-gray-300 table-fixed ">
           <thead>
             <tr className='bg-gray-300 text-black'>
-              <th className="border border-gray-300 p-2 w-[12%]" colSpan={2}>ID</th>
+              <th className="border border-gray-300 p-2 w-[12%]" >ID</th>
               <th className="border border-gray-300 p-2">Side</th>
               <th className="border border-gray-300 p-1">LOT</th>
               <th className="border border-gray-300 p-1">Status</th>
               <th className="border border-gray-300 p-1">Symbol </th>
               <th className="border border-gray-300 p-1">Action</th>
+              <th className="border border-gray-300 p-1">Action Button</th>
             </tr>
           </thead>
           <tbody>
             {scriptData.map((item) => ( <tr key={item.name} className="text-gray-800 ">
-                <td className="border border-gray-300 p-1">{item.name}</td>
-                <td className="border border-gray-300 p-1">{item.candleHighLow}</td>
-                <td className="border border-gray-300 p-1">{item.longshort}</td>
-                <td className="border border-gray-300 p-1">{item.status}</td>
-                <td className="border border-gray-300 p-1">{item.pnl}</td>
-                <td className="border border-gray-300 p-1">{item.cancel}</td>
-                <td className="border border-gray-300 p-1"><Button className="text-xs p-3">{item.exit}</Button></td>
+                <td className="border border-gray-300 p-1 text-white ">{item.name}</td>
+                <td className="border border-gray-300 p-1 text-white ">{item.candleHighLow}</td>
+                <td className="border border-gray-300 p-1 text-white ">{item.longshort}</td>
+                <td className="border border-gray-300 p-1 text-white ">{item.status}</td>
+                <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
+                <td className="border border-gray-300 p-1 text-white ">{item.cancel}</td>
+                <td className="border border-gray-300 p-1"><Button className="text-xs p-2">{item.exit}</Button></td>
               </tr>))}
               </tbody>
         </table>
+        </div>
 
         </div>
       </div>

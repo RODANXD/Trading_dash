@@ -244,19 +244,19 @@ function Custom() {
         </div>
         <div className="col-md-4 col-12 text-center mt-md-0 mt-3">
           {/* <button type="button" className="btn w-100" style={{ backgroundColor: '#e6e6e9', width: 'fit-content', borderRadius: '5px' }}><b>Terminal ON/OFF</b>&ensp; {toggleStatus ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus(true)} />}</button> */}
-          <div className="col-lg-6 mt-3">
-            <div className="row">
-              <div className="col-lg-4 col-6 offset-lg-4 mt-2">
-                <button type="button" className="btn btn-light w-100">Max Moving High</button>
+          <div className="col-lg-6 w-full">
+            <div className="flex flex-wrap gap-3 w-96">
+              <div className="col-lg-4 col-6 mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Max Moving High {890}</button>
               </div>
               <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100">Avg Moving</button>
+                <button type="button" className="btn btn-light w-100 text-sm">Avg Moving</button>
               </div>
-              <div className="col-lg-4 col-6 offset-lg-4 mt-2">
-                <button type="button" className="btn btn-light w-100">Max Drawdown</button>
+              <div className="col-lg-4 col-6  mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Max Drawdown</button>
               </div>
               <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100">Up Avg Moving</button>
+                <button type="button" className="btn btn-light w-100 text-sm">Up Avg Moving</button>
               </div>
             </div>
           </div>

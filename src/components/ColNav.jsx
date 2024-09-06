@@ -32,7 +32,7 @@ const ColNav = () => {
               <path d="M0 0h120v2H0z"></path>
             </svg>
 
-            <Link to="/Dashboard">
+            <Link to="/home">
               <li className="hover:text-cyan-500 cursor-pointer flex items-center gap-3 duration-500">
                 {" "}
                 <MdDashboard className=" size-5" />
