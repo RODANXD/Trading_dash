@@ -28,6 +28,9 @@ function Custom() {
   const [tradetype, setTradetype] = useState("");
   const [expiry, setExpiry] = useState("")
 
+  // const [isOpen, setIsOpen] = React.useState(false)
+  // const Addform = () => setIsOpen(!isOpen)
+
 
   // const [value, setValue] = useState<Date | null>(null);
 
@@ -49,7 +52,7 @@ function Custom() {
   const [pnlblock,setpnlblock]= useState('')
   const [lockblock,setlockblock]=useState('')
   const[lossblock,setLossblock]= useState('')
-const [rentry,setReentry]= useState('')
+  const [rentry,setReentry]= useState('')
 
 
 
@@ -57,7 +60,7 @@ const [rentry,setReentry]= useState('')
   const [Lockleg,setlogleg]=useState('')
   const [optiondata,setoptiondata]= useState({type:'',side:''})
   const [Amountblock,setAmountblock]= useState('')
-  const [addtrade,setAddtrade]= useState(true)
+  const [addtrade,setAddtrade]= useState(false)
   const [advice,Setadvice]= useState('')
   const[brokerselect,setbrokerselect]= useState('')
   const [spotpricel1,setspotpricel1]= useState('')
@@ -172,7 +175,7 @@ const [rentry,setReentry]= useState('')
       settargettype(e.target.value)}
 
   const handleAddTrade= ()=>{
-    setAddtrade(addtrade)}
+    setAddtrade(!addtrade)}
 
   const handleCheckboxChange = (id) => {
       setbrokerselect((prevData) =>
@@ -219,8 +222,7 @@ const [rentry,setReentry]= useState('')
       <div className="row">
         <div className="col-md-4 col-6">
           <button type="button" className="btn btn-success" onClick={handleAddTrade} disabled={isExpirySelected || isStrikeSelected}>+ Add Trade</button>
-          <button type="button" className="btn btn-success" onClick={handlezerodha}>Zerodtha</button>
-          <button type="button" className="btn btn-success" onClick={handlezerodha}>Angel</button>
+          
 
         </div>
         
@@ -241,7 +243,23 @@ const [rentry,setReentry]= useState('')
           </Dropdown>
         </div>
         <div className="col-md-4 col-12 text-center mt-md-0 mt-3">
-          <button type="button" className="btn w-100" style={{ backgroundColor: '#e6e6e9', width: 'fit-content', borderRadius: '5px' }}><b>Terminal ON/OFF</b>&ensp; {toggleStatus ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus(true)} />}</button>
+          {/* <button type="button" className="btn w-100" style={{ backgroundColor: '#e6e6e9', width: 'fit-content', borderRadius: '5px' }}><b>Terminal ON/OFF</b>&ensp; {toggleStatus ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus(true)} />}</button> */}
+          <div className="col-lg-6 mt-3">
+            <div className="row">
+              <div className="col-lg-4 col-6 offset-lg-4 mt-2">
+                <button type="button" className="btn btn-light w-100">Max Moving High</button>
+              </div>
+              <div className="col-lg-4 col-6 mt-2">
+                <button type="button" className="btn btn-light w-100">Avg Moving</button>
+              </div>
+              <div className="col-lg-4 col-6 offset-lg-4 mt-2">
+                <button type="button" className="btn btn-light w-100">Max Drawdown</button>
+              </div>
+              <div className="col-lg-4 col-6 mt-2">
+                <button type="button" className="btn btn-light w-100">Up Avg Moving</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div >
 
@@ -259,6 +277,7 @@ const [rentry,setReentry]= useState('')
       placeholder="Pick date"
     /> */}
               </div>
+              
               <div className="col-4">
               <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
                     <option value="">Select Tradetype</option>
@@ -266,13 +285,7 @@ const [rentry,setReentry]= useState('')
                     <option value="BANKNIFTY">Carryforward</option>
                   </select>
 
-                
-                
-                
-                
-                
-                
-                
+                  
                 
               </div>
               <div className="col-4">
@@ -350,22 +363,7 @@ const [rentry,setReentry]= useState('')
               </div>
             </div>
           </div>
-          <div className="col-lg-6 mt-3">
-            <div className="row">
-              <div className="col-lg-4 col-6 offset-lg-4 mt-2">
-                <button type="button" className="btn btn-light w-100">Max Moving High</button>
-              </div>
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100">Avg Moving</button>
-              </div>
-              <div className="col-lg-4 col-6 offset-lg-4 mt-2">
-                <button type="button" className="btn btn-light w-100">Max Drawdown</button>
-              </div>
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100">Up Avg Moving</button>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </div>
       

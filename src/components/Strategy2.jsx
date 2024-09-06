@@ -1,6 +1,23 @@
 import { useState } from 'react'
+import * as React from "react"
+
 import { TimeInput } from '@mantine/dates'
 import { CiClock2 } from "react-icons/ci"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import DropdownMenuCheckboxes from './ui/dropdown'
+
+
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+
 
 export default function TradingForm() {
   const [movement, setMovement] = useState('3')
@@ -14,6 +31,7 @@ export default function TradingForm() {
   const [niftyTime, setNiftyTime] = useState('09:45 AM')
   const [entryDurationTime, setEntryDurationTime] = useState('12:30 PM')
 
+  
   const scriptData = [
     { name: 'RAMCOCEM', candleHighLow: '826.15', longshort: 'LONG', status: 'EXECUTED', pnl: '+200', cancel: 'CANCEL', exit: 'EXIT' },
     { name: 'EXIDEIND', candleHighLow: '504.90', longshort: 'SHORT', status: 'PENDING', pnl: '', cancel: 'CANCEL', exit: 'EXIT' },
@@ -21,6 +39,10 @@ export default function TradingForm() {
     { name: 'BALKRISIND', candleHighLow: '2865.04', longshort: 'LONG', status: 'REJECTED', pnl: '', cancel: 'CANCEL', exit: 'EXIT' },
     { name: 'AMBUJACE', candleHighLow: '630.32', longshort: 'LONG', status: 'EXECUTED', pnl: '+300', cancel: 'CANCEL', exit: 'EXIT' },
   ]
+
+  const [showStatusBar, setShowStatusBar] = React.useState(true)
+  const [showActivityBar, setShowActivityBar] = React.useState(false)
+  const [showPanel, setShowPanel] = React.useState(false)
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
@@ -181,22 +203,48 @@ export default function TradingForm() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Broker</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" />
+            <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" className="w-full bg-blue-300">Broker</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuCheckboxItem
+          checked={showStatusBar}
+          onCheckedChange={setShowStatusBar}
+        >
+          Angel Broker
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={showActivityBar}
+          onCheckedChange={setShowActivityBar}
+        >
+          Zerodha
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={showPanel}
+          onCheckedChange={setShowPanel}
+        >
+          Binomo
+        </DropdownMenuCheckboxItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+              {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
             </div>
             <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Account</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" />
+            <DropdownMenuCheckboxes/>
+              {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
             </div>
             <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Paper/Live</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" />
+            <Button variant="outline" className="w-full bg-blue-300">Paper Live</Button>
+              {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
             </div>
           </div>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-300 text- bg-white rounded-sm">
+          <table className="min-w-full border border-gray-300 text- bg-white rounded-sm">
             <thead>
               <tr>
                 <th className="py-2 px-4 border-b border-r text-left">Script Name</th>
