@@ -6,6 +6,8 @@ import { CiClock2 } from "react-icons/ci"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import DropdownMenuCheckboxes from './ui/dropdown'
+import { Label } from "@/components/ui/label";
+
 
 
 import {
@@ -16,6 +18,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 
 
@@ -30,6 +38,8 @@ export default function TradingForm() {
   const [retracement, setRetracement] = useState('20')
   const [niftyTime, setNiftyTime] = useState('09:45 AM')
   const [entryDurationTime, setEntryDurationTime] = useState('12:30 PM')
+  const [isOpen, setIsOpen] = useState(false);
+  const [isActivated, setIsActivated] = useState(false);
 
   
   const scriptData = [
@@ -44,7 +54,104 @@ export default function TradingForm() {
   const [showActivityBar, setShowActivityBar] = React.useState(false)
   const [showPanel, setShowPanel] = React.useState(false)
 
+  const toggleActivation = () => {
+    setIsActivated(!isActivated);
+  };
+  const Addform = () => {
+    setIsOpen(true);
+  };
+
   return (
+    <>
+     <div className="col-md-4 col-6">
+          <button type="button" className="btn btn-success" onClick={Addform}>
+            + Add Trade
+          </button>
+        </div>
+        {!isOpen && (
+     <div className="h-[60%] border border-emerald-900 mt-3">
+            <div className="w-full p-2 text-xs text-white">
+              <div className="h-32 w-full flex justify-evenly">
+               
+                <div className="flex items-center justify-center h-24 w-64">
+                  <Popover>
+                    <PopoverTrigger>
+                      <button className="btn btn-danger w-32">Delete</button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-72">
+                      <div className="grid place-items-center gap-4">
+                        <div className="space-y-2 flex items-center gap-3">
+                          <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
+                          <button className="btn btn-danger w-32">confirm</button>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div className="flex items-center justify-center h-24 w-64">
+                  <button
+                    className={`btn w-44 ${isActivated ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
+                    onClick={toggleActivation}
+                  >
+                    {isActivated ? "Deactivate" : "Activate"}
+                  </button>
+                </div>
+                <div className="pt-1 flex flex-col gap-3 h-32 w-64">
+                  <button className="btn btn-danger">Exit All</button>
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="email">PNL</Label>
+                    <Input type="number" placeholder="Value" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-center h-24 w-64">
+                  <button className="btn btn-info w-24" onClick={Addform}>
+                    View All
+                  </button>
+                </div>
+              </div>
+
+              <div className="overflow-y-scroll w-full h-28">
+                <table className="w-full border-collapse border border-gray-300 table-fixed">
+                  <thead>
+                    <tr className="bg-gray-300 text-black">
+                      <th className="border border-gray-300 p-2 w-[12%]">ID</th>
+                      <th className="border border-gray-300 p-2">Side</th>
+                      <th className="border border-gray-300 p-1">LOT</th>
+                      <th className="border border-gray-300 p-1">Status</th>
+                      <th className="border border-gray-300 p-1">Symbol </th>
+                      <th className="border border-gray-300 p-1">Action</th>
+                      <th className="border border-gray-300 p-1">Action Button</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {scriptData.map((item) => (
+                      <tr key={item.name} className="text-gray-800">
+                        <td className="border border-gray-300 p-1 text-white">{item.name}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.status}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
+                        <td className="border border-gray-300 p-1">
+                          <Button className="text-xs p-2">{item.exit}</Button>
+        
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                
+              </div>
+            </div>
+          </div>
+          
+    )}
+
+    
+
+
+
+{isOpen &&(
     <div className="p-4 max-w-7xl mx-auto">
       <div className="overflow-x-auto mb-6">
         <table className="w-full border-collapse border border-gray-300">
@@ -242,7 +349,7 @@ export default function TradingForm() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-y-scroll w-full h-56">
           <table className="min-w-full border border-gray-300 text- bg-white rounded-sm">
             <thead>
               <tr>
@@ -289,8 +396,24 @@ export default function TradingForm() {
               ))}
             </tbody>
           </table>
+          
         </div>
       </div>
+      <Button
+              onClick={() => {
+                setIsOpen(false);
+              }}
+              className="mt-4"
+            >
+              Cancel
+            </Button>
+      
     </div>
+    )}
+  
+    
+
+    </>
   )
+
 }

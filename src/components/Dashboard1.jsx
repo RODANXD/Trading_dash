@@ -1,9 +1,29 @@
 // import axios from 'axios';
+import * as React from "react";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useEffect, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { DatePickerInput } from '@mantine/dates';
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import DropdownMenuCheckboxes from './ui/dropdown'
+
+import { Button } from "@/components/ui/button";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 
 
@@ -27,6 +47,8 @@ function Custom() {
   const [defaultstrikePrices, setDefaultStrikePrices] = useState("");
   const [tradetype, setTradetype] = useState("");
   const [expiry, setExpiry] = useState("")
+  const [isOpen, setIsOpen] = useState(false);
+  const [isActivated, setIsActivated] = useState(false);
 
   // const [isOpen, setIsOpen] = React.useState(false)
   // const Addform = () => setIsOpen(!isOpen)
@@ -54,7 +76,9 @@ function Custom() {
   const [lockblock,setlockblock]=useState('')
   const[lossblock,setLossblock]= useState('')
   const [rentry,setReentry]= useState('')
-
+  const [showStatusBar, setShowStatusBar] = React.useState(true);
+  const [showActivityBar, setShowActivityBar] = React.useState(false);
+  const [showPanel, setShowPanel] = React.useState(false);
 
 
 
@@ -152,7 +176,9 @@ function Custom() {
     setpnlblock(e.target.value)
   }
     
-
+  const toggleActivation = () => {
+    setIsActivated(!isActivated);
+  };
 
   const handledatecahnge1= (e)=>{
     SetDatevalue1(e.target.value)
@@ -164,6 +190,9 @@ function Custom() {
     Setadvice(e.target.value)
   }
 
+  const Addform = () => {
+    setIsOpen(true);
+  };
 
   const  handlebrokerchange=(e)=>{
     setbrokerselect(e.target.value)
@@ -218,6 +247,10 @@ function Custom() {
     fetchData();
   };
 
+  const scriptData = [
+    { name: "RAMCOCEM", candleHighLow: "826.15", longshort: "LONG", status: "EXECUTED", pnl: "+200", cancel: "CANCEL", exit: "EXIT" },
+    { name: "EXIDEIND", candleHighLow: "504.90", longshort: "SHORT", status: "PENDING", pnl: "", cancel: "CANCEL", exit: "EXIT" },
+  ];
   return (
     <div className="container-xl my-3">
       <div className="row">
@@ -263,6 +296,85 @@ function Custom() {
           </div>
         </div>
       </div >
+
+      {!addtrade && (
+     <div className="h-[65%] border border-emerald-900 mt-3">
+            <div className="w-full p-2 text-xs text-white">
+              <div className="h-32 w-full flex justify-evenly">
+               
+                <div className="flex items-center justify-center h-24 w-64">
+                  <Popover>
+                    <PopoverTrigger>
+                      <button className="btn btn-danger w-32">Delete</button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-72">
+                      <div className="grid place-items-center gap-4">
+                        <div className="space-y-2 flex items-center gap-3">
+                          <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
+                          <button className="btn btn-danger w-32">confirm</button>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div className="flex items-center justify-center h-24 w-64">
+                  <button
+                    className={`btn w-44 ${isActivated ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
+                    onClick={toggleActivation}
+                  >
+                    {isActivated ? "Deactivate" : "Activate"}
+                  </button>
+                </div>
+                <div className="pt-1 flex flex-col gap-3 h-32 w-64">
+                  <button className="btn btn-danger">Exit All</button>
+                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="email">PNL</Label>
+                    <Input type="number" placeholder="Value" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-center h-24 w-64">
+                  <button className="btn btn-info w-24" onClick={Addform}>
+                    View All
+                  </button>
+                </div>
+              </div>
+
+              <div className="overflow-y-scroll w-full h-28">
+                <table className="w-full border-collapse border border-gray-300 table-fixed">
+                  <thead>
+                    <tr className="bg-gray-300 text-black">
+                      <th className="border border-gray-300 p-2 w-[12%]">ID</th>
+                      <th className="border border-gray-300 p-2">Side</th>
+                      <th className="border border-gray-300 p-1">LOT</th>
+                      <th className="border border-gray-300 p-1">Status</th>
+                      <th className="border border-gray-300 p-1">Symbol </th>
+                      <th className="border border-gray-300 p-1">Action</th>
+                      <th className="border border-gray-300 p-1">Action Button</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {scriptData.map((item) => (
+                      <tr key={item.name} className="text-gray-800">
+                        <td className="border border-gray-300 p-1 text-white">{item.name}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.status}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
+                        <td className="border border-gray-300 p-1">
+                          <Button className="text-xs p-2">{item.exit}</Button>
+        
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                
+              </div>
+            </div>
+          </div>
+          
+    )}
 
      {addtrade?( <div className=' flex flex-col gap-4'>
       <div className="mt-2">
@@ -391,7 +503,33 @@ function Custom() {
                     <input type="number" className="form-control"  onChange={(e)=>setspotpricel1(e.target.value)} placeholder='Spot Price' />
                   </div>
                   {(advice === 'cover' || advice === 'sequence') && (
-                      <input type="text" placeholder="Leg No" className="bg-white w-32 text-black rounded-sm"/>
+                      <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="w-32 bgreen-600">Leg No</Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-56">
+                        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuCheckboxItem
+                          checked={showStatusBar}
+                          onCheckedChange={setShowStatusBar}
+                        >
+                          1
+                        </DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem
+                          checked={showActivityBar}
+                          onCheckedChange={setShowActivityBar}
+                        >
+                          2
+                        </DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem
+                          checked={showPanel}
+                          onCheckedChange={setShowPanel}
+                        >
+                          3
+                        </DropdownMenuCheckboxItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                     )}
                 </div>
               </div>
