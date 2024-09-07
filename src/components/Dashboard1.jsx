@@ -35,6 +35,7 @@ function Custom() {
   // const [value, setValue] = useState<Date | null>(null);
 
 
+
   const [sltype,setsltype]=useState('')
   const [sltytpe,settsltype]=useState('')
   const [targettype,settargettype]=useState('')
@@ -61,7 +62,7 @@ function Custom() {
   const [optiondata,setoptiondata]= useState({type:'',side:''})
   const [Amountblock,setAmountblock]= useState('')
   const [addtrade,setAddtrade]= useState(false)
-  const [advice,Setadvice]= useState('')
+  const [advice,Setadvice]= useState(false)
   const[brokerselect,setbrokerselect]= useState('')
   const [spotpricel1,setspotpricel1]= useState('')
   const[Nearestatml1,setNearestatml1]= useState('')
@@ -378,25 +379,36 @@ function Custom() {
             <div className="row" style={{ background: '#CCCCCC' }}>
               <div className="col-lg-6 my-3">
                 <div className="row">
-                  <div className="col-sm-4 col-3 text-center">
-                    <h2>Leg </h2>
-                  </div>
                   <div className="col-sm-4 col-5">
                   <select  className='form-select' onChange={handleTradeadvice}>
                       <option value=""> TRADE ADVICE</option>
                       <option value="spot">Spot </option>
-                      <option value="spot">Sequnce </option>
-                      <option value="spot">cover </option>
-                      </select>
+                      <option value="sequence">Sequnce </option>
+                      <option value="cover">cover </option>
+                      </select> 
                       </div>
                   <div className="col-4">
                     <input type="number" className="form-control"  onChange={(e)=>setspotpricel1(e.target.value)} placeholder='Spot Price' />
                   </div>
+                  {(advice === 'cover' || advice === 'sequence') && (
+                      <input type="text" placeholder="Leg No" className="bg-white w-32 text-black rounded-sm"/>
+                    )}
                 </div>
               </div>
               <div className="col-lg-6 my-3">
                 <div className="row">
-                  <div className="col-lg-3 col-6 offset-lg-4">
+
+                {advice === 'sequence' && (
+      <div className="flex w-1/2 gap-3">
+        <button className="btn btn-light w-32">Correction</button>
+        <input type="text" placeholder="value" className="bg-white w-32 text-black rounded-sm px-1"/>
+      </div>
+                )}
+                  
+
+
+
+                  <div className="col-lg-3 col-6">
                     <button type="button" className="btn btn-light w-100">PNL</button>
                   </div>
                   <div className="col-lg-3 col-6">
