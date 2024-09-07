@@ -372,89 +372,6 @@ function Custom() {
      
       
         <>
-              <div className="mt-4">
-        <div className="row pb-5" style={{ background: '#CCCCCC' }}>
-          <div className="row">
-            <div className="col-lg-4 col-sm-6">
-              <div className="row items-center">
-                 <h2>Block settings </h2>
-                <div className="col-6 mt-3">
-                  <button onClick={()=>{setPaper(true),setLive(false)}} type="button" className= {Paper?"btn btn-success w-100":"btn btn-light w-100"}>Paper</button>
-                </div>
-                <div className="col-6 mt-3">
-                  <button  onClick={()=>{setLive(true),setPaper(false)}}type="button" className={live?"btn btn-success w-100":"btn btn-light w-100"}>Live</button>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-sm-6">
-              <div className="row">
-                <div className="col-6 mt-3">
-                <select  onChange={(e)=>handlebrokerchange(e)} className='form-select'>
-                  <option value=""> Broker </option>
-                <option value="Zerodha">Zerodha</option>
-                <option value="Angel">Angel</option>
-                </select>
-                   
-                  
-                </div>
-                <div className="col-6 mt-3">
-                  <input type="number" className=' bg-white text-black p-2 rounded-sm' value={Amountblock} onChange= {(e)=>setAmountblock(e.target.value)} placeholder='Amount'></input>
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-lg-2 col-sm-4 mt-3">
-              <button type="button"  className="btn btn-secondary w-100">Re Entry</button>
-            </div>
-            <div className="col-lg-2 col-sm-4 mt-3">
-              <input type="number" onchange={(e)=>setReentry(e.target.value)} className='w-100 form-control' />
-            </div>
-            <div className="col-lg-2 col-sm-4 mt-3">
-              <input type="number" onChange={(e)=>setLossblock(e.target.value)} className='w-100 form-control' placeholder='Overall Loss' />
-            </div>
-          </div>
-
-          <h4 className="mt-5 text-danger">
-            Overall Profit Lock And Trail
-          </h4>
-
-          <div className="row">
-            <div className="col-lg col-sm-4 mt-3">
-              <input type="text"  onChange={ handleblockactive} className='form-control' placeholder='Active' />
-            </div>
-            <div className="col-lg col-sm-4 mt-3">
-              <input type="number"  onChange={handleblockLock} className='form-control' placeholder='Lock' />
-            </div>
-            <div className="col-lg col-sm-4 mt-3">
-              <input type="number"  onChange={handlebloctsl} className='form-control' placeholder='Trail Profit' />
-            </div>
-            <div className="col-lg col-sm-6 mt-3">
-              <input type="number"  onChange={handleblockTarget}  className='form-control' placeholder='Overall TARGET' />
-            </div>
-            <div className="col-lg col-sm-6 mt-3">
-              <input  onChange={handleBlockpnl} type="text" className='form-control' placeholder='Overall PNL' />
-            </div>
-          </div>
-          
-        </div>
-        <div className="col-sm-4 mt-3">
-            <button type="button"  onClick={() => settings()} className="btn btn-success w-100 btn-lg"><i className="fa fa-save" /> Save</button>
-          </div>
-      </div>
 
 
           <div className="mt-4">
@@ -468,8 +385,8 @@ function Custom() {
                   <select  className='form-select' onChange={handleTradeadvice}>
                       <option value=""> TRADE ADVICE</option>
                       <option value="spot">Spot </option>
-                      
-                      
+                      <option value="spot">Sequnce </option>
+                      <option value="spot">cover </option>
                       </select>
                       </div>
                   <div className="col-4">
@@ -656,398 +573,90 @@ function Custom() {
         </>
         <>
         <div className="mt-4">
-            <div className="row" style={{ background: '#CCCCCC' }}>
-              <div className="col-lg-6 my-3">
-                <div className="row">
-                  <div className="col-sm-4 col-3 text-center">
-                    <h2>Leg 1</h2>
-                  </div>
-                  <div className="col-sm-4 col-5">
-                  <select  className='form-select' onChange={handleTradeadvice}>
-                  <option value=""> Select</option>
-                  <option value="sequency">Sequency </option>
-                      </select>
-                      </div>
-                  <div className="col-4">
-                    <input type="number" className="form-control" placeholder='Spot Price' />
-                  </div>
+        <div className="row pb-5" style={{ background: '#CCCCCC' }}>
+          <div className="row">
+            <div className="col-lg-4 col-sm-6">
+              <div className="row items-center">
+                 <h2>Block settings </h2>
+                <div className="col-6 mt-3">
+                  <button onClick={()=>{setPaper(true),setLive(false)}} type="button" className= {Paper?"btn btn-success w-100":"btn btn-light w-100"}>Paper</button>
+                </div>
+                <div className="col-6 mt-3">
+                  <button  onClick={()=>{setLive(true),setPaper(false)}}type="button" className={live?"btn btn-success w-100":"btn btn-light w-100"}>Live</button>
                 </div>
               </div>
-              <div className="col-lg-6 my-3">
-                <div className="row">
-                  <div className="col-lg-3 col-6 offset-lg-4">
-                    <button type="button" className="btn btn-light w-100">PNL</button>
-                  </div>
-                  <div className="col-lg-3 col-6">
-                    <button type="button" className="btn btn-light w-100">❌ Exit All</button>
-                  </div>
+            </div>
+            <div className="col-lg-4 col-sm-6">
+              <div className="row">
+                <div className="col-6 mt-3">
+                <select  onChange={(e)=>handlebrokerchange(e)} className='form-select'>
+                  <option value=""> Broker </option>
+                <option value="Zerodha">Zerodha</option>
+                <option value="Angel">Angel</option>
+                </select>
+                   
+                  
+                </div>
+                <div className="col-6 mt-3">
+                  <input type="number" className=' bg-white text-black p-2 rounded-sm' value={Amountblock} onChange= {(e)=>setAmountblock(e.target.value)} placeholder='Amount'></input>
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
                 </div>
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-lg-3 col-sm-5 col-9 mt-3">
-              <div className="row">
-                <div className="col-6">
-                  {strikePrices.length !== 0 ?
-                    <select id="strikePriceSelect" className='form-select' onChange={() => setIsStrikeSelected(true)}>
-                      <option>Select Strike Price</option>
-                      {strikePrices.map((Price, index) =>
-                        <option key={index} value={Price}>{Price}</option>
-                      )}
-                    </select>
-                    :
-                    <select id="strikePriceSelect" className='form-select'>
-                      <option>Select Strike Price</option>
-                    </select>
-                  }
-                </div>
-                <div className="col-6">
-                  <button type="button" className="btn btn-success w-100">Automatic</button>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-2 col-sm-2 col-3 mt-3">
-              <input type="text" className='form-control' placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
-            </div>
-            <div className="col-lg-3 col-sm-5 mt-3">
-              <input type="number" className='form-control' placeholder='Nearest ATM' />
-            </div>
-            <div className="col-lg-2 col-6 mt-3">
-              <div className="row">
-                {/* <div className="col-6"> */}
-                  {/* <button type="button" className="btn btn-light w-100">(-)</button> */}
-                {/* </div> */}
-                {/* <div className="col-6"> */}
-                  {/* <button type="button" className="btn btn-danger w-100">(+)</button> */}
-                {/* </div> */}
-              </div>
-            </div>
-            <div className="col-lg-2 col-6 mt-3">
-              <div className="row">
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Call</button>
-                </div>
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Buy</button>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
-              <div className="row">
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Put</button>
-                </div>
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Sell</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-3 col-9 mt-3">
-              <div className="row">
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Strike</button>
-                </div>
-                <div className="col-6">
-                  <button type="button" className="btn btn-success w-100">Automatic</button>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-2 col-3 mt-3">
-              <input type="text" className='form-control' placeholder='Value' />
-            </div>
-            <div className="col-lg-3 col-sm-6 mt-3">
-              <div className="row">
-                <div className="col-6">
-                <select  className='form-select'onChange={handlesltype}>
-                      <option value=""> SL</option>
-                      <option value="Points">Spot Points </option>
-                      <option value="Percentage">Points</option>
-                      <option value="Percentage">Value</option>
-                      <option value="">%</option>
-                </select>
-                        </div>
-                <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-sm-6 mt-3">
-              <div className="row">
-                <div className="col-6">
-                <select  className='form-select'onChange={handletsltype}>
-                      <option value=""> TRAILSL</option>
-                      <option value="Points">Points </option>
-                      <option value="Percentage">%</option>
-                      </select>
-                      </div>
-                <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-sm-6 mt-3 offset-lg-5">
-              <div className="row">
-                <div className="col-6">
-                <select  className='form-select'onChange={handleTargettype}>
-                      <option value="">Target</option>
-                      <option value="Points">Spot Points </option>
-                      <option value="Percentage">Points</option>
-                      <option value="Percentage">Value</option>
-                      <option value="">%</option>
-                </select>
 
-                  </div>
-                <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
-                </div>
-              </div>
+          <div className="row">
+            <div className="col-lg-2 col-sm-4 mt-3">
+              <button type="button"  className="btn btn-secondary w-100">Re Entry</button>
             </div>
-            <div className="col-lg-4 col-sm-6 mt-3">
-              <div className="row">
-                <div className="col-6">
-                  <Dropdown>
-                    <Dropdown.Toggle variant="light" id="dropdown-basic" className="w-100">
-                      Timer
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {/* <Dropdown.Item href='#'>Point</Dropdown.Item> */}
-                      {/* <Dropdown.Item href='#'>Percentage</Dropdown.Item> */}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-                <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
-                </div>
-              </div>
+            <div className="col-lg-2 col-sm-4 mt-3">
+              <input type="number" onchange={(e)=>setReentry(e.target.value)} className='w-100 form-control' />
+            </div>
+            <div className="col-lg-2 col-sm-4 mt-3">
+              <input type="number" onChange={(e)=>setLossblock(e.target.value)} className='w-100 form-control' placeholder='Overall Loss' />
             </div>
           </div>
-          <h2 className="mt-5 text-danger">
-            Profit Lock and Trail
-          </h2>
-          
-            <div >
-              <div className="row">
-                <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onchange = { handlesetactive} placeholder='Active' />
-                </div>
-                <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onChange={handlesetlock} placeholder='Lock' />
-                </div>
-                <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onchange= {handletslleg} placeholder='Trail Profit' />
-                </div>
-                <div className="col-lg col-sm-6 mt-3">
-                  <input type="number" className='form-control' onchange={handleLegTarget} placeholder='TARGET' />
-                </div>
-                <div className="col-lg col-sm-6 mt-3">
-                  <button type="button" className="btn btn-success w-100" onClick={() => handleAddPLT(legIndex)}>+ Add Leg</button>
-                </div>
-              </div>
+
+          <h4 className="mt-5 text-danger">
+            Overall Profit Lock And Trail
+          </h4>
+
+          <div className="row">
+            <div className="col-lg col-sm-4 mt-3">
+              <input type="text"  onChange={ handleblockactive} className='form-control' placeholder='Active' />
             </div>
-        
+            <div className="col-lg col-sm-4 mt-3">
+              <input type="number"  onChange={handleblockLock} className='form-control' placeholder='Lock' />
+            </div>
+            <div className="col-lg col-sm-4 mt-3">
+              <input type="number"  onChange={handlebloctsl} className='form-control' placeholder='Trail Profit' />
+            </div>
+            <div className="col-lg col-sm-6 mt-3">
+              <input type="number"  onChange={handleblockTarget}  className='form-control' placeholder='Overall TARGET' />
+            </div>
+            <div className="col-lg col-sm-6 mt-3">
+              <input  onChange={handleBlockpnl} type="text" className='form-control' placeholder='Overall PNL' />
+            </div>
+          </div>
+          
+        </div>
+        {/* <div className="col-sm-4 mt-3"> */}
+            {/* <button type="button"  onClick={() => settings()} className="btn btn-success w-100 btn-lg"><i className="fa fa-save" /> Save</button> */}
+          {/* </div> */}
+      </div>
 
         </>
-        <>
-        <div className="mt-4">
-            <div className="row" style={{ background: '#CCCCCC' }}>
-              <div className="col-lg-6 my-3">
-                <div className="row">
-                  <div className="col-sm-4 col-3 text-center">
-                    <h2>Leg2 </h2>
-                  </div>
-                  <div className="col-sm-4 col-5">
-                  <select  className='form-select' onChange={handleTradeadvice}>
-                <option value=""> select</option>
-                      
-                      <option value="sequency">Cover </option>
-                      </select>
-                      </div>
-                  <div className="col-4">
-                    <input type="number" className="form-control" placeholder='Spot Price' />
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6 my-3">
-                <div className="row">
-                  <div className="col-lg-3 col-6 offset-lg-4">
-                    <button type="button" className="btn btn-light w-100">PNL</button>
-                  </div>
-                  <div className="col-lg-3 col-6">
-                    <button type="button" className="btn btn-light w-100">❌ Exit All</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-3 col-sm-5 col-9 mt-3">
-              <div className="row">
-                <div className="col-6">
-                  {strikePrices.length !== 0 ?
-                    <select id="strikePriceSelect" className='form-select' onChange={() => setIsStrikeSelected(true)}>
-                      <option>Select Strike Price</option>
-                      {strikePrices.map((Price, index) =>
-                        <option key={index} value={Price}>{Price}</option>
-                      )}
-                    </select>
-                    :
-                    <select id="strikePriceSelect" className='form-select'>
-                      <option>Select Strike Price</option>
-                    </select>
-                  }
-                </div>
-                <div className="col-6">
-                  <button type="button" className="btn btn-success w-100">Automatic</button>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-2 col-sm-2 col-3 mt-3">
-              <input type="text" className='form-control' placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
-            </div>
-            <div className="col-lg-3 col-sm-5 mt-3">
-              <input type="number" className='form-control' placeholder='Nearest ATM' />
-            </div>
-            <div className="col-lg-2 col-6 mt-3">
-              <div className="row">
-                {/* <div className="col-6"> */}
-                  {/* <button type="button" className="btn btn-light w-100">(-)</button> */}
-                {/* </div> */}
-                {/* <div className="col-6"> */}
-                  {/* <button type="button" className="btn btn-danger w-100">(+)</button> */}
-                {/* </div> */}
-              </div>
-            </div>
-            <div className="col-lg-2 col-6 mt-3">
-              <div className="row">
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Call</button>
-                </div>
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Buy</button>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
-              <div className="row">
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Put</button>
-                </div>
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Sell</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-3 col-9 mt-3">
-              <div className="row">
-                <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Strike</button>
-                </div>
-                <div className="col-6">
-                  <button type="button" className="btn btn-success w-100">Automatic</button>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-2 col-3 mt-3">
-              <input type="text" className='form-control' placeholder='Value' />
-            </div>
-            <div className="col-lg-3 col-sm-6 mt-3">
-              <div className="row">
-                <div className="col-6">
-                <select  className='form-select'onChange={handlesltype}>
-                      <option value=""> SL</option>
-                      <option value="Points">Spot Points </option>
-                      <option value="Percentage">Points</option>
-                      <option value="Percentage">Value</option>
-                      <option value="">%</option>
-                </select>
-                        </div>
-                <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-sm-6 mt-3">
-              <div className="row">
-                <div className="col-6">
-                <select  className='form-select'onChange={handletsltype}>
-                      <option value=""> TRAILSL</option>
-                      <option value="Points">Points </option>
-                      <option value="Percentage">%</option>
-                      </select>
-                      </div>
-                <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-sm-6 mt-3 offset-lg-5">
-              <div className="row">
-                <div className="col-6">
-                <select  className='form-select'onChange={handleTargettype}>
-                      <option value="">Target</option>
-                      <option value="Points">Spot Points </option>
-                      <option value="Percentage">Points</option>
-                      <option value="Percentage">Value</option>
-                      <option value="">%</option>
-                </select>
-
-                  </div>
-                <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-sm-6 mt-3">
-              <div className="row">
-                <div className="col-6">
-                  <Dropdown>
-                    <Dropdown.Toggle variant="light" id="dropdown-basic" className="w-100">
-                      Timer
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {/* <Dropdown.Item href='#'>Point</Dropdown.Item> */}
-                      {/* <Dropdown.Item href='#'>Percentage</Dropdown.Item> */}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-                <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
-                </div>
-              </div>
-            </div>
-          </div>
-          <h2 className="mt-5 text-danger">
-            Profit Lock and Trail
-          </h2>
-          
-            <div >
-              <div className="row">
-                <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onchange = { handlesetactive} placeholder='Active' />
-                </div>
-                <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onChange={handlesetlock} placeholder='Lock' />
-                </div>
-                <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onchange= {handletslleg} placeholder='Trail Profit' />
-                </div>
-                <div className="col-lg col-sm-6 mt-3">
-                  <input type="number" className='form-control' onchange={handleLegTarget} placeholder='TARGET' />
-                </div>
-                <div className="col-lg col-sm-6 mt-3">
-                  <button type="button" className="btn btn-success w-100" onClick={() => handleAddPLT(legIndex)}>+ Add Leg</button>
-                </div>
-              </div>
-            </div>
-        
-
-        </>
-
         
         
       
