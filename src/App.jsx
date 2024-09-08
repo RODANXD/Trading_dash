@@ -17,7 +17,7 @@ function App() {
     <MantineProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/" element={<LoginPage />}/>
           <Route path="/" element={<Design />}>
             <Route path="home" element={<ChartAreaStacked />} />
             <Route path="strategy" element={<Custom />} />
