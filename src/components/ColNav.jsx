@@ -7,6 +7,9 @@ import { BsBoxSeamFill } from "react-icons/bs";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { GrTransaction } from "react-icons/gr";
 import { FaLightbulb } from "react-icons/fa6";
+import { IoIosLogOut } from "react-icons/io";
+import { Button } from "@/components/ui/button"
+
 
 import Headers from './Headers'
 
@@ -60,9 +63,12 @@ const ColNav = () => {
               </li>
             </Link>
           </ul>
-          <div className="flex flex-row justify-evenly p-7 gap-4 items-center">
-            <GrLanguage className="size-5 cursor-pointer hover:text-cyan-500 duration-500" />
-            <FaRegUser className="size-5 cursor-pointer hover:text-cyan-500 duration-500" />
+          <div className="flex flex-row justify-evenly text-blue-500 p-7 gap-4 items-center">
+          
+            <IoIosLogOut className="  size-7 cursor-pointer text-white hover:text-cyan-500 duration-500" />
+            <Button className="text-lg hover:text-cyan-500 cursor-pointer flex items-center gap-3 duration-500">LogOut</Button>
+            
+            
           </div>
         </div>
         {/* <div><Header/></div> */}
