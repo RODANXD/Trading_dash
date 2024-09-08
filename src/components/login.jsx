@@ -28,7 +28,7 @@ const LoginPage = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch('http://13.127.52.62:8000/login', {
+      const response = await fetch('http://52.66.78.108:8000/login', {
         
         method: 'POST',
         headers: {
@@ -61,7 +61,7 @@ const LoginPage = () => {
       localStorage.setItem('token',token)
            
 
-      history('/dashboard');
+      history('/home');
 
       
     } catch (error) {
