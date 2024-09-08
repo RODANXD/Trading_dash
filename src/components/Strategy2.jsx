@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import DropdownMenuCheckboxes from './ui/dropdown'
 import { Label } from "@/components/ui/label";
 import Strategy3_form from './Strategy3_form'
+import {handleexchangerequest} from '../utility/Api'
 
 import {
   DropdownMenu,
@@ -58,7 +59,18 @@ export default function TradingForm() {
     setIsActivated(!isActivated);
   };
   const Addform = () => {
+    
+    const endpoint = "addblock"
+    const strategy= 3
+    const payload = JSON.stringify({strategy})
+    const type = "POST"
+    handleexchangerequest(type, payload, endpoint)
+    .then(response => {
     setIsOpen(true);
+
+    console.log(response)
+    })
+
   };
   const handleviewall = ()=>{
     setviewall(true)

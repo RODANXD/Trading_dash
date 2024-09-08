@@ -51,6 +51,7 @@ function Custom() {
   const [expiry, setExpiry] = useState("")
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
+  const[blockno,setblockno]= useState('')
 
   // const [isOpen, setIsOpen] = React.useState(false)
   // const Addform = () => setIsOpen(!isOpen)
@@ -210,15 +211,17 @@ function Custom() {
       settargettype(e.target.value)}
 
   const handleAddTrade= ()=>{
-    setAddtrade(!addtrade)}
     const endpoint = "addblock"
     const strategy= 1
     const payload = JSON.stringify({strategy})
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
+    setAddtrade(!addtrade)
+
     console.log(response)
     })
+  }
 
   const handleCheckboxChange = (id) => {
       setbrokerselect((prevData) =>
@@ -271,7 +274,7 @@ function Custom() {
     <div className="container-xl my-3">
       <div className="row">
         <div className="col-md-4 col-6">
-          <button type="button" className="btn btn-success" onClick={handleAddTrade} disabled={isExpirySelected || isStrikeSelected}>+ Add Trade</button>
+          <button type="button" className="btn btn-success" onClick={()=>handleAddTrade()} disabled={isExpirySelected || isStrikeSelected}>+ Add Trade</button>
           
 
         </div>
