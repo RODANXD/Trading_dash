@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import DropdownMenuCheckboxes from './ui/dropdown'
+import Strategy1_form from "./Strategy1_form";
 
 import { Button } from "@/components/ui/button";
 
@@ -80,6 +81,9 @@ function Custom() {
   const [showActivityBar, setShowActivityBar] = React.useState(false);
   const [showPanel, setShowPanel] = React.useState(false);
 
+  const [viewall, setviewall]= useState(false)
+
+
 
 
   const [Lockleg,setlogleg]=useState('')
@@ -135,6 +139,15 @@ function Custom() {
     console.log(response)
     })
   }
+
+
+  const handleviewall = ()=>{
+    setviewall(true)
+
+  }
+  const handleCancelViewAll = () => {
+    setviewall(false);
+  };
 
 
  const handledatecahnge= (e)=>{
@@ -252,6 +265,9 @@ function Custom() {
     { name: "EXIDEIND", candleHighLow: "504.90", longshort: "SHORT", status: "PENDING", pnl: "", cancel: "CANCEL", exit: "EXIT" },
   ];
   return (
+    <>
+    {!viewall && (
+      <>
     <div className="container-xl my-3">
       <div className="row">
         <div className="col-md-4 col-6">
@@ -333,7 +349,7 @@ function Custom() {
                   </div>
                 </div>
                 <div className="flex items-center justify-center h-24 w-64">
-                  <button className="btn btn-info w-24" onClick={Addform}>
+                  <button className="btn btn-info w-24" onClick={handleviewall}>
                     View All
                   </button>
                 </div>
@@ -435,8 +451,7 @@ function Custom() {
             <div className="row">
               <div className="col-4">
               <select  className='form-select'
-                onChange={handlesegment
-                      }
+                onChange={handlesegment}
                       
                     >
                       <option value=""> select segment</option>
@@ -752,15 +767,6 @@ function Custom() {
                   
                   
                   
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
                 </div>
               </div>
             </div>
@@ -828,6 +834,13 @@ function Custom() {
       
     </div>):''}
     </div>
+    </>
+    )}
+
+{viewall&&(<Strategy1_form onCancel={handleCancelViewAll}/>)}
+
+
+    </>
   );
 }
 

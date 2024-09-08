@@ -4,7 +4,7 @@ import DropdownMenuCheckboxes from "./ui/dropdown";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import * as React from "react";
-
+import Strategy2_form from "./Strategy2_form";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -23,6 +23,8 @@ import {
 export default function Strategy() {
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
+  const [viewall, setviewall]= useState(false)
+
 
   const Addform = () => {
     setIsOpen(true);
@@ -39,8 +41,18 @@ export default function Strategy() {
   const toggleActivation = () => {
     setIsActivated(!isActivated);
   };
+  const handleCancelViewAll = () => {
+    setviewall(false);
+  };
+  const handleviewall = ()=>{
+    setviewall(true)
+
+  }
 
   return (
+    <>
+    {!viewall && (
+      <>
     <div className="container mx-auto px-4 py-8 space-y-8">
       <div className="space-y-4">
         <h2 className="text-2xl font-bold text-center text-white">Index Price</h2>
@@ -101,7 +113,7 @@ export default function Strategy() {
                   </div>
                 </div>
                 <div className="flex items-center justify-center h-24 w-64">
-                  <button className="btn btn-info w-24" onClick={Addform}>
+                  <button className="btn btn-info w-24" onClick={handleviewall}>
                     View All
                   </button>
                 </div>
@@ -248,6 +260,12 @@ export default function Strategy() {
           </div>
         )}
       </div>
+      
+      
     </div>
+    </>
+    )}
+    {viewall&&(<Strategy2_form onCancel={handleCancelViewAll}/>)}
+    </>
   );
 }

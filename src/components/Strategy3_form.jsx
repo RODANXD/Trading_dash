@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import DropdownMenuCheckboxes from './ui/dropdown'
 import { Label } from "@/components/ui/label";
-import Strategy3_form from './Strategy3_form'
+
+
 
 import {
   DropdownMenu,
@@ -24,9 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-
-
-export default function TradingForm() {
+const Strategy3_form = ({ onCancel }) => {
   const [movement, setMovement] = useState('3')
   const [ioChange, setIoChange] = useState('3')
   const [fromTime, setFromTime] = useState('09:20 AM')
@@ -39,7 +38,6 @@ export default function TradingForm() {
   const [entryDurationTime, setEntryDurationTime] = useState('12:30 PM')
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
-  const [viewall, setviewall]= useState(false)
 
   
   const scriptData = [
@@ -60,160 +58,10 @@ export default function TradingForm() {
   const Addform = () => {
     setIsOpen(true);
   };
-  const handleviewall = ()=>{
-    setviewall(true)
 
-  }
-
-  const handleCancelViewAll = () => {
-    setviewall(false);
-  };
   return (
-    
     <>
-    {!viewall && (
-      <>
-     <div className="col-md-4 col-6">
-          <button type="button" className="btn btn-success" onClick={Addform}>
-            + Add Trade
-          </button>
-        </div>
-        {!isOpen && (
-     <div className="h-screen  mt-3 flex flex-col gap-10">
-            <div className="w-full p-2 text-xs border border-white  text-white">
-              <div className="h-32 w-full flex justify-evenly">
-               
-                <div className="flex items-center justify-center h-24 w-64">
-                  <Popover>
-                    <PopoverTrigger>
-                      <button className="btn btn-danger w-32">Delete</button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-72">
-                      <div className="grid place-items-center gap-4">
-                        <div className="space-y-2 flex items-center gap-3">
-                          <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-                          <button className="btn btn-danger w-32">confirm</button>
-                        </div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <div className="flex items-center justify-center h-24 w-64">
-                  <button
-                    className={`btn w-44 ${isActivated ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
-                    onClick={toggleActivation}
-                  >
-                    {isActivated ? "Deactivate" : "Activate"}
-                  </button>
-                </div>
-                <div className="pt-1 flex flex-col gap-3 h-32 w-64">
-                  <button className="btn btn-danger">Exit All</button>
-                  <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="email">PNL</Label>
-                    <Input type="number" placeholder="Value" />
-                  </div>
-                </div>
-                <div className="flex items-center justify-center h-24 w-64">
-                  <button className="btn btn-info w-24" onClick={handleviewall}>
-                    View All
-                  </button>
-                </div>
-              </div>
-             
-              
-              <div></div>
-              <div className="overflow-y-scroll w-full h-28">
-                <table className="w-full border-collapse border border-gray-300 table-fixed">
-                  <thead>
-                    <tr className="bg-gray-300 text-black">
-                      <th className="border border-gray-300 p-2 w-[12%]">ID</th>
-                      <th className="border border-gray-300 p-2">Side</th>
-                      <th className="border border-gray-300 p-1">LOT</th>
-                      <th className="border border-gray-300 p-1">Status</th>
-                      <th className="border border-gray-300 p-1">Symbol </th>
-                      <th className="border border-gray-300 p-1">Action</th>
-                      <th className="border border-gray-300 p-1">Action Button</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {scriptData.map((item) => (
-                      <tr key={item.name} className="text-gray-800">
-                        <td className="border border-gray-300 p-1 text-white">{item.name}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.status}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
-                        <td className="border border-gray-300 p-1">
-                          <Button className="text-xs p-2">{item.exit}</Button>
-        
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                
-              </div>
-            </div>
-            <div className="overflow-y-scroll  w-full h-56 rounded-lg">
-          <table className="min-w-full border border-gray-300 text- bg-white rounded-sm">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b border-r text-left">Script Name</th>
-                <th className="py-2 px-4 border-b border-r text-left">Candle high low</th>
-                <th className="py-2 px-4 border-b border-r text-left">LONG/SHORT</th>
-                <th className="py-2 px-4 border-b border-r text-left">Status</th>
-                <th className="py-2 px-4 border-b border-r text-left">PNL</th>
-                <th className="py-2 px-4 border-b text-left" colSpan={2}>Manual cancel or exit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scriptData.map((script, index) => (
-                <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                  <td className="py-2 px-4 border-b border-r">{script.name}</td>
-                  <td className="py-2 px-4 border-b border-r">{script.candleHighLow}</td>
-                  <td className="py-2 px-4 border-b border-r">{script.longshort}</td>
-                  <td className="py-2 px-4 border-b border-r">
-                    <span className={`px-2 py-1 rounded ${
-                      script.status === 'EXECUTED' ? 'bg-green-200 text-green-800' :
-                      script.status === 'PENDING' ? 'bg-yellow-200 text-yellow-800' :
-                      script.status === 'CANCELLED' ? 'bg-red-200 text-red-800' :
-                      'bg-gray-200 text-gray-800'
-                    }`}>
-                      {script.status}
-                    </span>
-                  </td>
-                  <td className="py-2 px-4 border-b border-r">
-                    <span className={script.pnl.startsWith('+') ? 'text-green-600 font-semibold' : ''}>
-                      {script.pnl}
-                    </span>
-                  </td>
-                  <td className="py-2 px-2 border-b border-r">
-                    <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">
-                      {script.cancel}
-                    </button>
-                  </td>
-                  <td className="py-2 px-2 border-b">
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
-                      {script.exit}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          
-        </div>
-          </div>
-          
-          
-    )}
-
     
-
-
-
-{isOpen &&(
     <div className="p-4 max-w-7xl mx-auto">
       <div className="overflow-x-auto mb-6">
         <table className="w-full border-collapse border border-gray-300">
@@ -414,25 +262,15 @@ export default function TradingForm() {
         
       </div>
       <Button
-              onClick={() => {
-                setIsOpen(false);
-              }}
+              onClick={onCancel}
               className="mt-4"
             >
               Cancel
             </Button>
       
     </div>
-    )}
-    </>
-    )}
-
-
-      {viewall&&(<Strategy3_form onCancel={handleCancelViewAll}/>)}
-  
-    
-
     </>
   )
-
 }
+
+export default Strategy3_form
