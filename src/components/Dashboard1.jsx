@@ -7,6 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { DatePickerInput } from '@mantine/dates';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -109,15 +110,6 @@ function Custom() {
     localStorage.setItem('numberOfLegs', numberOfLegs.toString());
   }, [numberOfLegs, legPLTs]);
 
-  const handlezerodha = ()=>{
-    const endpoint = "zerodha"
-    const payload = ""
-    const type = "POST"
-    handleexchangerequest(type, payload, endpoint)
-    .then(response => {
-      window.open(response)
-    })
-  }
   const settings = ()=>{
     const endpoint = "settings"
     const payload = JSON.stringify({datevalue,datevalue1,tradetype,segment,selectVertical,
@@ -219,6 +211,14 @@ function Custom() {
 
   const handleAddTrade= ()=>{
     setAddtrade(!addtrade)}
+    const endpoint = "addblock"
+    const strategy= 1
+    const payload = JSON.stringify({strategy})
+    const type = "POST"
+    handleexchangerequest(type, payload, endpoint)
+    .then(response => {
+    console.log(response)
+    })
 
   const handleCheckboxChange = (id) => {
       setbrokerselect((prevData) =>

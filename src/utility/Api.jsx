@@ -6,7 +6,7 @@ export const handleexchangerequest = async (type, payload, endpoint) => {
       const t = "token " + sdd;
 
       if (type === "POST") {
-        const response = await fetch("http://13.127.52.62:8000/" + endpoint, {
+        const response = await fetch("http://52.66.78.108:8000/" + endpoint, {
           method: type,
           headers: {
             "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export const handleexchangerequest = async (type, payload, endpoint) => {
         
       }
       if (type === "PUT") {
-        const response = await fetch("http://13.127.52.62:8000" + endpoint, {
+        const response = await fetch("http://52.66.78.108:8000/" + endpoint, {
           method: type,
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export const handleexchangerequest = async (type, payload, endpoint) => {
 
       if (type === "GET" || "DELETE") {
         const response = await fetch(
-          "http://13.127.52.62:8000/" + endpoint + payload,
+          "http://52.66.78.108:8000/" + endpoint + payload,
           {
             method: type,
             headers: {  

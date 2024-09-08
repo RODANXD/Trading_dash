@@ -5,6 +5,8 @@ import Strategy from './components/Strategy';
 import TradingForm from './components/Strategy2';
 import { MantineProvider } from "@mantine/core";
 import { ChartAreaStacked } from './components/Home';
+import LoginPage from './components/login';
+
 import './App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -19,6 +21,8 @@ function App() {
       <Router>
         <Routes>
             <Route path="/" element={<Design/>}>
+            <Route path="/login" element={<LoginPage />} />
+
             <Route path="/Strategy" element={<Custom />} />
             <Route path="/home" element={<ChartAreaStacked />} />
             <Route path="/Strategy2" element={<Strategy />} />
