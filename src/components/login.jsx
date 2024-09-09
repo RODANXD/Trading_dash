@@ -15,17 +15,11 @@ const LoginPage = () => {
 
  
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
   
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+     e.preventDefault();
+    
     
     try {
       const response = await fetch('http://52.66.78.108:8000/login', {
@@ -43,17 +37,9 @@ const LoginPage = () => {
         throw new Error('Login failed');
       }
       const data = await response.json()
-
-      
-      
-      
-     
-      
-      // Login successful, perform further actions (e.g., redirect to a different page)
-      console.log('Login successful');
       const token = data.message.token
       const id = data.id
-      //const status = data.message.ClientStatus
+      console.log('Login successful');
       
       
         
@@ -86,29 +72,30 @@ const LoginPage = () => {
         <input type="hidden" name="remember" defaultValue="true" />
         <div className="rounded-md shadow-sm -space-y-px">
           <div>
-            <label htmlFor="email-address" className="sr-only">
+            <label >
               Email address
             </label>
             <input
-
+              onChange={(e)=>setUsername(e.target.value)}
+              value={username}
               type="text"
-              autoComplete="username"
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-white rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Username"
             />
           </div>
           <div>
-            <label htmlFor="password" className="sr-only">
+            <label >
               Password
             </label>
             <input
-              id="password"
+            
               name="password"
               type="password"
-              autoComplete="current-password"
+              onChange={(e)=>setPassword(e.target.value)}
+              value={password}
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-white rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-black rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Password"
             />
           </div>
@@ -116,6 +103,7 @@ const LoginPage = () => {
 
         <div>
           <button
+          onClick={(e)=>handleSubmit(e)}
             type="submit"
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >

@@ -27,6 +27,9 @@ export default function Strategy() {
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
   const [viewall, setviewall]= useState(false)
+  const [paper, setpaper]= useState(false)
+  
+
   
 
 
@@ -93,6 +96,15 @@ console.log(broker,'broker')
           item.id === id ? { ...item,value:!item.value } : item
         )
       );
+
+
+  }
+
+  const handlemode = () =>{
+    setpaper(!paper)
+
+
+
 
 
   }
@@ -178,7 +190,8 @@ console.log(broker,'broker')
                 </div>
                 <div className="flex items-center justify-center h-24 w-64">
                   <button className="btn btn-info w-24" onClick={handleviewall}>
-                    View All
+                  View Detail
+
                   </button>
                 </div>
               </div>
@@ -290,7 +303,7 @@ console.log(broker,'broker')
             <DropdownMenuCheckboxes/>
             </div>
             <div>
-            <Button variant="outline" className="w-full bgreen-600">Paper/Live</Button>
+            <Button onClick={()=>handlemode()} variant="outline" className={paper ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper?"Paper":"Live"}</Button>
             </div>
           </div>
 

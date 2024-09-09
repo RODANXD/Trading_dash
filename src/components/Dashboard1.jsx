@@ -7,7 +7,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { DatePickerInput } from '@mantine/dates';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -15,7 +14,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+
+
+
+
+
+
+
+
+
 import DropdownMenuCheckboxes from './ui/dropdown'
 import Strategy1_form from "./Strategy1_form";
 
@@ -52,6 +60,14 @@ function Custom() {
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
   const[blockno,setblockno]= useState('')
+  const [broker,setBroker]= useState([
+    {id:1,name:'Shoonya',value:true},
+    {id:2,name:'Dhan',value:true},
+    {id:3,name:'Angel',value:true},]
+
+
+  )
+
 
   // const [isOpen, setIsOpen] = React.useState(false)
   // const Addform = () => setIsOpen(!isOpen)
@@ -210,6 +226,8 @@ function Custom() {
   const handleTargettype= (e)=>{
       settargettype(e.target.value)}
 
+
+  
   const handleAddTrade= ()=>{
     const endpoint = "addblock"
     const strategy= 1
@@ -242,7 +260,14 @@ function Custom() {
     });
   };
 
-  
+  const brokerstatus= (id,val) =>{
+
+    setBroker((prevData) =>
+  prevData.map((item) =>
+    item.id === id ? { ...item,value:!item.value } : item
+  )
+);}
+
 
   const handleSelectChange = async (event) => {
     setSelectVertical(event.target.value)
@@ -353,7 +378,7 @@ function Custom() {
                 </div>
                 <div className="flex items-center justify-center h-24 w-64">
                   <button className="btn btn-info w-24" onClick={handleviewall}>
-                    View All
+                    View Detail
                   </button>
                 </div>
               </div>
@@ -438,10 +463,8 @@ function Custom() {
           <div className="col-lg-6 mt-3">
             <div className="row">
               <div className="col-lg-4 col-sm-6 col-7 offset-lg-4">
-                <button type="button" className="btn btn-light w-100">{toggleStatus2 ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus2(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus2(true)} />}&ensp;Active/Deactivate</button>
               </div>
               <div className="col-lg-4 col-sm-6 col-5">
-                <button type="button" className="btn btn-light w-100">❌ Exit All</button>
               </div>
             </div>
           </div>
@@ -565,10 +588,10 @@ function Custom() {
 
 
                   <div className="col-lg-3 col-6">
-                    <button type="button" className="btn btn-light w-100">PNL</button>
+                    {/* <button type="button" className="btn btn-light w-100">PNL</button> */}
                   </div>
                   <div className="col-lg-3 col-6">
-                    <button type="button" className="btn btn-light w-100">❌ Exit All</button>
+                    {/* <button type="button" className="btn btn-light w-100">❌ Exit All</button> */}
                   </div>
                 </div>
               </div>
@@ -757,16 +780,55 @@ function Custom() {
             <div className="col-lg-4 col-sm-6">
               <div className="row">
                 <div className="col-6 mt-3">
-                <select  onChange={(e)=>handlebrokerchange(e)} className='form-select'>
-                  <option value=""> Broker </option>
-                <option value="Zerodha">Zerodha</option>
-                <option value="Angel">Angel</option>
-                </select>
-                   
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="w-full bgreen-600">Broker</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel></DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {broker.map((item) => (
+                <DropdownMenuCheckboxItem
+                
+                onCheckedChange={()=>brokerstatus(item.id,!item.value)} 
+                checked={item.value}
+                >
+                {item.name}
+              </DropdownMenuCheckboxItem>
+
+                  ))}
+                  </DropdownMenuContent>
+                  </DropdownMenu>
+
+                
+                
+                
+                
+                
+                
                   
                 </div>
                 <div className="col-6 mt-3">
-                  <input type="number" className=' bg-white text-black p-2 rounded-sm' value={Amountblock} onChange= {(e)=>setAmountblock(e.target.value)} placeholder='Amount'></input>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="w-full bgreen-600">Account</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel></DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {broker.map((item) => (
+                <DropdownMenuCheckboxItem
+                
+                onCheckedChange={()=>brokerstatus(item.id,!item.value)} 
+                checked={item.value}
+                >
+                {item.name}
+              </DropdownMenuCheckboxItem>
+
+                  ))}
+                  </DropdownMenuContent>
+                  </DropdownMenu>
+
                   
                   
                   

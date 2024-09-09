@@ -127,7 +127,7 @@ export default function TradingForm() {
                 </div>
                 <div className="flex items-center justify-center h-24 w-64">
                   <button className="btn btn-info w-24" onClick={handleviewall}>
-                    View All
+                  View Detail
                   </button>
                 </div>
               </div>
