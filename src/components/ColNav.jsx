@@ -43,23 +43,23 @@ const ColNav = () => {
               </li>
             </Link>
             <Link to = "/Strategy">
-              <li className="hover:text-cyan-500 cursor-pointer flex items-center gap-3 duration-500">
+              <li className="hover:text-cyan-500 cursor-pointer capitalize flex items-center gap-3 duration-500">
                 {" "}
                 <BsBoxSeamFill className=" size-5" />
-                Strategy 1
+                Trade Tool
               </li>
             </Link>
             <Link to = "/Strategy2">
-              <li className="hover:text-cyan-500 cursor-pointer flex items-center gap-3 duration-500">
+              <li className="hover:text-cyan-500 cursor-pointer capitalize flex items-center gap-3 duration-500">
                 {" "}
                 <CiDeliveryTruck className=" size-5" />
-                Strategy 2
+                index scalping
               </li>
             </Link>
             <Link to = "/Strategy3">
-              <li className="hover:text-cyan-500 cursor-pointer flex items-center gap-3 duration-500">
+              <li className="hover:text-cyan-500 cursor-pointer capitalize flex items-center gap-3 duration-500">
                 <GrTransaction className=" size-5" />
-                Strategy 3
+                movementum
               </li>
             </Link>
           </ul>

@@ -218,7 +218,7 @@ const Strategy3_form = ({ onCancel }) => {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            <div>
+            {/* <div>
             <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="w-full bg-blue-300">Broker</Button>
@@ -246,8 +246,8 @@ const Strategy3_form = ({ onCancel }) => {
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
-              {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
-            </div>
+              
+            </div> */}
             <div>
             <DropdownMenuCheckboxes/>
               {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}

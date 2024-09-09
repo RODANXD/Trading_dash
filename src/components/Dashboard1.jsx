@@ -779,7 +779,7 @@ function Custom() {
             </div>
             <div className="col-lg-4 col-sm-6">
               <div className="row">
-                <div className="col-6 mt-3">
+                {/* <div className="col-6 mt-3">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full bgreen-600">Broker</Button>
@@ -807,7 +807,7 @@ function Custom() {
                 
                 
                   
-                </div>
+                </div> */}
                 <div className="col-6 mt-3">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

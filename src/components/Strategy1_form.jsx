@@ -615,7 +615,7 @@ const Strategy1_form = ({onCancel}) => {
           </div>
           <div className="col-lg-4 col-sm-6">
             <div className="row">
-              <div className="col-6 mt-3">
+              {/* <div className="col-6 mt-3">
               <select  onChange={(e)=>handlebrokerchange(e)} className='form-select'>
                 <option value=""> Broker </option>
               <option value="Zerodha">Zerodha</option>
@@ -623,7 +623,7 @@ const Strategy1_form = ({onCancel}) => {
               </select>
                  
                 
-              </div>
+              </div> */}
               <div className="col-6 mt-3">
                 <input type="number" className=' bg-white text-black p-2 rounded-sm' value={Amountblock} onChange= {(e)=>setAmountblock(e.target.value)} placeholder='Amount'></input>
                 
