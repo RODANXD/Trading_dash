@@ -624,21 +624,40 @@ const Strategy1_form = ({onCancel}) => {
                  
                 
               </div> */}
-              <div className="col-6 mt-3">
+               <div className=" grid place-items-center mt-8">
+            <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" className="w-56 bg-white">Broker</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuCheckboxItem
+          checked={showStatusBar}
+          onCheckedChange={setShowStatusBar}
+        >
+          Angel Broker
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={showActivityBar}
+          onCheckedChange={setShowActivityBar}
+        >
+          Zerodha
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={showPanel}
+          onCheckedChange={setShowPanel}
+        >
+          Binomo
+        </DropdownMenuCheckboxItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+              
+            </div> 
+              {/* <div className="col-6 mt-3">
                 <input type="number" className=' bg-white text-black p-2 rounded-sm' value={Amountblock} onChange= {(e)=>setAmountblock(e.target.value)} placeholder='Amount'></input>
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
