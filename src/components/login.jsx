@@ -38,12 +38,16 @@ const LoginPage = () => {
       }
       const data = await response.json()
       const token = data.message.token
+      const expiry = data.message.expiry
       const id = data.id
       console.log('Login successful');
       
       
         
       localStorage.setItem('token',token)
+      localStorage.setItem('expiry',expiry)
+
+
            
 
       history('/home');
