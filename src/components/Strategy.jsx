@@ -102,27 +102,15 @@ console.log(broker,'broker')
 
   const handlemode = () =>{
     setpaper(!paper)
-
-
-
-
-
   }
   console.log(head,'head')
   const handleheadchange= (id,val)=>{
     
-      
           Sethead((prevData) =>
         prevData.map((item) =>
           item.id === id ? { ...item,value:val } : item
         )
       );
-
-
-
-   
-   
-   
     
   }
   return (
@@ -132,10 +120,13 @@ console.log(broker,'broker')
     <div className="container mx-auto px-4 py-8 space-y-8">
       <div className="space-y-4">
         <h2 className="text-2xl font-bold text-center text-white">Index Price</h2>
-        <div className="col-md-4 col-6">
+        <div className="flex justify-between">
           <button type="button" className="btn btn-success" onClick={()=>Addform()}>
             + Add Trade
           </button>
+          <div className="col-md-4 col-6 d-flex justify-content-end order-md-2">
+          <Button>Exit All</Button>
+        </div>
         </div>
         
         
@@ -147,7 +138,7 @@ console.log(broker,'broker')
                 <Label variant="outline" className="w-full text-teal-50 text-lg">
                   {item}
                 </Label>
-                <Input placeholder="Value" className="w-full" />
+                <Input placeholder="Value" type="number" className="w-full" />
               </div>
             ))}
           </div>
@@ -238,7 +229,7 @@ console.log(broker,'broker')
         {head.map((item) => (
           <div key={item} className="flex flex-col items-center gap-2">
             <Button variant="outline" className="w-full bg-green-600">{item.key}</Button>
-            <Input placeholder="Value" className="w-full" onChange= {(e)=>handleheadchange(item.id,e.target.value)}/>
+            <Input placeholder="Value" className="w-full" type="number" onChange= {(e)=>handleheadchange(item.id,e.target.value)}/>
           </div>
         ))}
       </div>

@@ -7,6 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { DatePickerInput } from '@mantine/dates';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import Addleg from "./Addleg";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -15,6 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+
 
 
 
@@ -69,12 +72,11 @@ function Custom() {
   )
 
 
-  // const [isOpen, setIsOpen] = React.useState(false)
-  // const Addform = () => setIsOpen(!isOpen)
 
 
   // const [value, setValue] = useState<Date | null>(null);
 
+  const [showAddleg, setShowAddleg] = useState(false);
 
 
   const [sltype,setsltype]=useState('')
@@ -101,8 +103,7 @@ function Custom() {
 
   const [viewall, setviewall]= useState(false)
 
-
-
+  const [selectDisable, setSelectDisable] = useState("");
 
   const [Lockleg,setlogleg]=useState('')
   const [optiondata,setoptiondata]= useState({type:'',side:''})
@@ -148,6 +149,12 @@ function Custom() {
     console.log(response)
     })
   }
+
+  const handleSelectdisable = (e) => {
+    setSelectDisable(e.target.value);
+  };
+
+  const isContentDisabled = selectDisable === "Future";
 
 
   const handleviewall = ()=>{
@@ -197,7 +204,11 @@ function Custom() {
   const handleBlockpnl= (e)=>{
     setpnlblock(e.target.value)
   }
-    
+  
+  const toggleAddleg = () => {
+    setShowAddleg(false);
+  };
+
   const toggleActivation = () => {
     setIsActivated(!isActivated);
   };
@@ -299,26 +310,14 @@ function Custom() {
     <div className="container-xl my-3">
       <div className="row">
         <div className="col-md-4 col-6">
-          <button type="button" className="btn btn-success" onClick={()=>handleAddTrade()} disabled={isExpirySelected || isStrikeSelected}>+ Add Trade</button>
+          <button type="button" className="btn btn-success" 
+          onClick={()=>handleAddTrade()} disabled={isExpirySelected || isStrikeSelected}>+ Add Trade</button>
           
 
         </div>
         
         <div className="col-md-4 col-6 d-flex justify-content-end order-md-2">
-          <Dropdown>
-            <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="w-100">
-              Exit All
-            </Dropdown.Toggle>
-            {/* <Dropdown.Menu> */}
-              {/* <Dropdown.Item href='#'>Trade 01 <span style={{ float: 'right' }}> <input type="checkbox" /></span></Dropdown.Item> */}
-              {/* <Dropdown.Item href='#'>Trade 02 <span style={{ float: 'right' }}> <input type="checkbox" /></span></Dropdown.Item> */}
-              {/* <Dropdown.Item href='#'>Trade 03 <span style={{ float: 'right' }}> <input type="checkbox" /></span></Dropdown.Item> */}
-              {/* <Dropdown.Item href='#'>Trade 04 <span style={{ float: 'right' }}> <input type="checkbox" /></span></Dropdown.Item> */}
-              {/* <Dropdown.Item href='#'>Trade 05 <span style={{ float: 'right' }}> <input type="checkbox" /></span></Dropdown.Item> */}
-              {/* <Dropdown.Item href='#'>Trade 06 <span style={{ float: 'right' }}> <input type="checkbox" /></span></Dropdown.Item> */}
-            {/* </Dropdown.Menu> */}
-            
-          </Dropdown>
+          <Button>Exit All</Button>
         </div>
         <div className="col-md-4 col-12 text-center mt-md-0 mt-3">
           {/* <button type="button" className="btn w-100" style={{ backgroundColor: '#e6e6e9', width: 'fit-content', borderRadius: '5px' }}><b>Terminal ON/OFF</b>&ensp; {toggleStatus ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus(true)} />}</button> */}
@@ -328,7 +327,7 @@ function Custom() {
                 <button type="button" className="btn btn-light w-100 text-sm">Max Moving High {890}</button>
               </div>
               <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Avg Moving</button>
+                <button type="button" className="btn btn-light w-100 text-sm">Avg Moving</button>       
               </div>
               <div className="col-lg-4 col-6  mt-2">
                 <button type="button" className="btn btn-light w-100 text-sm">Max Drawdown</button>
@@ -346,7 +345,7 @@ function Custom() {
             <div className="w-full p-2 text-xs text-white">
               <div className="h-32 w-full flex justify-evenly">
                
-                <div className="flex items-center justify-center h-24 w-64">
+                <div className="flex items-center justify-center h-24">
                   <Popover>
                     <PopoverTrigger>
                       <button className="btn btn-danger w-32">Delete</button>
@@ -361,7 +360,7 @@ function Custom() {
                     </PopoverContent>
                   </Popover>
                 </div>
-                <div className="flex items-center justify-center h-24 w-64">
+                <div className="flex items-center justify-center h-24">
                   <button
                     className={`btn w-44 ${isActivated ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
                     onClick={toggleActivation}
@@ -369,17 +368,36 @@ function Custom() {
                     {isActivated ? "Deactivate" : "Activate"}
                   </button>
                 </div>
-                <div className="pt-1 flex flex-col gap-3 h-32 w-64">
+                <div className="pt-1 flex flex-col gap-3 h-32">
                   <button className="btn btn-danger">Exit All</button>
                   <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="email">PNL</Label>
                     <Input type="number" placeholder="Value" />
                   </div>
                 </div>
-                <div className="flex items-center justify-center h-24 w-64">
+                <div className="flex items-center justify-center h-24">
                   <button className="btn btn-info w-24" onClick={handleviewall}>
                     View Detail
                   </button>
+                </div>
+                <div className="flex items-center justify-center h-24">
+                  <button className="btn btn-info w-24" onClick={() => setShowAddleg(true)}>
+                    Add Leg
+                  </button>
+                </div>
+                <div className="flex items-center justify-center h-24">
+                  <button className="btn btn-info w-24" >
+                    View Leg
+                  </button>
+                
+                  {showAddleg && (
+        <div >
+          <div >
+            
+           { showAddleg && <Addleg onClose={toggleAddleg} />}
+          </div>
+        </div>
+      )}
                 </div>
               </div>
 
@@ -416,7 +434,11 @@ function Custom() {
                 
               </div>
             </div>
+            
           </div>
+
+
+
           
     )}
 
@@ -474,7 +496,7 @@ function Custom() {
       <div className="mt-2">
         <div className="row">
           <div className="col-lg-6 mt-3">
-            <div className="row">
+            <div className="flex justify-around gap-5 w-full">
               <div className="col-4">
               <select  className='form-select'
                 onChange={handlesegment}
@@ -501,6 +523,21 @@ function Custom() {
                   </div>
                 }
               </div>
+              <div className="col-4">
+              {!loading ?
+                <select id="selectVertical" className='form-select' onChange={handleSelectdisable} value={selectDisable}>
+                  <option value="">Select FNO</option>
+                  <option value="Future">FUTURE</option>
+                  <option value="BANKNIFTY">OPTION</option>
+                </select>
+                :
+                <div className="text-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              }
+            </div>
               <div className="col-4">
                 {expiries.length !== 0 ?
                   <select id="expirySelect" className='form-select' onChange={(e) => sethandleexpiry(e)}value={expiry}>
@@ -583,21 +620,11 @@ function Custom() {
         <input type="text" placeholder="value" className="bg-white w-32 text-black rounded-sm px-1"/>
       </div>
                 )}
-                  
-
-
-
-                  <div className="col-lg-3 col-6">
-                    {/* <button type="button" className="btn btn-light w-100">PNL</button> */}
-                  </div>
-                  <div className="col-lg-3 col-6">
-                    {/* <button type="button" className="btn btn-light w-100">❌ Exit All</button> */}
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="row">
+          <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
             <div className="col-lg-3 col-sm-5 col-9 mt-3">
               <div className="row">
                 <div className="col-6">
@@ -799,14 +826,6 @@ function Custom() {
                   ))}
                   </DropdownMenuContent>
                   </DropdownMenu>
-
-                
-                
-                
-                
-                
-                
-                  
                 </div> */}
                 <div className="col-6 mt-3">
                 <DropdownMenu>
@@ -884,7 +903,7 @@ function Custom() {
 
 
       <div className='mt-3' style={{ maxWidth: '500px', margin: 'auto' }}>
-        <div className="row">
+        <div className="flex items-center gap-4 flex-wrap w-full ">
           <div className="col-sm-4 mt-3">
             <button type="button" className="btn btn-success w-100 btn-lg"><i className="fa fa-save" /> Save</button>
           </div>
@@ -894,6 +913,12 @@ function Custom() {
           <div className="col-sm-4 mt-3">
             <button type="button" className="btn btn-secondary w-100 btn-lg">Deployed</button>
           </div>
+          <div className="col-sm-4 mt-3 ">
+        <button onClick={() => {
+                setAddtrade(false);
+              }} type="button" className="btn btn-danger w-100 btn-lg">Cancel</button>
+          
+        </div>
         </div>
       </div>
       

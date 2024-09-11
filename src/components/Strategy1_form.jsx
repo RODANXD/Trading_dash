@@ -294,22 +294,33 @@ const Strategy1_form = ({onCancel}) => {
            : <></>}</div>
         </div>
         <div className="col-lg-6 mt-3">
-          <div className="row">
-            <div className="col-lg-4 col-sm-6 col-7 offset-lg-4">
-              <button type="button" className="btn btn-light w-100">{toggleStatus2 ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus2(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus2(true)} />}&ensp;Active/Deactivate</button>
-            </div>
-            <div className="col-lg-4 col-sm-6 col-5">
-              <button type="button" className="btn btn-light w-100">❌ Exit All</button>
+        <div className="col-md-4 col-12 text-center mt-md-0 mt-3">
+          {/* <button type="button" className="btn w-100" style={{ backgroundColor: '#e6e6e9', width: 'fit-content', borderRadius: '5px' }}><b>Terminal ON/OFF</b>&ensp; {toggleStatus ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus(true)} />}</button> */}
+          <div className="col-lg-6 w-full">
+            <div className="flex flex-nowrap gap-3 w-96 items-center">
+              <div className="col-lg-4 col-6 mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Max Moving High {890}</button>
+              </div>
+              <div className="col-lg-4 col-6 mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Avg Moving</button>
+              </div>
+              <div className="col-lg-4 col-6  mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Max Drawdown</button>
+              </div>
+              <div className="col-lg-4 col-6 mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Up Avg Moving</button>
+              </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
 
     <div className="mt-2">
-      <div className="row">
+      <div className="w-full">
         <div className="col-lg-6 mt-3">
-          <div className="row">
+          <div className="flex justify-around gap-5 w-full">
             <div className="col-4">
             <select  className='form-select'
               onChange={handlesegment
@@ -328,6 +339,21 @@ const Strategy1_form = ({onCancel}) => {
                   <option value="">Select Vertical</option>
                   <option value="NIFTY">Nifty</option>
                   <option value="BANKNIFTY">BANKNIFTY</option>
+                </select>
+                :
+                <div className="text-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              }
+            </div>
+            <div className="col-4">
+              {!loading ?
+                <select id="selectVertical" className='form-select' onChange={(e) => handleSelectChange(e)} value={selectVertical}>
+                  <option value="">Select FNO</option>
+                  <option value="NIFTY">FUTURE</option>
+                  <option value="BANKNIFTY">OPTION</option>
                 </select>
                 :
                 <div className="text-center">
@@ -362,8 +388,6 @@ const Strategy1_form = ({onCancel}) => {
    
     
       <>
-
-
         <div className="mt-4">
           <div className="row" style={{ background: '#CCCCCC' }}>
             <div className="col-lg-6 my-3">
@@ -412,23 +436,18 @@ const Strategy1_form = ({onCancel}) => {
             </div>
             <div className="col-lg-6 my-3">
               <div className="row">
-
               {advice === 'sequence' && (
     <div className="flex w-1/2 gap-3">
       <button className="btn btn-light w-32">Correction</button>
       <input type="text" placeholder="value" className="bg-white w-32 text-black rounded-sm px-1"/>
     </div>
               )}
-                
-
-
-
-                <div className="col-lg-3 col-6">
+                {/* <div className="col-lg-3 col-6">
                   <button type="button" className="btn btn-light w-100">PNL</button>
                 </div>
                 <div className="col-lg-3 col-6">
                   <button type="button" className="btn btn-light w-100">❌ Exit All</button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

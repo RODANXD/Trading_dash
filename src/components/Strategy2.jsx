@@ -41,6 +41,8 @@ export default function TradingForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
   const [viewall, setviewall]= useState(false)
+  const [paper, setpaper]= useState(false)
+
 
   
   const scriptData = [
@@ -58,6 +60,10 @@ export default function TradingForm() {
   const toggleActivation = () => {
     setIsActivated(!isActivated);
   };
+
+  const handlemode = () =>{
+    setpaper(!paper)
+  }
   const Addform = () => {
     
     const endpoint = "addblock"
@@ -91,7 +97,38 @@ export default function TradingForm() {
           </button>
         </div>
         {!isOpen && (
-     <div className="h-screen  mt-3 flex flex-col gap-10">
+     <div className="h-screen  mt-3 flex flex-col gap-3">
+      <div className="overflow-x-auto mb-6">
+        <table className="w-full border-collapse border border-gray-300">
+          <thead>
+            <tr className='bg-gray-300 text-black'>
+              <th className="border border-gray-300 p-2" colSpan={2}>Filtered Script</th>
+              <th className="border border-gray-300 p-2">Pending</th>
+              <th className="border border-gray-300 p-2">Executed</th>
+              <th className="border border-gray-300 p-2">Cancelled</th>
+              <th className="border border-gray-300 p-2">PNL</th>
+            </tr>
+          </thead>
+          <tbody className="text-white">
+            <tr>
+              <td className="border border-gray-300 p-2">Long side</td>
+              <td className="border border-gray-300 p-2">3</td>
+              <td className="border border-gray-300 p-2">1</td>
+              <td className="border border-gray-300 p-2">2</td>
+              <td className="border border-gray-300 p-2"></td>
+              <td className="border border-gray-300 p-2"></td>
+            </tr>
+            <tr>
+              <td className="border border-gray-300 p-2">Short Side</td>
+              <td className="border border-gray-300 p-2">2</td>
+              <td className="border border-gray-300 p-2">1</td>
+              <td className="border border-gray-300 p-2"></td>
+              <td className="border border-gray-300 p-2">1</td>
+              <td className="border border-gray-300 p-2">+500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
             <div className="w-full p-2 text-xs border border-white  text-white">
               <div className="h-32 w-full flex justify-evenly">
                
@@ -289,7 +326,7 @@ export default function TradingForm() {
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">IO Change below</label>
               <div className="relative rounded-md shadow-sm">
-                <input type="text" value={ioChange} onChange={(e) => setIoChange(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+                <input type="number" value={ioChange} onChange={(e) => setIoChange(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                   <span className="text-gray-500 sm:text-sm">%</span>
                 </div>
@@ -297,11 +334,11 @@ export default function TradingForm() {
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">Same direction day</label>
-              <input type="text" value={sameDirectionDay} onChange={(e) => setSameDirectionDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number"value={sameDirectionDay} onChange={(e) => setSameDirectionDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">Monthly expiry day</label>
-              <input type="text" value={monthlyExpiryDay} onChange={(e) => setMonthlyExpiryDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" value={monthlyExpiryDay} onChange={(e) => setMonthlyExpiryDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
           </div>
         </div>
@@ -314,7 +351,7 @@ export default function TradingForm() {
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Retracement</label>
             <div className="relative rounded-md shadow-sm">
-              <input type="text" value={retracement} onChange={(e) => setRetracement(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" value={retracement} onChange={(e) => setRetracement(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
               <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <span className="text-gray-500 sm:text-sm">%</span>
               </div>
@@ -346,39 +383,39 @@ export default function TradingForm() {
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Target</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Amount</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">SL</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">SL Trail</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Timer</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Profit Trail Active</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number"  className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Lock</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Trail</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
@@ -417,7 +454,9 @@ export default function TradingForm() {
               {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
             </div>
             <div>
-            <Button variant="outline" className="w-full bg-blue-300">Paper Live</Button>
+            <div>
+            <Button onClick={()=>handlemode()} variant="outline" className={paper ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper?"Paper":"Live"}</Button>
+            </div>
               {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
             </div>
           </div>
@@ -425,6 +464,7 @@ export default function TradingForm() {
 
         
       </div>
+      <div className=' flex justify-between items-center'>
       <Button
               onClick={() => {
                 setIsOpen(false);
@@ -433,6 +473,13 @@ export default function TradingForm() {
             >
               Cancel
             </Button>
+      <Button
+              className="mt-4"
+            >
+              Save
+            </Button>
+            
+            </div>
       
     </div>
     )}
