@@ -100,6 +100,7 @@ function Custom() {
   const [showPanel, setShowPanel] = React.useState(false);
 
   const [viewall, setviewall]= useState(false)
+  const [Tradeblockno,settradeblockno]= useState([])
 
 
 
@@ -149,6 +150,40 @@ function Custom() {
     })
   }
 
+  const Deleteblock = (Blockid) =>{
+    const endpoint = "tradeblock"
+    const payload = 'strategy=1&Blockid='+Blockid
+    const type = "DELETE"
+    handleexchangerequest(type, payload, endpoint)
+    .then(response => {
+    console.log(response)
+    window.location.reload()
+    })
+
+
+
+
+  }
+  
+
+  const tradeblocklist= async () =>{
+    const endpoint = "tradeblock"
+    const payload = 'strategy=1'
+    const type = "GET"
+    handleexchangerequest(type, payload, endpoint)
+    .then (response=> {
+    settradeblockno(response)
+    console.log(response)
+    
+    
+    })
+
+
+  }
+  useState(()=>{
+    tradeblocklist()
+
+  },[])
 
   const handleviewall = ()=>{
     setviewall(true)
@@ -198,8 +233,19 @@ function Custom() {
     setpnlblock(e.target.value)
   }
     
-  const toggleActivation = () => {
-    setIsActivated(!isActivated);
+  const toggleActivation = (id,ac) => {
+    const endpoint = "Activateblock"
+    const Blockid= id
+    const strategy= 1
+    const Activate= ac
+    const payload = JSON.stringify({Blockid,strategy,Activate})
+    const type = "POST"
+    handleexchangerequest(type, payload, endpoint)
+    .then (response=> {
+      console.log(response)
+})
+  window.location.reload()
+  
   };
 
   const handledatecahnge1= (e)=>{
@@ -342,6 +388,11 @@ function Custom() {
       </div >
 
       {!addtrade && (
+      
+      Tradeblockno.map((item)=>(
+     
+     <div>
+      <p className="text-white">{item.Blockid}</p>
      <div className="h-[65%] border border-emerald-900 mt-3">
             <div className="w-full p-2 text-xs text-white">
               <div className="h-32 w-full flex justify-evenly">
@@ -349,13 +400,13 @@ function Custom() {
                 <div className="flex items-center justify-center h-24 w-64">
                   <Popover>
                     <PopoverTrigger>
-                      <button className="btn btn-danger w-32">Delete</button>
+                      <button  className="btn btn-danger w-32">Delete</button>
                     </PopoverTrigger>
                     <PopoverContent className="w-72">
                       <div className="grid place-items-center gap-4">
                         <div className="space-y-2 flex items-center gap-3">
                           <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-                          <button className="btn btn-danger w-32">confirm</button>
+                          <button  onClick={()=>Deleteblock(item.Blockid)} className="btn btn-danger w-32">confirm</button>
                         </div>
                       </div>
                     </PopoverContent>
@@ -363,10 +414,10 @@ function Custom() {
                 </div>
                 <div className="flex items-center justify-center h-24 w-64">
                   <button
-                    className={`btn w-44 ${isActivated ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
-                    onClick={toggleActivation}
+                    className={`btn w-44 ${item.Activate ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
+                    onClick= {()=> toggleActivation(item.Blockid,!item.Activate)}
                   >
-                    {isActivated ? "Deactivate" : "Activate"}
+                    {!item.Activate ? "Deactivate" : "Activate"}
                   </button>
                 </div>
                 <div className="pt-1 flex flex-col gap-3 h-32 w-64">
@@ -417,6 +468,8 @@ function Custom() {
               </div>
             </div>
           </div>
+          </div>
+        ))
           
     )}
 

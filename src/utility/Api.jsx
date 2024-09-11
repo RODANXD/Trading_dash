@@ -1,5 +1,6 @@
 
 export const handleexchangerequest = async (type, payload, endpoint) => {
+
     const sdd = localStorage.getItem("token");
     console.log(payload)
     try {
@@ -44,7 +45,7 @@ export const handleexchangerequest = async (type, payload, endpoint) => {
 
       if (type === "GET" || "DELETE") {
         const response = await fetch(
-          "http://52.66.78.108:8000/" + endpoint + payload,
+          "http://52.66.78.108:8000/" + endpoint +'?'+ payload,
           {
             method: type,
             headers: {  
@@ -57,8 +58,8 @@ export const handleexchangerequest = async (type, payload, endpoint) => {
           throw new Error("Login failed");
         }
         const datastr = await response.json();
-
-        return data = datastr.message
+        
+        return  datastr.message
 
         
       }
@@ -67,9 +68,8 @@ export const handleexchangerequest = async (type, payload, endpoint) => {
       //   throw new Error('Login failed');
       // }
       // const data = await response.json()
-      console.log(data);
     } catch (error) {
-      setError("something went wrong");
+      // setError("something went wrong");
       console.error("INIT error:", error);
     }
 
