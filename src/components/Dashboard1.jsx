@@ -366,8 +366,9 @@ function Custom() {
 
         </div>
         
-        <div className="col-md-4 col-6 d-flex justify-content-end order-md-2">
+        <div className="col-md-4 col-6 d-flex gap-3 justify-content-end order-md-2">
           <Button>Exit All</Button>
+          <Button className=" bg-red-600">Delete All</Button>
         </div>
         <div className="col-md-4 col-12 text-center mt-md-0 mt-3">
           {/* <button type="button" className="btn w-100" style={{ backgroundColor: '#e6e6e9', width: 'fit-content', borderRadius: '5px' }}><b>Terminal ON/OFF</b>&ensp; {toggleStatus ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus(true)} />}</button> */}

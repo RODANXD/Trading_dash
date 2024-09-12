@@ -38,6 +38,7 @@ const Strategy3_form = ({ onCancel }) => {
   const [entryDurationTime, setEntryDurationTime] = useState('12:30 PM')
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
+  const [paper, setpaper]= useState(false)
 
   
   const scriptData = [
@@ -59,6 +60,9 @@ const Strategy3_form = ({ onCancel }) => {
     setIsOpen(true);
   };
 
+  const handlemode = () =>{
+    setpaper(!paper)
+  }
   return (
     <>
     
@@ -102,7 +106,7 @@ const Strategy3_form = ({ onCancel }) => {
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">Movement</label>
               <div className="relative rounded-md shadow-sm">
-                <input type="text" value={movement} onChange={(e) => setMovement(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" />
+                <input type="number" value={movement} onChange={(e) => setMovement(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                   <span className="text-gray-500 sm:text-sm">%</span>
                 </div>
@@ -125,7 +129,7 @@ const Strategy3_form = ({ onCancel }) => {
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">IO Change below</label>
               <div className="relative rounded-md shadow-sm">
-                <input type="text" value={ioChange} onChange={(e) => setIoChange(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+                <input type="number" value={ioChange} onChange={(e) => setIoChange(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                   <span className="text-gray-500 sm:text-sm">%</span>
                 </div>
@@ -133,11 +137,11 @@ const Strategy3_form = ({ onCancel }) => {
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">Same direction day</label>
-              <input type="text" value={sameDirectionDay} onChange={(e) => setSameDirectionDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" value={sameDirectionDay} onChange={(e) => setSameDirectionDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">Monthly expiry day</label>
-              <input type="text" value={monthlyExpiryDay} onChange={(e) => setMonthlyExpiryDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" value={monthlyExpiryDay} onChange={(e) => setMonthlyExpiryDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
           </div>
         </div>
@@ -150,7 +154,7 @@ const Strategy3_form = ({ onCancel }) => {
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Retracement</label>
             <div className="relative rounded-md shadow-sm">
-              <input type="text" value={retracement} onChange={(e) => setRetracement(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" value={retracement} onChange={(e) => setRetracement(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
               <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <span className="text-gray-500 sm:text-sm">%</span>
               </div>
@@ -182,39 +186,39 @@ const Strategy3_form = ({ onCancel }) => {
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Target</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Amount</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">SL</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">SL Trail</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Timer</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Profit Trail Active</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Lock</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-lg font-medium text-zinc-300 mb-1">Trail</label>
-              <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
@@ -253,8 +257,8 @@ const Strategy3_form = ({ onCancel }) => {
               {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
             </div>
             <div>
-            <Button variant="outline" className="w-full bg-blue-300">Paper Live</Button>
-              {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
+            <Button onClick={()=>handlemode()} variant="outline" className={paper ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper?"Paper":"Live"}</Button>
+              
             </div>
           </div>
         </div>

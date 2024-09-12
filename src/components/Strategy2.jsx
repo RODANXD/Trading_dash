@@ -91,10 +91,15 @@ export default function TradingForm() {
     <>
     {!viewall && (
       <>
-     <div className="col-md-4 col-6">
-          <button type="button" className="btn btn-success" onClick={Addform}>
+    <div className="flex justify-between">
+          <button type="button" className="btn btn-success" onClick={()=>Addform()}>
             + Add Trade
           </button>
+            <div className="col-md-4 col-6 d-flex gap-3 justify-content-end order-md-2">
+            <Button>Exit All</Button>
+            <Button className=" bg-red-600">Delete All</Button>
+
+          </div>
         </div>
         {!isOpen && (
      <div className="h-screen  mt-3 flex flex-col gap-3">
