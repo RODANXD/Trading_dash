@@ -71,6 +71,8 @@ export const handleexchangerequest = async (type, payload, endpoint) => {
     // const data = await response.json()
   } catch (error) {
     console.error("INIT error:", error);
+    return  false
+
   }
 
   // Reset the form after submission

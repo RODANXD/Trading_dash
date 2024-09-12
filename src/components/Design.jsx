@@ -6,11 +6,13 @@ import {handleauth} from './auth'
 import { useNavigate  } from 'react-router-dom';
 
 
+
+
 const Design = () => {
   const navigate = useNavigate();
 
   const isAuthExpired = handleauth();
-  console.log(isAuthExpired,'chekc')
+  console.log(isAuthExpired,'checktimestamp')
 
   {if (isAuthExpired) (
     navigate('/')

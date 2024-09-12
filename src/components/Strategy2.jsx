@@ -42,9 +42,11 @@ export default function TradingForm() {
   const [isActivated, setIsActivated] = useState(false);
   const [viewall, setviewall]= useState(false)
   const [paper, setpaper]= useState(false)
+  const [Tradeblockno,settradeblockno]= useState([])
 
 
   
+
   const scriptData = [
     { name: 'RAMCOCEM', candleHighLow: '826.15', longshort: 'LONG', status: 'EXECUTED', pnl: '+200', cancel: 'CANCEL', exit: 'EXIT' },
     { name: 'EXIDEIND', candleHighLow: '504.90', longshort: 'SHORT', status: 'PENDING', pnl: '', cancel: 'CANCEL', exit: 'EXIT' },
@@ -57,10 +59,9 @@ export default function TradingForm() {
   const [showActivityBar, setShowActivityBar] = React.useState(false)
   const [showPanel, setShowPanel] = React.useState(false)
 
-  const toggleActivation = () => {
-    setIsActivated(!isActivated);
-  };
+  
 
+  
   const handlemode = () =>{
     setpaper(!paper)
   }
@@ -78,6 +79,67 @@ export default function TradingForm() {
     })
 
   };
+  const toggleActivation = (id,ac) => {
+    const endpoint = "Activateblock"
+    const Blockid= id
+    const strategy= 1
+    const Activate= ac
+    const payload = JSON.stringify({Blockid,strategy,Activate})
+    const type = "POST"
+    handleexchangerequest(type, payload, endpoint)
+    .then (response=> {
+      console.log(response)
+})
+  window.location.reload()
+  
+  };
+
+  const Deleteblock = (Blockid) =>{
+    const endpoint = "tradeblock"
+    const payload = 'strategy=1&Blockid='+Blockid
+    const type = "DELETE"
+    handleexchangerequest(type, payload, endpoint)
+    .then(response => {
+    console.log(response)
+    window.location.reload()
+    })
+
+
+
+
+  }
+
+  const tradeblocklist= async () =>{
+    const endpoint = "tradeblock"
+    const payload = 'strategy=3'
+    const type = "GET"
+    // try {}
+    // catch (error){
+      // 
+    // }
+
+    handleexchangerequest(type, payload, endpoint)
+    .then (response=> {
+      if (response){
+        settradeblockno(response)
+    console.log(response,'resposnse')
+
+
+      }
+
+    
+  
+    
+    })
+
+
+  }
+  useState(()=>{
+    tradeblocklist()
+
+  },[])
+
+
   const handleviewall = ()=>{
     setviewall(true)
 
@@ -92,12 +154,17 @@ export default function TradingForm() {
     {!viewall && (
       <>
      <div className="col-md-4 col-6">
-          <button type="button" className="btn btn-success" onClick={Addform}>
+          <button type="button" className="btn btn-success" onClick={()=>Addform()}>
             + Add Trade
           </button>
         </div>
+
+
+        
         {!isOpen && (
-     <div className="h-screen  mt-3 flex flex-col gap-3">
+          <div>
+
+<>
       <div className="overflow-x-auto mb-6">
         <table className="w-full border-collapse border border-gray-300">
           <thead>
@@ -129,9 +196,70 @@ export default function TradingForm() {
           </tbody>
         </table>
       </div>
+
+
+      <div className="overflow-y-scroll  w-full h-56 rounded-lg">
+        <table className="min-w-full border border-gray-300 text- bg-white rounded-sm">
+          <thead>
+            <tr>
+              <th className="py-2 px-4 border-b border-r text-left">Script Name</th>
+              <th className="py-2 px-4 border-b border-r text-left">Candle high low</th>
+              <th className="py-2 px-4 border-b border-r text-left">LONG/SHORT</th>
+              <th className="py-2 px-4 border-b border-r text-left">Status</th>
+              <th className="py-2 px-4 border-b border-r text-left">PNL</th>
+              <th className="py-2 px-4 border-b text-left" colSpan={2}>Manual cancel or exit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {scriptData.map((script, index) => (
+              <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                <td className="py-2 px-4 border-b border-r">{script.name}</td>
+                <td className="py-2 px-4 border-b border-r">{script.candleHighLow}</td>
+                <td className="py-2 px-4 border-b border-r">{script.longshort}</td>
+                <td className="py-2 px-4 border-b border-r">
+                  <span className={`px-2 py-1 rounded ${
+                    script.status === 'EXECUTED' ? 'bg-green-200 text-green-800' :
+                    script.status === 'PENDING' ? 'bg-yellow-200 text-yellow-800' :
+                    script.status === 'CANCELLED' ? 'bg-red-200 text-red-800' :
+                    'bg-gray-200 text-gray-800'
+                  }`}>
+                    {script.status}
+                  </span>
+                </td>
+                <td className="py-2 px-4 border-b border-r">
+                  <span className={script.pnl.startsWith('+') ? 'text-green-600 font-semibold' : ''}>
+                    {script.pnl}
+                  </span>
+                </td>
+                <td className="py-2 px-2 border-b border-r">
+                  <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">
+                    {script.cancel}
+                  </button>
+                </td>
+                <td className="py-2 px-2 border-b">
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
+                    {script.exit}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+          
+        </div>
+        </>
+
+
+      {Tradeblockno.map((item)=>(
+        <div>
+          
+          
+     <div className="h-full mt-3 flex flex-col gap-3">
+
             <div className="w-full p-2 text-xs border border-white  text-white">
               <div className="h-32 w-full flex justify-evenly">
-               
+              <p className="text-white">Block Id:{item.Blockid}</p>
+
                 <div className="flex items-center justify-center h-24 w-64">
                   <Popover>
                     <PopoverTrigger>
@@ -141,7 +269,7 @@ export default function TradingForm() {
                       <div className="grid place-items-center gap-4">
                         <div className="space-y-2 flex items-center gap-3">
                           <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-                          <button className="btn btn-danger w-32">confirm</button>
+                          <button  onClick={()=>Deleteblock(item.Blockid)} className="btn btn-danger w-32">confirm</button>
                         </div>
                       </div>
                     </PopoverContent>
@@ -150,8 +278,7 @@ export default function TradingForm() {
                 <div className="flex items-center justify-center h-24 w-64">
                   <button
                     className={`btn w-44 ${isActivated ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
-                    onClick={toggleActivation}
-                  >
+                   onClick= {()=> toggleActivation(item.Blockid,!item.Activate)}                  >
                     {isActivated ? "Deactivate" : "Activate"}
                   </button>
                 </div>
@@ -204,58 +331,11 @@ export default function TradingForm() {
                 
               </div>
             </div>
-            <div className="overflow-y-scroll  w-full h-56 rounded-lg">
-          <table className="min-w-full border border-gray-300 text- bg-white rounded-sm">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b border-r text-left">Script Name</th>
-                <th className="py-2 px-4 border-b border-r text-left">Candle high low</th>
-                <th className="py-2 px-4 border-b border-r text-left">LONG/SHORT</th>
-                <th className="py-2 px-4 border-b border-r text-left">Status</th>
-                <th className="py-2 px-4 border-b border-r text-left">PNL</th>
-                <th className="py-2 px-4 border-b text-left" colSpan={2}>Manual cancel or exit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scriptData.map((script, index) => (
-                <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                  <td className="py-2 px-4 border-b border-r">{script.name}</td>
-                  <td className="py-2 px-4 border-b border-r">{script.candleHighLow}</td>
-                  <td className="py-2 px-4 border-b border-r">{script.longshort}</td>
-                  <td className="py-2 px-4 border-b border-r">
-                    <span className={`px-2 py-1 rounded ${
-                      script.status === 'EXECUTED' ? 'bg-green-200 text-green-800' :
-                      script.status === 'PENDING' ? 'bg-yellow-200 text-yellow-800' :
-                      script.status === 'CANCELLED' ? 'bg-red-200 text-red-800' :
-                      'bg-gray-200 text-gray-800'
-                    }`}>
-                      {script.status}
-                    </span>
-                  </td>
-                  <td className="py-2 px-4 border-b border-r">
-                    <span className={script.pnl.startsWith('+') ? 'text-green-600 font-semibold' : ''}>
-                      {script.pnl}
-                    </span>
-                  </td>
-                  <td className="py-2 px-2 border-b border-r">
-                    <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">
-                      {script.cancel}
-                    </button>
-                  </td>
-                  <td className="py-2 px-2 border-b">
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
-                      {script.exit}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          
-        </div>
           </div>
-          
-          
+          </div>
+        )) }  
+        </div>
+
     )}
 
     

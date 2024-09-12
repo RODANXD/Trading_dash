@@ -164,6 +164,7 @@ function Custom() {
     const type = "DELETE"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
+
     console.log(response)
     window.location.reload()
     })
@@ -178,9 +179,16 @@ function Custom() {
     const endpoint = "tradeblock"
     const payload = 'strategy=1'
     const type = "GET"
+
     handleexchangerequest(type, payload, endpoint)
     .then (response=> {
-    settradeblockno(response)
+      if (response){
+        settradeblockno(response)
+    console.log(response,'resposnse')
+
+
+      }
+
     console.log(response,'resposnse')
     
     

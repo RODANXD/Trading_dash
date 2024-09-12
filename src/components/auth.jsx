@@ -13,7 +13,9 @@
     const func = ()=>{
 
         const expiry = localStorage.getItem('expiry')
-        const authexpired = Date.now()>expiry
+        // const expirystamp= new Date(expiry).getTime()
+        const authexpired = Date.now()>(parseFloat(expiry) * 1000)
+        console.log(Date.now(),expiry)
         setIsAuthExpired(authexpired)
         
 

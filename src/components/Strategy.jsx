@@ -28,7 +28,8 @@ export default function Strategy() {
   const [isActivated, setIsActivated] = useState(false);
   const [viewall, setviewall]= useState(false)
   const [paper, setpaper]= useState(false)
-  
+  const [Tradeblockno,settradeblockno]= useState([])
+
 
   
 
@@ -72,15 +73,70 @@ const [head,Sethead]= useState([{id:1,key:'Movement Time',value:''},
 
   };
 
+  const toggleActivation = (id,ac) => {
+    const endpoint = "Activateblock"
+    const Blockid= id
+    const strategy= 1
+    const Activate= ac
+    const payload = JSON.stringify({Blockid,strategy,Activate})
+    const type = "POST"
+    handleexchangerequest(type, payload, endpoint)
+    .then (response=> {
+      console.log(response)
+})
+  window.location.reload()
+  
+  };
+
+
+  const Deleteblock = (Blockid) =>{
+    const endpoint = "tradeblock"
+    const payload = 'strategy=1&Blockid='+Blockid
+    const type = "DELETE"
+    handleexchangerequest(type, payload, endpoint)
+    .then(response => {
+    console.log(response)
+    window.location.reload()
+    })
+
+
+
+
+  }
+
+  const tradeblocklist= async () =>{
+    const endpoint = "tradeblock"
+    const payload = 'strategy=2'
+    const type = "GET"
+
+    handleexchangerequest(type, payload, endpoint)
+    .then (response=> {
+      if (response){
+        settradeblockno(response)
+    console.log(response,'resposnse')
+
+
+      }
+    
+    
+    })
+    
+
+
+  }
+
+  useState(()=>{
+    tradeblocklist()
+
+  },[])
+
   
   const scriptData = [
     { name: "RAMCOCEM", candleHighLow: "826.15", longshort: "LONG", status: "EXECUTED", pnl: "+200", cancel: "CANCEL", exit: "EXIT" },
     { name: "EXIDEIND", candleHighLow: "504.90", longshort: "SHORT", status: "PENDING", pnl: "", cancel: "CANCEL", exit: "EXIT" },
   ];
 
-  const toggleActivation = () => {
-    setIsActivated(!isActivated);
-  };
+  
   const handleCancelViewAll = () => {
     setviewall(false);
   };
@@ -116,7 +172,9 @@ console.log(broker,'broker')
   return (
     <>
     {!viewall && (
+
       <>
+      
     <div className="container mx-auto px-4 py-8 space-y-8">
       <div className="space-y-4">
         <h2 className="text-2xl font-bold text-center text-white">Index Price</h2>
@@ -129,10 +187,7 @@ console.log(broker,'broker')
         </div>
         </div>
         
-        
-          {!isOpen && (
-            <div className=" flex flex-col gap-5">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
             {["Nifty", "Bank Nifty", "Sensex", "Midcap", "Finnifty", "PNL", "Active/Deactive"].map((item) => (
               <div key={item} className="flex flex-col items-center gap-2">
                 <Label variant="outline" className="w-full text-teal-50 text-lg">
@@ -142,14 +197,23 @@ console.log(broker,'broker')
               </div>
             ))}
           </div>
+
+          {!isOpen && (
+             Tradeblockno.map((item)=>(
+              <div>
+            <div className=" flex flex-col gap-5">
+
+              
         
 
         
           <div className="h-[60%] border border-emerald-900">
             <div className="w-full border border-white rounded-sm h-[10%] p-2 text-xs text-white">
               <div className="h-32 w-full flex justify-evenly">
+            <p className="text-white">Block Id:{item.Blockid}</p>
                
                 <div className="flex items-center justify-center h-24 w-64">
+                  
                   <Popover>
                     <PopoverTrigger>
                       <button className="btn btn-danger w-32">Delete</button>
@@ -158,7 +222,7 @@ console.log(broker,'broker')
                       <div className="grid place-items-center gap-4">
                         <div className="space-y-2 flex items-center gap-3">
                           <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-                          <button className="btn btn-danger w-32">confirm</button>
+                          <button  onClick={()=>Deleteblock(item.Blockid)} className="btn btn-danger w-32">confirm</button>
                         </div>
                       </div>
                     </PopoverContent>
@@ -167,8 +231,7 @@ console.log(broker,'broker')
                 <div className="flex items-center justify-center h-24 w-64">
                   <button
                     className={`btn w-44 ${isActivated ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
-                    onClick={toggleActivation}
-                  >
+                    onClick= {()=> toggleActivation(item.Blockid,!item.Activate)}                  >
                     {isActivated ? "Deactivate" : "Activate"}
                   </button>
                 </div>
@@ -220,6 +283,10 @@ console.log(broker,'broker')
             </div>
           </div>
           </div>
+          </div>
+             ))
+
+          
         )}
 
      
