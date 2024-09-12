@@ -182,9 +182,11 @@ console.log(broker,'broker')
           <button type="button" className="btn btn-success" onClick={()=>Addform()}>
             + Add Trade
           </button>
-          <div className="col-md-4 col-6 d-flex justify-content-end order-md-2">
-          <Button>Exit All</Button>
-        </div>
+            <div className="col-md-4 col-6 d-flex gap-3 justify-content-end order-md-2">
+            <Button>Exit All</Button>
+            <Button className=" bg-red-600">Delete All</Button>
+
+          </div>
         </div>
         
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">

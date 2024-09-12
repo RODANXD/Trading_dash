@@ -49,6 +49,9 @@ const Strategy1_form = ({onCancel}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
 
+  const [selectDisable, setSelectDisable] = useState("");
+
+
   // const [isOpen, setIsOpen] = React.useState(false)
   // const Addform = () => setIsOpen(!isOpen)
 
@@ -246,6 +249,11 @@ const Strategy1_form = ({onCancel}) => {
     fetchData();
   };
 
+  const isContentDisabled = selectDisable === "Future";
+  const handleSelectdisable = (e) => {
+    setSelectDisable(e.target.value);
+  };
+
   const scriptData = [
     { name: "RAMCOCEM", candleHighLow: "826.15", longshort: "LONG", status: "EXECUTED", pnl: "+200", cancel: "CANCEL", exit: "EXIT" },
     { name: "EXIDEIND", candleHighLow: "504.90", longshort: "SHORT", status: "PENDING", pnl: "", cancel: "CANCEL", exit: "EXIT" },
@@ -372,10 +380,10 @@ const Strategy1_form = ({onCancel}) => {
             </div>
             <div className="col-4">
               {!loading ?
-                <select id="selectVertical" className='form-select' onChange={(e) => handleSelectChange(e)} value={selectVertical}>
+                <select id="selectVertical" className='form-select' onChange={(e)=>handleSelectdisable(e)} value={selectDisable}>
                   <option value="">Select FNO</option>
-                  <option value="NIFTY">FUTURE</option>
-                  <option value="BANKNIFTY">OPTION</option>
+                  <option value="Future">FUTURE</option>
+                  <option value="Option">OPTION</option>
                 </select>
                 :
                 <div className="text-center">
@@ -474,7 +482,7 @@ const Strategy1_form = ({onCancel}) => {
             </div>
           </div>
         </div>
-        <div className="row">
+        <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
           <div className="col-lg-3 col-sm-5 col-9 mt-3">
             <div className="row">
               <div className="col-6">

@@ -25,10 +25,16 @@ import {
 const Strategy2_form = ({ onCancel }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
+  const [paper, setpaper]= useState(false)
+
 
   const Addform = () => {
     setIsOpen(true);
   };
+
+  const handlemode = () =>{
+    setpaper(!paper)
+  }
 
   const [showStatusBar, setShowStatusBar] = React.useState(true);
   const [showActivityBar, setShowActivityBar] = React.useState(false);
@@ -51,7 +57,7 @@ const Strategy2_form = ({ onCancel }) => {
         {['Movement Time', 'Movement Continuity', 'Amount'].map((item) => (
           <div key={item} className="flex flex-col items-center gap-2">
             <Button variant="outline" className="w-full bg-green-600">{item}</Button>
-            <Input placeholder="Value" className="w-full" defaultValue={item === 'Amount' ? '20000' : item === 'Movement Continuity' ? '1500' : '100'} />
+            <Input placeholder="Value" type="number" className="w-full" defaultValue={item === 'Amount' ? '20000' : item === 'Movement Continuity' ? '1500' : '100'} />
           </div>
         ))}
       </div>
@@ -61,7 +67,7 @@ const Strategy2_form = ({ onCancel }) => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="flex flex-col items-center gap-2">
           <Button variant="outline" className="w-full bg-green-600">Spike in Index</Button>
-          <Input placeholder="Value" className="w-full" defaultValue="0.20%" />
+          <Input placeholder="Value" type="number" className="w-full" defaultValue="0.20%" />
         </div>
         <div className="flex flex-col items-center gap-2">
           <Button variant="outline" className="w-full bg-green-600">Strike Price</Button>
@@ -72,7 +78,7 @@ const Strategy2_form = ({ onCancel }) => {
         </div>
         <div className="flex flex-col items-center gap-2">
           <Button variant="outline" className="w-full bg-green-600">Target</Button>
-          <Input placeholder="Value" className="w-full" defaultValue="50%" />
+          <Input placeholder="Value" type="number" className="w-full" defaultValue="50%" />
         </div>
       </div>
       <h2 className=" text-white text-xl">Profit Trail</h2>
@@ -83,6 +89,7 @@ const Strategy2_form = ({ onCancel }) => {
               <Button variant="outline" className="w-full bg-green-600">{item}</Button>
               <Input 
                 placeholder="Value" 
+                type="number"
                 className="w-full" 
                 defaultValue={
                   item === 'SL' ? '10%' : 
@@ -133,7 +140,8 @@ const Strategy2_form = ({ onCancel }) => {
             <DropdownMenuCheckboxes/>
             </div>
             <div>
-            <Button variant="outline" className="w-full bgreen-600">Paper/Live</Button>
+                       <Button onClick={()=>handlemode()} variant="outline" className={paper ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper?"Paper":"Live"}</Button>
+
             </div>
           </div>
 
