@@ -157,6 +157,7 @@ function Custom() {
 
   const isContentDisabled = selectDisable === "Future";
 
+  
   const Deleteblock = (Blockid) =>{
     const endpoint = "tradeblock"
     const payload = 'strategy=1&Blockid='+Blockid
@@ -580,8 +581,8 @@ function Custom() {
                 }
               </div>
               <div className="col-4">
-              {!loading ?
-                <select id="selectVertical" className='form-select' onChange={handleSelectdisable} value={selectDisable}>
+              
+                <select id="selectVertical" className='form-select' onChange={(e)=>handleSelectdisable(e)} value={selectDisable}>
                   <option value="">Select FNO</option>
                   <option value="Future">FUTURE</option>
                   <option value="BANKNIFTY">OPTION</option>
@@ -592,7 +593,7 @@ function Custom() {
                     <span className="visually-hidden">Loading...</span>
                   </div>
                 </div>
-              }
+              
             </div>
               <div className="col-4">
                 {expiries.length !== 0 ?

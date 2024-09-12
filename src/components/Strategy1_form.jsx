@@ -251,8 +251,29 @@ const Strategy1_form = ({onCancel}) => {
     { name: "EXIDEIND", candleHighLow: "504.90", longshort: "SHORT", status: "PENDING", pnl: "", cancel: "CANCEL", exit: "EXIT" },
   ];
   return (
+
+    
+    
     
     <>
+              <div className="col-lg-6 w-full">
+            <div className="flex flex-wrap gap-3 w-96">
+              <div className="col-lg-4 col-6 mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Max Moving High {890}</button>
+              </div>
+              <div className="col-lg-4 col-6 mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Avg Moving</button>       
+              </div>
+              <div className="col-lg-4 col-6  mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Max Drawdown</button>
+              </div>
+              <div className="col-lg-4 col-6 mt-2">
+                <button type="button" className="btn btn-light w-100 text-sm">Up Avg Moving</button>
+              </div>
+            </div>
+          </div>
+
+    
     <div className=' flex flex-col gap-4'>
     <div className="mt-2">
       <div className="row">
@@ -267,6 +288,7 @@ const Strategy1_form = ({onCancel}) => {
     placeholder="Pick date"
   /> */}
             </div>
+            
             
             <div className="col-4">
             <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
