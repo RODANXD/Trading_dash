@@ -151,14 +151,12 @@ function Custom() {
     })
   }
 
-<<<<<<< HEAD
   const handleSelectdisable = (e) => {
     setSelectDisable(e.target.value);
   };
 
   const isContentDisabled = selectDisable === "Future";
 
-=======
   const Deleteblock = (Blockid) =>{
     const endpoint = "tradeblock"
     const payload = 'strategy=1&Blockid='+Blockid
@@ -182,7 +180,7 @@ function Custom() {
     handleexchangerequest(type, payload, endpoint)
     .then (response=> {
     settradeblockno(response)
-    console.log(response)
+    console.log(response,'resposnse')
     
     
     })
@@ -193,7 +191,6 @@ function Custom() {
     tradeblocklist()
 
   },[])
->>>>>>> origin/main
 
   const handleviewall = ()=>{
     setviewall(true)
@@ -242,15 +239,13 @@ function Custom() {
   const handleBlockpnl= (e)=>{
     setpnlblock(e.target.value)
   }
-<<<<<<< HEAD
   
   const toggleAddleg = () => {
     setShowAddleg(false);
   };
 
-  const toggleActivation = () => {
-    setIsActivated(!isActivated);
-=======
+  // const toggleActivation = () => {
+    // setIsActivated(!isActivated);
     
   const toggleActivation = (id,ac) => {
     const endpoint = "Activateblock"
@@ -265,7 +260,6 @@ function Custom() {
 })
   window.location.reload()
   
->>>>>>> origin/main
   };
 
   const handledatecahnge1= (e)=>{
@@ -496,14 +490,11 @@ function Custom() {
             </div>
             
           </div>
-<<<<<<< HEAD
 
 
 
-=======
           </div>
         ))
->>>>>>> origin/main
           
     )}
 
