@@ -35,7 +35,7 @@ const [expiries, setExpiries] = useState([]);
   const [strikePrices, setStrikePrices] = useState([]);
   const [toggleStatus, setToggleStatus] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
-  const [selectVertical, setSelectVertical] = useState('');
+  // const [selectVertical, setSelectVertical] = useState('');
   const [toggleStatus2, setToggleStatus2] = useState(true);
   const [showCalender2, setShowCalender2] = useState(false);
   const [isExpirySelected, setIsExpirySelected] = useState(false);
@@ -83,6 +83,20 @@ const [expiries, setExpiries] = useState([]);
   const [showActivityBar, setShowActivityBar] = React.useState(false);
   const [showPanel, setShowPanel] = React.useState(false);
 
+  const [sublegid,setsublegid]= useState([
+    {Blockid:'' ,sublegid:1,checked:false}
+  ])
+
+  const [correction,setcorrection]= useState(0)
+  const [blocksl,setblocksl]=useState(0)
+  const [blocktrail,setblocktrail]=useState(0)
+  const [blocktarget,setblocktarget]=useState('')
+  const [blocktimer,setblocktimer]=useState('')
+
+
+
+
+
   const [viewall, setviewall]= useState(false)
 
   const [selectDisable, setSelectDisable] = useState("");
@@ -123,8 +137,9 @@ const [expiries, setExpiries] = useState([]);
 
   const legadd = ()=>{
     const endpoint = advice
-    const payload = JSON.stringify({advice,spotpricel1,Nearestatml1,segment,selectVertical,
-      brokerselect,Paper,live,rentry,lossblock,Activeblock,pnlblock,lossblock,lockblock,targetblock,tslblock,pnlblock})
+    const payload = JSON.stringify({advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrices,sltype,blocksl,blocktrail,
+      targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg})
+      console.log(payload)
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
@@ -146,6 +161,17 @@ const [expiries, setExpiries] = useState([]);
   const handleCancelViewAll = () => {
     setviewall(false);
   };
+
+  const handlelegselect= (id) =>{
+
+    setsublegid((prevData) =>
+  prevData.map((item) =>
+    item.sublegid === id ? { ...item,checked:!item.checked } : item
+  )
+);
+
+
+}
 
 
  const handledatecahnge= (e)=>{
@@ -306,29 +332,20 @@ const [expiries, setExpiries] = useState([]);
         {(advice === 'cover' || advice === 'sequence') && (
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-32 bgreen-600">Leg No</Button>
+              <Button variant="outline" className="w-32 bgreen-600 text-black">Leg No</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+              <DropdownMenuLabel>Leg</DropdownMenuLabel>
               <DropdownMenuSeparator />
+              {sublegid.map((Item)=>
               <DropdownMenuCheckboxItem
-                checked={showStatusBar}
-                onCheckedChange={setShowStatusBar}
-              >
-                1
+              checked={Item.checked}
+             onCheckedChange={()=>handlelegselect(Item.sublegid)}>
+              {Item.sublegid}
               </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={showActivityBar}
-                onCheckedChange={setShowActivityBar}
-              >
-                2
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={showPanel}
-                onCheckedChange={setShowPanel}
-              >
-                3
-              </DropdownMenuCheckboxItem>
+              
+
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
           )}
@@ -340,7 +357,8 @@ const [expiries, setExpiries] = useState([]);
       {advice === 'sequence' && (
 <div className="flex w-1/2 gap-3">
 <button className="btn btn-light w-32">Correction</button>
-<input type="text" placeholder="value" className="bg-white w-32 text-black rounded-sm px-1"/>
+<input type="text" onChange={(e)=>setcorrection(e.target.value)} placeholder="value" 
+className="bg-white w-32 text-black rounded-sm px-1"/>
 </div>
       )}
       </div>
@@ -352,7 +370,7 @@ const [expiries, setExpiries] = useState([]);
     <div className="row">
       <div className="col-6">
         {strikePrices.length !== 0 ?
-          <select id="strikePriceSelect" className='form-select' onChange={() => setIsStrikeSelected(true)}>
+          <select id="strikePriceSelect" className='form-select' onChange={() => setStrikePrices=(true)}>
             <option>Select Strike Price</option>
             {strikePrices.map((Price, index) =>
               <option key={index} value={Price}>{Price}</option>
@@ -433,7 +451,7 @@ const [expiries, setExpiries] = useState([]);
       </select>
               </div>
       <div className="col-6">
-        <input type="text" placeholder='Manual Entry' className='form-control' />
+        <input type="text"  onChange={(e)=>setblocksl(e.target.value)} value = {blocksl} placeholder='Manual Entry' className='form-control' />
       </div>
     </div>
   </div>
@@ -447,7 +465,7 @@ const [expiries, setExpiries] = useState([]);
             </select>
             </div>
       <div className="col-6">
-        <input type="text" placeholder='Manual Entry' className='form-control' />
+        <input type="text"  onChange={(e)=>setblocktrail(e.target.value)} value = {blocktrail}  placeholder='Manual Entry' className='form-control' />
       </div>
     </div>
   </div>
@@ -464,7 +482,7 @@ const [expiries, setExpiries] = useState([]);
 
         </div>
       <div className="col-6">
-        <input type="text" placeholder='Manual Entry' className='form-control' />
+        <input type="text" onChange={(e)=>setblocktarget(e.target.value)} value = {blocktarget} placeholder='Manual Entry' className='form-control' />
       </div>
     </div>
   </div>
@@ -482,7 +500,7 @@ const [expiries, setExpiries] = useState([]);
         </Dropdown>
       </div>
       <div className="col-6">
-        <input type="text" placeholder='Manual Entry' className='form-control' />
+        <input type="text" onChange={(e)=>setblocktimer(e.target.value)} value = {blocktimer} placeholder='Manual Entry' className='form-control' />
       </div>
     </div>
   </div>

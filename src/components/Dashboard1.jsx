@@ -845,7 +845,7 @@ function Custom() {
                   {(advice === 'cover' || advice === 'sequence') && (
                       <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="w-32 bgreen-600">Leg No</Button>
+                        <Button variant="outline" className="w-32 bgreen-600 text-black">Leg No</Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="w-56">
                         <DropdownMenuLabel>Leg</DropdownMenuLabel>
