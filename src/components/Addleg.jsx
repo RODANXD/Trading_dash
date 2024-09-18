@@ -135,18 +135,25 @@ const [expiries, setExpiries] = useState([]);
     })
   }
 
+
+
+  
   const legadd = ()=>{
     const endpoint = advice
+    
     const payload = JSON.stringify({advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrices,sltype,blocksl,blocktrail,
       targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg})
-      console.log(payload)
-    const type = "POST"
+    
+      const type = "POST"
     
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
     console.log(response)
     })
   }
+
+
+  
 
   const handleSelectdisable = (e) => {
     setSelectDisable(e.target.value);
@@ -285,24 +292,6 @@ const [expiries, setExpiries] = useState([]);
 );}
 
 
-  const handleSelectChange = async (event) => {
-    setSelectVertical(event.target.value)
-    setLoading(true)
-    const fetchData = async () => {
-      try {
-        // const response = await axios.get(`http://127.0.0.1:5000/option_chain?option_type=${event.target.value}`);
-        const response = await axios.get(`serverURL/option_chain?option_type=${event.target.value}`);
-        setExpiries(response.data.records.expiryDates);
-        setStrikePrices(response.data.records.strikePrices);
-        setDefaultStrikePrices(response.data.records.underlyingValue)
-        setLoading(false)
-      } catch (error) {
-        alert("Getting Error While Fetching API! Please Try Again!!!")
-        setLoading(false)
-      }
-    };
-    fetchData();
-  };
 
   
 

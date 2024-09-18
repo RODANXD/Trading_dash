@@ -49,9 +49,9 @@ function Custom() {
   const [tradevalidity, Settradevalidity] = useState(new Date());
   const [Notradingzone, SetNotradingzone] = useState(new Date());
   const [segment,SetSegment]=useState('')
-  const [strikePrices, setStrikePrices] = useState([ 17000,18000
+  const [strikePrices, setStrikePrices] = useState([ 17000,18000]);
 
-  ]);
+
   const [strikeprice,setstrikeprice]= useState('')
 
   const [toggleStatus, setToggleStatus] = useState(true);
@@ -107,6 +107,38 @@ function Custom() {
   const [rentry,setReentry]= useState(0)
   const [correction,setcorrection]= useState(0)
   const [Symbol,setsymbol]= useState([])
+  const [optionlabel,setoptionlabel]= useState('')
+  const [call,setcall]= useState('')
+  const [put,setput]= useState('')
+
+const   handlecallput = (type)=>{
+  
+  if (optionlabel==='Call'){
+    setcall(type)
+    setoptionlabel('')
+
+
+  }
+
+  
+  if (optionlabel==='Put'){
+    setput(type)
+    setoptionlabel('')
+
+
+    
+
+
+  }
+
+
+
+
+
+
+  }
+
+
 
 
   const [showStatusBar, setShowStatusBar] = React.useState(true);
@@ -149,7 +181,7 @@ function Custom() {
     const payload = JSON.stringify({tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,advice,spotprice,
       correction,sltype,tsltype,targettype,blocksl,blocktarget,blocktimer,blocktrail,
       paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl
-      ,Activeleg,lockleg,targetleg,tslleg,strategy,selectsymbol})
+      ,Activeleg,lockleg,targetleg,tslleg,strategy,selectsymbol,call,put})
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
@@ -915,20 +947,20 @@ function Custom() {
             <div className="col-lg-2 col-6 mt-3">
               <div className="row">
                 <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Call</button>
+                  <button  onClick={()=>setoptionlabel('Call')} type="button" className="btn btn-light w-100">Call</button>
                 </div>
                 <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Buy</button>
+                  <button  onClick={()=>handlecallput('BUY')} type="button" className="btn btn-light w-100">Buy</button>
                 </div>
               </div>
             </div>
             <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
               <div className="row">
                 <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Put</button>
+                  <button onClick={()=>setoptionlabel('Put')} type="button" className="btn btn-light w-100">Put</button>
                 </div>
                 <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Sell</button>
+                  <button  onClick={()=>handlecallput('SELL')} type="button" className="btn btn-light w-100">Sell</button>
                 </div>
               </div>
             </div>
