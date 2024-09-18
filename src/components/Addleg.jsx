@@ -126,6 +126,7 @@ const [expiries, setExpiries] = useState([]);
     const payload = JSON.stringify({advice,spotpricel1,Nearestatml1,segment,selectVertical,
       brokerselect,Paper,live,rentry,lossblock,Activeblock,pnlblock,lossblock,lockblock,targetblock,tslblock,pnlblock})
     const type = "POST"
+    
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
     console.log(response)
