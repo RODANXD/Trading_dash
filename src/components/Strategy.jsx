@@ -29,29 +29,32 @@ export default function Strategy() {
   const [viewall, setviewall]= useState(false)
   const [paper, setpaper]= useState(false)
   const [Tradeblockno,settradeblockno]= useState([])
+  const [currentblock,setcurrentblock]= useState('')
+
+  
 
 
   
 
 
-const [head,Sethead]= useState([{id:1,key:'Movement Time',value:''}, 
-    {id:2,key:'Movement Continuity',value:""},
-    {id:3,key: 'Amount',value:''},
-    {id:4,key: 'Spike',value:''},
-    {id:5,key: 'Target',value:''},
-    {id:6,key: 'Strike',value:''},
-    {id:7,key: 'SL',value:''},
-    {id:8,key: 'SLtrail',value:''},
-     {id:9,key: 'Rentry',value:''},
-    {id:10,key: 'Active',value:''},
-    {id:11,key: 'Lock',value:''},
-    {id:12,key: 'Trail',value:''},
+const [head,Sethead]= useState([{id:1,key:'MTime',value:0}, 
+    {id:2,key:'MContinuity',value:0},
+    {id:3,key: 'Amount',value:0},
+    {id:4,key: 'Spike',value:0},
+    {id:5,key: 'Target',value:0},
+    {id:6,key: 'Strike',value:0},
+    {id:7,key: 'SL',value:0},
+    {id:8,key: 'SLtrail',value:0},
+     {id:9,key: 'Rentry',value:0},
+    {id:10,key: 'Active',value:0},
+    {id:11,key: 'Lock',value:0},
+    {id:12,key: 'Trail',value:0},
     ])
 
   const [broker,setBroker]= useState([
-    {id:1,name:'Shoonya',value:true},
-    {id:2,name:'Dhan',value:true},
-    {id:3,name:'Angel',value:true},]
+    {id:1,name:'Shoonya',Number:'',value:true},
+    {id:2,name:'Dhan',Number:'',value:true},
+    {id:3,name:'Angel',Number:'',value:true},]
 
 
   )
@@ -60,23 +63,23 @@ const [head,Sethead]= useState([{id:1,key:'Movement Time',value:''},
 
   
   const Addform = () => {
-    const endpoint = "addblock"
-    const strategy= 2
-    const payload = JSON.stringify({strategy})
-    const type = "POST"
-    handleexchangerequest(type, payload, endpoint)
-    .then(response => {
+    // const endpoint = "addblock"
+    // const strategy= 2
+    // const payload = JSON.stringify({strategy})
+    // const type = "POST"
+    // handleexchangerequest(type, payload, endpoint)
+    // .then(response => {
     setIsOpen(true);
 
-    console.log(response)
-    })
+    // console.log(response)
+    // })
 
   };
 
   const toggleActivation = (id,ac) => {
     const endpoint = "Activateblock"
     const Blockid= id
-    const strategy= 1
+    const strategy= 2
     const Activate= ac
     const payload = JSON.stringify({Blockid,strategy,Activate})
     const type = "POST"
@@ -84,14 +87,15 @@ const [head,Sethead]= useState([{id:1,key:'Movement Time',value:''},
     .then (response=> {
       console.log(response)
 })
-  window.location.reload()
+tradeblocklist()
+
   
   };
 
 
   const Deleteblock = (Blockid) =>{
     const endpoint = "tradeblock"
-    const payload = 'strategy=1&Blockid='+Blockid
+    const payload = 'strategy=2&Blockid='+Blockid
     const type = "DELETE"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
@@ -103,7 +107,21 @@ const [head,Sethead]= useState([{id:1,key:'Movement Time',value:''},
 
 
   }
-
+  const savedatta = ()=>
+  
+    {
+      const endpoint = "saveblockst2"
+      const strategy= 2
+      const payload = JSON.stringify({head,paper,strategy})
+      const type = "POST"
+      handleexchangerequest(type, payload, endpoint)
+      .then(response => {
+  
+      console.log(response)
+      })
+  
+    }
+  
   const tradeblocklist= async () =>{
     const endpoint = "tradeblock"
     const payload = 'strategy=2'
@@ -115,6 +133,7 @@ const [head,Sethead]= useState([{id:1,key:'Movement Time',value:''},
         settradeblockno(response)
     console.log(response,'resposnse')
 
+    
 
       }
     
@@ -124,6 +143,8 @@ const [head,Sethead]= useState([{id:1,key:'Movement Time',value:''},
 
 
   }
+
+
 
   useState(()=>{
     tradeblocklist()
@@ -137,13 +158,25 @@ const [head,Sethead]= useState([{id:1,key:'Movement Time',value:''},
   ];
 
   
+const handleviewdetail = ()=>{
+
+
+
+
+
+}
+
+
+
   const handleCancelViewAll = () => {
     setviewall(false);
   };
-  const handleviewall = ()=>{
+  const handleviewall = (id)=>{
     setviewall(true)
+    setcurrentblock(id)
 
   }
+
 console.log(broker,'broker')
   const showStatusBar= (id,val) =>{
 
@@ -184,13 +217,13 @@ console.log(broker,'broker')
           </button>
             <div className="col-md-4 col-6 d-flex gap-3 justify-content-end order-md-2">
             <Button>Exit All</Button>
-            <Button className=" bg-red-600">Delete All</Button>
+            <Button onClick={()=>(Deleteblock(0))} className=" bg-red-600">Delete All</Button>
 
           </div>
         </div>
         
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
-            {["Nifty", "Bank Nifty", "Sensex", "Midcap", "Finnifty", "PNL", "Active/Deactive"].map((item) => (
+            {["Nifty", "Bank Nifty", "Sensex", "Midcap", "Finnifty", "PNL"].map((item) => (
               <div key={item} className="flex flex-col items-center gap-2">
                 <Label variant="outline" className="w-full text-teal-50 text-lg">
                   {item}
@@ -232,9 +265,9 @@ console.log(broker,'broker')
                 </div>
                 <div className="flex items-center justify-center h-24 w-64">
                   <button
-                    className={`btn w-44 ${isActivated ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
+                    className={`btn w-44 ${item.Activate ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
                     onClick= {()=> toggleActivation(item.Blockid,!item.Activate)}                  >
-                    {isActivated ? "Deactivate" : "Activate"}
+                    {item.Activate ? "Deactivate" : "Activate"}
                   </button>
                 </div>
                 <div className="pt-1 flex flex-col gap-3 h-32 w-64">
@@ -245,7 +278,7 @@ console.log(broker,'broker')
                   </div>
                 </div>
                 <div className="flex items-center justify-center h-24 w-64">
-                  <button className="btn btn-info w-24" onClick={handleviewall}>
+                  <button className="btn btn-info w-24" onClick={()=>handleviewall(item.Blockid)}>
                   View Detail
 
                   </button>
@@ -360,14 +393,14 @@ console.log(broker,'broker')
     </DropdownMenu>
             </div> */}
             <div>
-            <DropdownMenuCheckboxes/>
+            <DropdownMenuCheckboxes stat="2"/>
             </div>
             <div>
             <Button onClick={()=>handlemode()} variant="outline" className={paper ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper?"Paper":"Live"}</Button>
             </div>
           </div>
 
-      <Button className="w-full sm:w-auto">Save</Button>
+      <Button  onClick={()=>savedatta()}className="w-full sm:w-auto">Save</Button>
 
             <Button
               onClick={() => {
@@ -385,7 +418,7 @@ console.log(broker,'broker')
     </div>
     </>
     )}
-    {viewall&&(<Strategy2_form onCancel={handleCancelViewAll}/>)}
+    {viewall&&(<Strategy2_form onCancel={handleCancelViewAll} blockid= {currentblock}/>)}
     </>
   );
 }

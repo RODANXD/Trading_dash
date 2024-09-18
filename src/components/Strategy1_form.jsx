@@ -29,7 +29,7 @@ import {
 
 import {handleexchangerequest} from '../utility/Api'
 
-const Strategy1_form = ({onCancel}) => {
+const Strategy1_form = ({onCancel,blockid}) => {
   const [expiries, setExpiries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [datevalue, SetDatevalue] = useState(new Date());
@@ -82,6 +82,34 @@ const Strategy1_form = ({onCancel}) => {
   const [showActivityBar, setShowActivityBar] = React.useState(false);
   const [showPanel, setShowPanel] = React.useState(false);
 
+  const [head,Sethead]= useState([])
+
+  
+  const handlemap=()=>{
+}
+useEffect(()=>{
+  head.map((item)=>{
+    console.log(item,'value1')
+    SetDatevalue(item.tradevalidity)
+    SetDatevalue1(item.Notradingzone)
+    setTradetype(item.tradetype)
+    SetSegment(item.segment)
+    setSelectVertical(item.selectVertical)
+    setSelectDisable(item.fno)
+
+    setDefaultStrikePrices(item.ATM)
+    setTargetblock(item.blocktarget)
+    setTslblock(item.blocksl)
+
+
+
+  
+
+  })
+
+},[head,SetDatevalue,SetDatevalue1,setTradetype,,SetSegment,setSelectVertical,setSelectDisable,
+  setDefaultStrikePrices,setTargetblock,setTslblock])
+
 
 
   const [Lockleg,setlogleg]=useState('')
@@ -126,6 +154,31 @@ const Strategy1_form = ({onCancel}) => {
     console.log(response)
     })
   }
+
+  const handleviewdetail = (Blockid=blockid)=>
+  
+    {
+      const endpoint = "saveblockst1"
+      const payload = "Blockid="+Blockid
+      const type = "GET"
+      handleexchangerequest(type, payload, endpoint)
+      .then(response => {
+        if (response.length!=0){
+          console.log(response,'headres')
+
+        Sethead(response)
+        
+      }
+
+      
+      })
+  
+    }
+    useEffect (()=>{
+      handleviewdetail()
+
+    },[])
+
 
   const legadd = ()=>{
     const endpoint = "SpotLeg"
@@ -316,7 +369,7 @@ const Strategy1_form = ({onCancel}) => {
           {showCalender ? 
               // <div style={{ position: 'absolute', zIndex: '999' }}><Calendar onChange={onChange} value={value} /></div>
               
-        <div style={{ position: 'absolute', zIndex: '999' }}><input  onChange={handledatecahnge} className =" bg-white w-2/3 rounded-sm mt-2"value={datevalue} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
+        <div style={{ position: 'absolute', zIndex: '999' }}><input  onChange={handledatecahnge}  className =" bg-white w-2/3 rounded-sm mt-2"value={datevalue} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
         : <></>}
           <div className='d-flex justify-content-end' style={{ position: 'relative' }}>{showCalender2 ?
         <div style={{ position: 'absolute', zIndex: '999', right: "-40px" }}><input className=' bg-white w-2/3 rounded-sm mt-2'  onChange={handledatecahnge1} value={datevalue1} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
@@ -353,6 +406,7 @@ const Strategy1_form = ({onCancel}) => {
           <div className="flex justify-around gap-5 w-full">
             <div className="col-4">
             <select  className='form-select'
+            value={segment}
               onChange={handlesegment
                     }
                     
@@ -365,7 +419,7 @@ const Strategy1_form = ({onCancel}) => {
             
             <div className="col-4">
               {!loading ?
-                <select id="selectVertical" className='form-select' onChange={(e) => handleSelectChange(e)} value={selectVertical}>
+                <select id="selectVertical" className='form-select'  onChange={(e) => handleSelectChange(e)} value={selectVertical}>
                   <option value="">Select Vertical</option>
                   <option value="NIFTY">Nifty</option>
                   <option value="BANKNIFTY">BANKNIFTY</option>
@@ -559,7 +613,7 @@ const Strategy1_form = ({onCancel}) => {
           <div className="col-lg-3 col-sm-6 mt-3">
             <div className="row">
               <div className="col-6">
-              <select  className='form-select'onChange={handlesltype}>
+              <select   value = {sltype} className='form-select'onChange={handlesltype}>
                     <option value=""> SL</option>
                     <option value="Points">Spot Points </option>
                     <option value="Percentage">Points</option>
@@ -575,7 +629,7 @@ const Strategy1_form = ({onCancel}) => {
           <div className="col-lg-4 col-sm-6 mt-3">
             <div className="row">
               <div className="col-6">
-              <select  className='form-select'onChange={handletsltype}>
+              <select value = {sltytpe}  className='form-select'onChange={handletsltype}>
                     <option value=""> TRAILSL</option>
                     <option value="Points">Points </option>
                     <option value="Percentage">%</option>
@@ -589,7 +643,7 @@ const Strategy1_form = ({onCancel}) => {
           <div className="col-lg-3 col-sm-6 mt-3 offset-lg-5">
             <div className="row">
               <div className="col-6">
-              <select  className='form-select'onChange={handleTargettype}>
+              <select value={targettype}  className='form-select'onChange={handleTargettype}>
                     <option value="">Target</option>
                     <option value="Points">Spot Points </option>
                     <option value="Percentage">Points</option>
@@ -629,16 +683,16 @@ const Strategy1_form = ({onCancel}) => {
           <div >
             <div className="row">
               <div className="col-lg col-sm-4 mt-3">
-                <input type="number" className='form-control' onchange = { handlesetactive} placeholder='Active' />
+                <input type="number" className='form-control'  value={Activeleg} onchange = { handlesetactive} placeholder='Active' />
               </div>
               <div className="col-lg col-sm-4 mt-3">
-                <input type="number" className='form-control' onChange={handlesetlock} placeholder='Lock' />
+                <input type="number" className='form-control'  value={lockleg} onChange={handlesetlock} placeholder='Lock' />
               </div>
               <div className="col-lg col-sm-4 mt-3">
-                <input type="number" className='form-control'  onchange= {handletslleg} placeholder='Trail Profit' />
+                <input type="number" className='form-control'  value={tslleg}  onchange= {handletslleg} placeholder='Trail Profit' />
               </div>
               <div className="col-lg col-sm-6 mt-3">
-                <input type="number" className='form-control' onchange={handleLegTarget} placeholder='TARGET' />
+                <input type="number" className='form-control' value={targetleg} onchange={handleLegTarget} placeholder='TARGET' />
               </div>
               <div className="col-lg col-sm-6 mt-3">
                 <button type="button" className="btn btn-success w-100" >+ Add Leg</button>
@@ -716,10 +770,10 @@ const Strategy1_form = ({onCancel}) => {
             <button type="button"  className="btn btn-secondary w-100">Re Entry</button>
           </div>
           <div className="col-lg-2 col-sm-4 mt-3">
-            <input type="number" onchange={(e)=>setReentry(e.target.value)} className='w-100 form-control' />
+            <input type="number"  value={rentry} onchange={(e)=>setReentry(e.target.value)} className='w-100 form-control' />
           </div>
           <div className="col-lg-2 col-sm-4 mt-3">
-            <input type="number" onChange={(e)=>setLossblock(e.target.value)} className='w-100 form-control' placeholder='Overall Loss' />
+            <input type="number" value={lossblock} onChange={(e)=>setLossblock(e.target.value)} className='w-100 form-control' placeholder='Overall Loss' />
           </div>
         </div>
 
@@ -729,19 +783,19 @@ const Strategy1_form = ({onCancel}) => {
 
         <div className="row">
           <div className="col-lg col-sm-4 mt-3">
-            <input type="text"  onChange={ handleblockactive} className='form-control' placeholder='Active' />
+            <input type="text" value={Activeblock}  onChange={ handleblockactive} className='form-control' placeholder='Active' />
           </div>
           <div className="col-lg col-sm-4 mt-3">
-            <input type="number"  onChange={handleblockLock} className='form-control' placeholder='Lock' />
+            <input type="number"  value = {lockblock} onChange={handleblockLock} className='form-control' placeholder='Lock' />
           </div>
           <div className="col-lg col-sm-4 mt-3">
-            <input type="number"  onChange={handlebloctsl} className='form-control' placeholder='Trail Profit' />
+            <input type="number"  value={tslblock} onChange={handlebloctsl} className='form-control' placeholder='Trail Profit' />
           </div>
           <div className="col-lg col-sm-6 mt-3">
-            <input type="number"  onChange={handleblockTarget}  className='form-control' placeholder='Overall TARGET' />
+            <input type="number" value={targetblock}  onChange={handleblockTarget}  className='form-control' placeholder='Overall TARGET' />
           </div>
           <div className="col-lg col-sm-6 mt-3">
-            <input  onChange={handleBlockpnl} type="text" className='form-control' placeholder='Overall PNL' />
+            <input  value={pnlblock} onChange={handleBlockpnl} type="text" className='form-control' placeholder='Overall PNL' />
           </div>
         </div>
         

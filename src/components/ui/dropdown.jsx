@@ -13,14 +13,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export default function DropdownMenuCheckboxes() {
+export default function DropdownMenuCheckboxes(stat) {
   const [showActivityBar, setShowActivityBar] = React.useState(false)
   const [showPanel, setShowPanel] = React.useState(false)
   
   const [broker,setBroker]= useState([
-    {id:1,name:'Shoonya',Account:"",value:true},
-    {id:2,name:'Dhan',Account:"",value:true},
-    {id:3,name:'Angel',Account:"",value:true},]
+    {id:1,Username:"Xyz",brokername:'Shoonya',accountnumber:"123456", strategy:stat,value:true},
+    {id:2,Username:"Xyz",brokername:'Angel',accountnumber:"123456",strategy:stat,value:true},
+    {id:3,Username:"Xyz",brokername:'Dhan',accountnumber:"123456",strategy:stat,value:true},]
 
 
   )
@@ -53,7 +53,7 @@ export default function DropdownMenuCheckboxes() {
           onCheckedChange={()=>showStatusBar(item.id,!item.value)} 
           checked={item.value}
           >
-          {item.name}
+          {item.Username +" " +item.brokername+" "+item.accountnumber}
         </DropdownMenuCheckboxItem>
 
             ))}

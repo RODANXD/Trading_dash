@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DropdownMenuCheckboxes from "./ui/dropdown";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import * as React from "react";
+import {handleexchangerequest} from '../utility/Api'
 
 import {
   DropdownMenu,
@@ -22,7 +23,7 @@ import {
 } from "@/components/ui/popover";
 
 
-const Strategy2_form = ({ onCancel }) => {
+const Strategy2_form = ({ onCancel,blockid }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
   const [paper, setpaper]= useState(false)
@@ -35,6 +36,19 @@ const Strategy2_form = ({ onCancel }) => {
   const handlemode = () =>{
     setpaper(!paper)
   }
+  const [head,Sethead]= useState([{id:1,key:'MTime',value:0}, 
+    {id:2,key:'MContinuity',value:0},
+    {id:3,key: 'Amount',value:0},
+    {id:4,key: 'Spike',value:0},
+    {id:5,key: 'Target',value:0},
+    {id:6,key: 'Strike',value:0},
+    {id:7,key: 'SL',value:0},
+    {id:8,key: 'SLtrail',value:0},
+     {id:9,key: 'Rentry',value:0},
+    {id:10,key: 'Active',value:0},
+    {id:11,key: 'Lock',value:0},
+    {id:12,key: 'Trail',value:0},
+    ])
 
   const [showStatusBar, setShowStatusBar] = React.useState(true);
   const [showActivityBar, setShowActivityBar] = React.useState(false);
@@ -44,6 +58,48 @@ const Strategy2_form = ({ onCancel }) => {
     { name: "EXIDEIND", candleHighLow: "504.90", longshort: "SHORT", status: "PENDING", pnl: "", cancel: "CANCEL", exit: "EXIT" },
   ];
 
+  const savedatta = (Blockid=blockid)=>
+  
+    {
+      const endpoint = "saveblockst2"
+      const strategy= 2
+      const payload = JSON.stringify({head,paper,strategy,Blockid})
+      const type = "PUT"
+      handleexchangerequest(type, payload, endpoint)
+      .then(response => {
+  
+      console.log(response)
+      })
+  
+    }
+
+
+    
+    const handleviewdetail = (Blockid=blockid)=>
+  
+      {
+        const endpoint = "saveblockst2"
+        const payload = "Blockid="+Blockid
+        const type = "GET"
+        handleexchangerequest(type, payload, endpoint)
+        .then(response => {
+          if (response.length!=0){
+            console.log(response,'headres')
+
+          Sethead(response)
+        }
+
+        
+        })
+    
+      }
+      useEffect (()=>{
+        handleviewdetail()
+  
+      },[])
+  
+  
+
   const toggleActivation = () => {
     setIsActivated(!isActivated);
   };
@@ -52,59 +108,17 @@ const Strategy2_form = ({ onCancel }) => {
     <>
     <div>
     {!isOpen && (
+      
           <div className="flex flex-col gap-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {['Movement Time', 'Movement Continuity', 'Amount'].map((item) => (
+        {head.map((item) => (
           <div key={item} className="flex flex-col items-center gap-2">
-            <Button variant="outline" className="w-full bg-green-600">{item}</Button>
-            <Input placeholder="Value" type="number" className="w-full" defaultValue={item === 'Amount' ? '20000' : item === 'Movement Continuity' ? '1500' : '100'} />
+            <Button variant="outline" className="w-full bg-green-600">{item.key}</Button>
+            <Input placeholder="Value" value= {item.value} className="w-full" type="number" onChange= {(e)=>handleheadchange(item.id,e.target.value)}/>
           </div>
         ))}
       </div>
-      
-      
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="flex flex-col items-center gap-2">
-          <Button variant="outline" className="w-full bg-green-600">Spike in Index</Button>
-          <Input placeholder="Value" type="number" className="w-full" defaultValue="0.20%" />
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <Button variant="outline" className="w-full bg-green-600">Strike Price</Button>
-          <div className="flex w-full gap-2">
-            <Input placeholder="Value" type="number" className="flex-grow" defaultValue="4%" />
-            
-          </div>
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <Button variant="outline" className="w-full bg-green-600">Target</Button>
-          <Input placeholder="Value" type="number" className="w-full" defaultValue="50%" />
-        </div>
-      </div>
-      <h2 className=" text-white text-xl">Profit Trail</h2>
-      {['SL', 'Active'].map((section, index) => (
-        <div key={section} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {[section, ['SL Trail', 'Lock'][index], ['Re entry', 'Trail'][index]].map((item) => (
-            <div key={item} className="flex flex-col items-center gap-2">
-              <Button variant="outline" className="w-full bg-green-600">{item}</Button>
-              <Input 
-                placeholder="Value" 
-                type="number"
-                className="w-full" 
-                defaultValue={
-                  item === 'SL' ? '10%' : 
-                  item === 'SL Trail' ? '4' : 
-                  item === 'Re entry' ? '5' : 
-                  item === 'Profit Trail Active' ? '5%' : 
-                  item === 'Lock' ? '2%' : 
-                  item === 'Trail' ? '1%' : ''
-                } 
-              />
-            </div>
-          ))}
-        </div>
-        
-      ))}
 
 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             {/* <div>
@@ -145,7 +159,7 @@ const Strategy2_form = ({ onCancel }) => {
             </div>
           </div>
 
-      <Button className="w-full sm:w-auto">Save</Button>
+      <Button onClick={()=>savedatta()} className="w-full sm:w-auto">Save</Button>
 
             <Button
               onClick={onCancel}

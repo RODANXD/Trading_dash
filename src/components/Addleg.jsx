@@ -112,7 +112,7 @@ const [expiries, setExpiries] = useState([]);
 
   const settings = ()=>{
     const endpoint = "settings"
-    const payload = JSON.stringify({datevalue,datevalue1,tradetype,segment,selectVertical,
+    const payload = JSON.stringify({datevalue,datevalue1,tradetype,segment,selectVertical,sltype,
       brokerselect,Paper,live,rentry,lossblock,Activeblock,pnlblock,lossblock,lockblock,targetblock,tslblock,pnlblock})
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
@@ -122,7 +122,7 @@ const [expiries, setExpiries] = useState([]);
   }
 
   const legadd = ()=>{
-    const endpoint = "SpotLeg"
+    const endpoint = advice
     const payload = JSON.stringify({advice,spotpricel1,Nearestatml1,segment,selectVertical,
       brokerselect,Paper,live,rentry,lossblock,Activeblock,pnlblock,lossblock,lockblock,targetblock,tslblock,pnlblock})
     const type = "POST"
@@ -209,7 +209,7 @@ const [expiries, setExpiries] = useState([]);
     setbrokerselect(e.target.value)
   }
   const handlesltype= (e)=>{
-  setsltype(e.target.value)}
+   setsltype(e.target.value)}
   const handletsltype= (e)=>{
     settsltype(e.target.value)}
   const handleTargettype= (e)=>{
@@ -281,6 +281,8 @@ const [expiries, setExpiries] = useState([]);
 
   return (
     <>
+
+    
      <div className=" bg-blue-600 rounded-md absolute right-14 bottom-10 w-9/12 p-3">
      <div className=" flex flex-row-reverse">
      <Button onClick={onClose}  className="bg-red-600">X</Button>
@@ -504,7 +506,7 @@ const [expiries, setExpiries] = useState([]);
         <input type="number" className='form-control' onchange={handleLegTarget} placeholder='TARGET' />
       </div>
       <div className="col-lg col-sm-6 mt-3">
-        <button type="button" className="btn btn-success w-100" >+ Add Leg</button>
+        <button type="button" onClick={()=>legadd()} className="btn btn-success w-100" >save</button>
       </div>
     </div>
   </div>

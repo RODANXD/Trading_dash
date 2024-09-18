@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import * as React from "react"
 
 import { TimeInput } from '@mantine/dates'
@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import DropdownMenuCheckboxes from './ui/dropdown'
 import { Label } from "@/components/ui/label";
+import {handleexchangerequest} from '../utility/Api'
+
 
 
 
@@ -25,20 +27,75 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const Strategy3_form = ({ onCancel }) => {
-  const [movement, setMovement] = useState('3')
-  const [ioChange, setIoChange] = useState('3')
-  const [fromTime, setFromTime] = useState('09:20 AM')
-  const [toTime, setToTime] = useState('09:30 AM')
-  const [sameDirectionDay, setSameDirectionDay] = useState('3')
-  const [monthlyExpiryDay, setMonthlyExpiryDay] = useState('4')
-  const [candleHighLowTime, setCandleHighLowTime] = useState('09:20 AM')
-  const [retracement, setRetracement] = useState('20')
-  const [niftyTime, setNiftyTime] = useState('09:45 AM')
-  const [entryDurationTime, setEntryDurationTime] = useState('12:30 PM')
+const Strategy3_form = ({ onCancel,blockid }) => {
+  const [movement, setMovement] = useState('')
+  const [ioChange, setIoChange] = useState('')
+  const [fromTime, setFromTime] = useState('')
+  const [toTime, setToTime] = useState('')
+  const [sameDirectionDay, setSameDirectionDay] = useState('')
+  const [monthlyExpiryDay, setMonthlyExpiryDay] = useState('')
+  const [candleHighLowTime, setCandleHighLowTime] = useState('')
+  const [retracement, setRetracement] = useState('')
+  const [niftyTime, setNiftyTime] = useState('')
+  const [entryDurationTime, setEntryDurationTime] = useState('')
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
   const [paper, setpaper]= useState(false)
+  const [head,Sethead]= useState([
+    {id:1,key: 'Amount',value:0},
+    {id:2,key: 'Target',value:0},
+    {id:3,key: 'Strike',value:0},
+    {id:4,key: 'SL',value:0},
+    {id:5,key: 'SLtrail',value:0},
+    {id:6,key: 'Active',value:0},
+    {id:7,key: 'Lock',value:0},
+    {id:8,key: 'Trail',value:0},
+    {id:9,key: 'Timer',value:0},
+
+    ])
+
+  const [bodydata,SetBodydata]= useState([
+    {id:1,key: 'movementum',value:movement},
+    {id:2,key: 'oichange',value:ioChange},
+    {id:3,key: 'fromtime',value:fromTime},
+    {id:4,key: 'totime',value:toTime},
+    {id:5,key: 'samedirection',value:sameDirectionDay},
+    {id:6,key: 'monthlyexpiry',value:monthlyExpiryDay},
+    {id:7,key: 'candlehighlowtime',value:candleHighLowTime},
+    {id:8,key: 'Retracement',value:retracement},
+
+    {id:9,key: 'indextime',value:niftyTime},
+    {id:10,key: 'Entrytime',value:entryDurationTime},
+
+])
+
+useEffect(() => {
+  SetBodydata([
+    { id: 1, key: "movementum", value: movement },
+    { id: 2, key: "oichange", value: ioChange },
+    { id: 3, key: "fromtime", value: fromTime },
+    { id: 4, key: "totime", value: toTime },
+    { id: 5, key: "samedirection", value: sameDirectionDay },
+    { id: 6, key: "monthlyexpiry", value: monthlyExpiryDay },
+    { id: 7, key: "candlehighlowtime", value: candleHighLowTime },
+    { id: 8, key: "Retracement", value: retracement },
+    { id: 9, key: "indextime", value: niftyTime },
+    { id: 10, key: "Entrytime", value: entryDurationTime }
+  ]);
+}, [
+  movement,
+  ioChange,
+  fromTime,
+  toTime,
+  sameDirectionDay,
+  monthlyExpiryDay,
+  candleHighLowTime,
+  retracement,
+  niftyTime,
+  entryDurationTime
+]);
+
+
 
   
   const scriptData = [
@@ -59,6 +116,98 @@ const Strategy3_form = ({ onCancel }) => {
   const Addform = () => {
     setIsOpen(true);
   };
+
+  useEffect(() => {
+
+      bodydata.map((item)=>{
+        if (item.key=="movementum"){
+          setMovement(item.value)
+        }
+        if (item.key=="fromtime"){
+          setFromTime(item.value)
+        }
+        if (item.key=="totime"){
+          setToTime(item.value)
+        }
+        if (item.key=="oichange"){
+          setIoChange(item.value)
+        }
+        if (item.key=="Entrytime"){
+          setEntryDurationTime(item.value)
+        }
+        if (item.key=="samedirection"){
+          setSameDirectionDay(item.value)
+        }
+        if (item.key=="monthlyexpiry"){
+          setMonthlyExpiryDay(item.value)
+        }
+        if (item.key=="candlehighlowtime"){
+          setCandleHighLowTime(item.value)
+        }
+        if (item.key=="Retracement"){
+          setRetracement(item.value)
+        }
+        if (item.key=="indextime"){
+          setNiftyTime(item.value)
+        }
+
+
+
+
+
+
+
+
+
+      })
+
+
+  },[setMovement,setToTime,setFromTime,setIoChange,setEntryDurationTime,setSameDirectionDay,
+    ,setMonthlyExpiryDay,setCandleHighLowTime,setRetracement,setNiftyTime,bodydata
+  ])
+
+  const savedatta = (Blockid=blockid)=>
+  
+    {
+      const endpoint = "saveblock3"
+      const strategy= 3
+      const payload = JSON.stringify({head,paper,bodydata,strategy,Blockid})
+      const type = "PUT"
+      handleexchangerequest(type, payload, endpoint)
+      .then(response => {
+  
+      console.log(response)
+      })
+  
+    }
+  
+
+  const handleviewdetail = (Blockid=blockid)=>
+  
+    {
+      const endpoint = "saveblock3"
+      const payload = "Blockid="+Blockid
+      const type = "GET"
+      handleexchangerequest(type, payload, endpoint)
+      .then(response => {
+        if (response.length!=0){
+          console.log(response,'headres')
+
+        Sethead(response.list1)
+        console.log(response.list1,'list1')
+        
+        SetBodydata(response.list2)
+      }
+
+      
+      })
+  
+    }
+    useEffect (()=>{
+      handleviewdetail()
+
+    },[])
+
 
   const handlemode = () =>{
     setpaper(!paper)
@@ -106,7 +255,7 @@ const Strategy3_form = ({ onCancel }) => {
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">Movement</label>
               <div className="relative rounded-md shadow-sm">
-                <input type="number" value={movement} onChange={(e) => setMovement(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" />
+                <input type="number" value={movement} onChange={(e) => setMovement(e.target.value)} className="form-input w-full py-2 px-3 text-black bg-white rounded-sm" placeholder="Active" />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                   <span className="text-gray-500 sm:text-sm">%</span>
                 </div>
@@ -114,11 +263,11 @@ const Strategy3_form = ({ onCancel }) => {
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">From Time</label>
-              <TimeInput value={fromTime} onChange={(value) => setFromTime(value)} className="w-full" />
+              <TimeInput value={fromTime} onChange={(e) => setFromTime(e.target.value)} className="w-full text-black" />
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">To Time</label>
-              <TimeInput value={toTime} onChange={(value) => setToTime(value)} className="w-full" />
+              <TimeInput value={toTime} onChange={(e) => setToTime(e.target.value)} className="w-full text-black" />
             </div>
           </div>
         </div>
@@ -149,7 +298,7 @@ const Strategy3_form = ({ onCancel }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Candle high/low time</label>
-            <TimeInput value={candleHighLowTime} onChange={(value) => setCandleHighLowTime(value)} className="w-full" />
+            <TimeInput value={candleHighLowTime} onChange={(e) => setCandleHighLowTime(e.target.value)} className="w-full" />
           </div>
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Retracement</label>
@@ -165,11 +314,11 @@ const Strategy3_form = ({ onCancel }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Nifty time</label>
-            <TimeInput value={niftyTime} onChange={(value) => setNiftyTime(value)} className="w-full" />
+            <TimeInput value={niftyTime} onChange={(e) => setNiftyTime(e.target.value)} className="w-full" />
           </div>
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Entry duration time</label>
-            <TimeInput value={entryDurationTime} onChange={(value) => setEntryDurationTime(value)} className="w-full" />
+            <TimeInput value={entryDurationTime} onChange={(e) => setEntryDurationTime(e.target.value)} className="w-full" />
           </div>
         </div>
 
@@ -177,49 +326,20 @@ const Strategy3_form = ({ onCancel }) => {
           <h2 className="text-xl font-semibold mb-4 text-center text-white">Entry and Exit</h2>
           <p className="text-white mb-4">Entry will be once bal stock break of its high or low marked spot price of Candle High/low time</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Strike Price</label>
-              <div className="flex items-center gap-2">
-                <input type="number" className="form-input flex-grow py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
-                
+          {head.map((item)=>(
+
+              <div key={item}>
+
+                <label className="block text-lg font-medium text-zinc-300 mb-1">{item.key}</label>
+                <div className="flex items-center gap-2">
+                  <input type="number" value={item.value}   onChange= {(e)=>handleheadchange(item.id,e.target.value)} className="form-input flex-grow py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+
+                </div>
               </div>
-            </div>
-            <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Target</label>
-              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
-            </div>
-            <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Amount</label>
-              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">SL</label>
-              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
-            </div>
-            <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">SL Trail</label>
-              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
-            </div>
-            <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Timer</label>
-              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Profit Trail Active</label>
-              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
-            </div>
-            <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Lock</label>
-              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
-            </div>
-            <div>
-              <label className="block text-lg font-medium text-zinc-300 mb-1">Trail</label>
-              <input type="number" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
-            </div>
+                ) 
+                )}
+
+
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             {/* <div>
@@ -265,14 +385,12 @@ const Strategy3_form = ({ onCancel }) => {
 
         
       </div>
-      <Button
-              onClick={onCancel}
-              className="mt-4"
-            >
-              Cancel
-            </Button>
+      <Button onClick={onCancel} className="mt-4" > Cancel </Button>
+      <Button onClick={()=>savedatta()} className="w-full sm:w-auto">Save</Button>
+
       
     </div>
+    
     </>
   )
 }

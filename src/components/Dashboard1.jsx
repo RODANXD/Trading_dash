@@ -46,10 +46,14 @@ function Custom() {
 
   const [expiries, setExpiries] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [datevalue, SetDatevalue] = useState(new Date());
-  const [datevalue1, SetDatevalue1] = useState(new Date());
+  const [tradevalidity, Settradevalidity] = useState(new Date());
+  const [Notradingzone, SetNotradingzone] = useState(new Date());
   const [segment,SetSegment]=useState('')
-  const [strikePrices, setStrikePrices] = useState([]);
+  const [strikePrices, setStrikePrices] = useState([ 17000,18000
+
+  ]);
+  const [strikeprice,setstrikeprice]= useState('')
+
   const [toggleStatus, setToggleStatus] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
   const [selectVertical, setSelectVertical] = useState('');
@@ -62,14 +66,9 @@ function Custom() {
   const [expiry, setExpiry] = useState("")
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
-  const[blockno,setblockno]= useState('')
-  const [broker,setBroker]= useState([
-    {id:1,name:'Shoonya',value:true},
-    {id:2,name:'Dhan',value:true},
-    {id:3,name:'Angel',value:true},]
+  const [currentblock,setcurrentblock]= useState('')
 
-
-  )
+  
 
 
 
@@ -80,23 +79,36 @@ function Custom() {
 
 
   const [sltype,setsltype]=useState('')
-  const [sltytpe,settsltype]=useState('')
+  const [tsltype,settsltype]=useState('')
   const [targettype,settargettype]=useState('')
-  const [Activeleg,setActiveleg]=useState('')
-  const [tslleg,setTslleg]=useState('')
-  const [Paper,setPaper]= useState(false)
-  const[live,setLive]= useState(false)
-  console.log(live,Paper)
-  const [targetleg,setTargetleg]=useState('')
+  const [Activeleg,setActiveleg]=useState(0)
+  const [blocksl,setblocksl]=useState(0)
+  const [blocktrail,setblocktrail]=useState(0)
+  const [blocktarget,setblocktarget]=useState('')
+  const [blocktimer,setblocktimer]=useState('')
+  const [showsymbol,setshowsymbol]=useState(false)
+  const [selectsymbol,setselectsymbol]=useState('')
+
   
-  const [lockleg,setLockleg]=useState('')
-  const [targetblock,setTargetblock]=useState('')
-  const [Activeblock,setActiveblock]=useState('')
-  const [tslblock,setTslblock]=useState('')
-  const [pnlblock,setpnlblock]= useState('')
-  const [lockblock,setlockblock]=useState('')
-  const[lossblock,setLossblock]= useState('')
-  const [rentry,setReentry]= useState('')
+
+
+  const [tslleg,setTslleg]=useState(0)
+  const [paper,setPaper]= useState(false)
+  const[live,setLive]= useState(false)
+  const [targetleg,setTargetleg]=useState(0)
+  const [isContentDisabled,setisContentDisabled]= useState(false)
+  const [lockleg,setLockleg]=useState(0)
+  const [overallTARGET,setoverallTARGET]=useState(0)
+  const [overallActive,setoverallActive]=useState(0)
+  const [overallTrailprofit,setoverallTrailprofit]=useState(0)
+  const [overallpnl,setoverallpnl]= useState(0)
+  const [overallLock,setoverallLock]=useState(0)
+  const[overallloss,setoverallloss]= useState(0)
+  const [rentry,setReentry]= useState(0)
+  const [correction,setcorrection]= useState(0)
+  const [Symbol,setsymbol]= useState([])
+
+
   const [showStatusBar, setShowStatusBar] = React.useState(true);
   const [showActivityBar, setShowActivityBar] = React.useState(false);
   const [showPanel, setShowPanel] = React.useState(false);
@@ -104,15 +116,17 @@ function Custom() {
   const [viewall, setviewall]= useState(false)
   const [Tradeblockno,settradeblockno]= useState([])
 
-  const [selectDisable, setSelectDisable] = useState("");
-
-  const [Lockleg,setlogleg]=useState('')
+  const [fno, setFno] = useState("");
+  const [sublegid,setsublegid]= useState([
+    {Blockid:'' ,sublegid:1,checked:false}
+  ])
+  const [Lockleg,setlogleg]=useState(0)
   const [optiondata,setoptiondata]= useState({type:'',side:''})
   const [Amountblock,setAmountblock]= useState('')
   const [addtrade,setAddtrade]= useState(false)
-  const [advice,Setadvice]= useState(false)
+  const [advice,Setadvice]= useState('')
   const[brokerselect,setbrokerselect]= useState('')
-  const [spotpricel1,setspotpricel1]= useState('')
+  const [spotprice,setspotprice]= useState(0)
   const[Nearestatml1,setNearestatml1]= useState('')
   console.log(brokerselect)
   const [numberOfLegs, setNumberOfLegs] = useState(() => {
@@ -129,10 +143,13 @@ function Custom() {
     localStorage.setItem('numberOfLegs', numberOfLegs.toString());
   }, [numberOfLegs, legPLTs]);
 
-  const settings = ()=>{
-    const endpoint = "settings"
-    const payload = JSON.stringify({datevalue,datevalue1,tradetype,segment,selectVertical,
-      brokerselect,Paper,live,rentry,lossblock,Activeblock,pnlblock,lossblock,lockblock,targetblock,tslblock,pnlblock})
+  const settings =  ()=>{
+    const endpoint = "saveblockst1"
+    const strategy= 1
+    const payload = JSON.stringify({tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,advice,spotprice,
+      correction,sltype,tsltype,targettype,blocksl,blocktarget,blocktimer,blocktrail,
+      paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl
+      ,Activeleg,lockleg,targetleg,tslleg,strategy,selectsymbol})
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
@@ -142,8 +159,8 @@ function Custom() {
 
   const legadd = ()=>{
     const endpoint = "SpotLeg"
-    const payload = JSON.stringify({advice,spotpricel1,Nearestatml1,segment,selectVertical,
-      brokerselect,Paper,live,rentry,lossblock,Activeblock,pnlblock,lossblock,lockblock,targetblock,tslblock,pnlblock})
+    const payload = JSON.stringify({
+      })
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
@@ -151,11 +168,162 @@ function Custom() {
     })
   }
 
-  const handleSelectdisable = (e) => {
-    setSelectDisable(e.target.value);
+
+  const handleselectsymbol = (e) => {
+    setselectsymbol(e.target.value);
+
+    const sdd = localStorage.getItem("token");
+    const t = "token " + sdd;
+
+
+    setLoading(true)
+    const fetchData = async () => {
+      try {
+        // const response = await axios.get(`http://127.0.0.1:5000/option_chain?option_type=${event.target.value}`);
+        const response = await fetch (`http://52.66.78.108:8000/option_type?option_type=${e.target.value}&segment=${segment}&instrument=${fno}`,
+          {
+            method: 'GET',
+            headers: {  
+              "Content-Type": "application/json",
+              Authorization: t,
+            },
+          }
+        );
+        const data = await response.json();
+
+        console.log(data,'expiry')
+        // const removeDuplicates = [...new Set(data.message.Expiry)];
+        const removeDuplicatesstrike = [...new Set(data.message.StrikePrice)];
+        // const removeDuplicatsymbol = [...new Set(data.message.Symbol)];
+
+
+
+        // setExpiries(removeDuplicates);
+        // setsymbol(removeDuplicatsymbol);
+        setStrikePrices(removeDuplicatesstrike);
+        // setDefaultStrikePrices(response.message.underlyingValue)
+        setLoading(false)
+      } catch (error) {
+        alert("Getting Error While Fetching API! Please Try Again!!!",)
+        console.log(error)
+        setLoading(false)
+      }
+    };
+    fetchData();
+
+
+
+
+
   };
 
-  const isContentDisabled = selectDisable === "Future";
+
+
+
+  // useEffect(()=>{
+    // const removeDuplicates = [...new Set(expiries)];
+    // console.log(removeDuplicates,'removeDuplicates')
+    // setExpiries(removeDuplicates)
+// 
+    // 
+// 
+// 
+// 
+  // },[])
+  
+  
+  
+  const handleSelectdisable = (e) => {
+    setFno(e.target.value);
+    
+    // if  (e.target.value==='FUTSTK'||'OPTSTK'){
+        // setSelectVertical('stock')
+// 
+// 
+// 
+    // }
+  if  (e.target.value==='FUTSTK'){
+      // setshowsymbol(false)
+      setshowsymbol(true)
+      setisContentDisabled(true)
+      setSelectVertical('stock')}
+
+  if  (e.target.value==='OPTSTK'){
+      // setshowsymbol(false)
+      setshowsymbol(true)
+      setSelectVertical('stock')
+      setisContentDisabled(false)
+
+}
+
+
+
+
+    if  (e.target.value==='FUTIDX'){
+      setisContentDisabled(true)
+      setshowsymbol(false)
+  
+
+
+  
+      }
+    
+    if (e.target.value==='OPTIDX'){
+      setisContentDisabled(false)
+      setshowsymbol(false)
+
+
+    }
+
+  
+
+
+
+    const sdd = localStorage.getItem("token");
+    const t = "token " + sdd;
+
+
+    setLoading(true)
+    const fetchData = async () => {
+      try {
+        // const response = await axios.get(`http://127.0.0.1:5000/option_chain?option_type=${event.target.value}`);
+        const response = await fetch (`http://52.66.78.108:8000/option_type?option_type=${selectVertical}&segment=${segment}&instrument=${e.target.value}`,
+          {
+            method: 'GET',
+            headers: {  
+              "Content-Type": "application/json",
+              Authorization: t,
+            },
+          }
+        );
+        const data = await response.json();
+
+        console.log(data,'expiry')
+        const removeDuplicates = [...new Set(data.message.Expiry)];
+        const removeDuplicatesstrike = [...new Set(data.message.StrikePrice)];
+        const removeDuplicatsymbol = [...new Set(data.message.Symbol)];
+
+
+
+        setExpiries(removeDuplicates);
+        setsymbol(removeDuplicatsymbol);
+        setStrikePrices(removeDuplicatesstrike);
+        // setDefaultStrikePrices(response.message.underlyingValue)
+        setLoading(false)
+      } catch (error) {
+        alert("Getting Error While Fetching API! Please Try Again!!!",)
+        console.log(error)
+        setLoading(false)
+      }
+    };
+    fetchData();
+
+
+
+
+
+  };
+
 
   
   const Deleteblock = (Blockid) =>{
@@ -201,7 +369,8 @@ function Custom() {
 
   },[])
 
-  const handleviewall = ()=>{
+  const handleviewall = (id)=>{
+    setcurrentblock(id)
     setviewall(true)
 
   }
@@ -209,9 +378,14 @@ function Custom() {
     setviewall(false);
   };
 
+  const  handlenearestatm=(e)=>{
+    const strikenear= e.target.value
+    setstrikeprice(defaultstrikePrices+strikenear)
+
+  }
 
  const handledatecahnge= (e)=>{
-    SetDatevalue(e.target.value)
+    Settradevalidity(e.target.value)
   }
 
   const handletradetype =(e)=>{
@@ -234,19 +408,19 @@ function Custom() {
     setLockleg(e.target.value)
   }
   const handleblockactive= (e)=>{
-    setActiveblock(e.target.value)
+    setoverallActive(e.target.value)
   }
   const handlebloctsl= (e)=>{
-    setTslblock(e.target.value)
+    setoverallTrailprofit(e.target.value)
   }
   const handleblockTarget= (e)=>{
-    setTargetblock(e.target.value)
+    setoverallTARGET(e.target.value)
   }
   const handleblockLock= (e)=>{
-    setlockblock(e.target.value)
+    setoverallLock(e.target.value)
   }
   const handleBlockpnl= (e)=>{
-    setpnlblock(e.target.value)
+    setoverallpnl(e.target.value)
   }
   
   const toggleAddleg = () => {
@@ -267,12 +441,12 @@ function Custom() {
     .then (response=> {
       console.log(response)
 })
-  window.location.reload()
+  tradeblocklist()
   
   };
 
   const handledatecahnge1= (e)=>{
-    SetDatevalue1(e.target.value)
+    SetNotradingzone(e.target.value)
   }
   const handlesegment= (e)=>{
     SetSegment(e.target.value)
@@ -290,25 +464,31 @@ function Custom() {
   }
   const handlesltype= (e)=>{
   setsltype(e.target.value)}
+  
   const handletsltype= (e)=>{
     settsltype(e.target.value)}
-  const handleTargettype= (e)=>{
+  
+    const handleTargettype= (e)=>{
       settargettype(e.target.value)}
+  
+  
+  const handlelegselect= (id) =>{
 
-
+        setsublegid((prevData) =>
+      prevData.map((item) =>
+        item.sublegid === id ? { ...item,checked:!item.checked } : item
+      )
+    );
+    
+    
+    }
+    
   
   const handleAddTrade= ()=>{
-    const endpoint = "addblock"
-    const strategy= 1
-    const payload = JSON.stringify({strategy})
-    const type = "POST"
-    handleexchangerequest(type, payload, endpoint)
-    .then(response => {
     setAddtrade(!addtrade)
 
-    console.log(response)
-    })
   }
+
 
   const handleCheckboxChange = (id) => {
       setbrokerselect((prevData) =>
@@ -340,21 +520,10 @@ function Custom() {
 
   const handleSelectChange = async (event) => {
     setSelectVertical(event.target.value)
-    setLoading(true)
-    const fetchData = async () => {
-      try {
-        // const response = await axios.get(`http://127.0.0.1:5000/option_chain?option_type=${event.target.value}`);
-        const response = await axios.get(`serverURL/option_chain?option_type=${event.target.value}`);
-        setExpiries(response.data.records.expiryDates);
-        setStrikePrices(response.data.records.strikePrices);
-        setDefaultStrikePrices(response.data.records.underlyingValue)
-        setLoading(false)
-      } catch (error) {
-        alert("Getting Error While Fetching API! Please Try Again!!!")
-        setLoading(false)
-      }
-    };
-    fetchData();
+    const sdd = localStorage.getItem("token");
+    const t = "token " + sdd;
+
+
   };
 
   const scriptData = [
@@ -376,8 +545,8 @@ function Custom() {
         
         <div className="col-md-4 col-6 d-flex gap-3 justify-content-end order-md-2">
           <Button>Exit All</Button>
-          <Button className=" bg-red-600">Delete All</Button>
-        </div>
+          <Button onClick={()=>(Deleteblock(0))} className=" bg-red-600">Delete All</Button>
+          </div>
         <div className="col-md-4 col-12 text-center mt-md-0 mt-3">
           {/* <button type="button" className="btn w-100" style={{ backgroundColor: '#e6e6e9', width: 'fit-content', borderRadius: '5px' }}><b>Terminal ON/OFF</b>&ensp; {toggleStatus ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus(true)} />}</button> */}
           <div className="col-lg-6 w-full">
@@ -440,7 +609,7 @@ function Custom() {
                   </div>
                 </div>
                 <div className="flex items-center justify-center h-24">
-                  <button className="btn btn-info w-24" onClick={handleviewall}>
+                  <button className="btn btn-info w-24" onClick={()=>handleviewall(item.Blockid)}>
                     View Detail
                   </button>
                 </div>
@@ -526,8 +695,8 @@ function Custom() {
               <div className="col-4">
               <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
                     <option value="">Select Tradetype</option>
-                    <option value="NIFTY">Intrday</option>
-                    <option value="BANKNIFTY">Carryforward</option>
+                    <option value="Intrday">Intrday</option>
+                    <option value="Carryforward">Carryforward</option>
                   </select>
 
                   
@@ -541,10 +710,11 @@ function Custom() {
             {showCalender ? 
                 // <div style={{ position: 'absolute', zIndex: '999' }}><Calendar onChange={onChange} value={value} /></div>
                 
-          <div style={{ position: 'absolute', zIndex: '999' }}><input  onChange={handledatecahnge} className =" bg-white w-2/3 rounded-sm mt-2"value={datevalue} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
+          <div style={{ position: 'absolute', zIndex: '999' }}><input  onChange={handledatecahnge} className =" bg-white w-2/3 rounded-sm mt-2"value={tradevalidity} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
           : <></>}
-            <div className='d-flex justify-content-end' style={{ position: 'relative' }}>{showCalender2 ?
-          <div style={{ position: 'absolute', zIndex: '999', right: "-40px" }}><input className=' bg-white w-2/3 rounded-sm mt-2'  onChange={handledatecahnge1} value={datevalue1} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
+            <div className='d-flex justify-content-end' style={{ position: 'relative' }}>
+              {showCalender2 ?
+          <div style={{ position: 'absolute', zIndex: '999', right: "-40px" }}><input className=' bg-white w-2/3 rounded-sm mt-2'  onChange={handledatecahnge1} value={Notradingzone} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
 
              : <></>}</div>
           </div>
@@ -569,17 +739,24 @@ function Custom() {
                       
                     >
                       <option value=""> select segment</option>
-                      <option value="Cash">Cash </option>
-                      <option value="Derivative">Derivative </option>
+                      <option value="Cash">NSE </option>
+                      <option value="NFO">NFO</option>
+                      <option value="BFO">BFO</option>
+                      <option value="BSE">BSE</option>
+
+
                       </select>
                     </div>
               
               <div className="col-4">
-                {!loading ?
+                
                   <select id="selectVertical" className='form-select' onChange={(e) => handleSelectChange(e)} value={selectVertical}>
                     <option value="">Select Vertical</option>
                     <option value="NIFTY">Nifty</option>
                     <option value="BANKNIFTY">BANKNIFTY</option>
+                    <option value="SENSEX">SENSEX</option>
+                    <option value="FINNIFTY">FINNIFTY</option>
+
                   </select>
                   :
                   <div className="text-center">
@@ -587,14 +764,17 @@ function Custom() {
                       <span className="visually-hidden">Loading...</span>
                     </div>
                   </div>
-                }
+                
               </div>
               <div className="col-4">
               
-                <select id="selectVertical" className='form-select' onChange={(e)=>handleSelectdisable(e)} value={selectDisable}>
+                <select id="selectVertical" className='form-select' onChange={(e)=>handleSelectdisable(e)} value={fno}>
                   <option value="">Select FNO</option>
-                  <option value="Future">FUTURE</option>
-                  <option value="BANKNIFTY">OPTION</option>
+                  <option value="FUTIDX">FUTURE</option>
+                  <option value="OPTIDX">OPTION</option>
+                  <option value="FUTSTK">STOCK FUTURE</option>
+                  <option value="OPTSTK"> STOCK OPTION</option>
+
                 </select>
                 :
                 <div className="text-center">
@@ -604,8 +784,24 @@ function Custom() {
                 </div>
               
             </div>
+            <div className="col-4">
+              {  showsymbol ?
+              
+              
+                  <select id="SymbolSelect" className='form-select' onChange={(e) => handleselectsymbol(e)}value={selectsymbol}>
+                    <option>Select Symbol</option>
+                    {Symbol.map((val, index) =>
+                      <option key={index} value={val}>{val}</option>
+                    )}
+                  </select>
+                
+              :<></>}
+
+              </div>
+            
               <div className="col-4">
                 {expiries.length !== 0 ?
+
                   <select id="expirySelect" className='form-select' onChange={(e) => sethandleexpiry(e)}value={expiry}>
                     <option>Select Expiry</option>
                     {expiries.map((date, index) =>
@@ -624,7 +820,7 @@ function Custom() {
         </div>
       </div>
       
-      {defaultstrikePrices !== '' ? <h1 className='mt-3'>Current Spot Price <span className='bg-secondary text-white px-2 py-1 fs-3'>₹ {defaultstrikePrices}</span></h1> : <></>}
+      {/* {defaultstrikePrices !== '' ? <h1 className='mt-3'>Current Spot Price <span className='bg-secondary text-white px-2 py-1 fs-3'>₹ {defaultstrikePrices}</span></h1> : <></>} */}
       
      
       
@@ -636,7 +832,7 @@ function Custom() {
               <div className="col-lg-6 my-3">
                 <div className="row">
                   <div className="col-sm-4 col-5">
-                  <select  className='form-select' onChange={handleTradeadvice}>
+                  <select  className='form-select' onChange={(e)=>handleTradeadvice(e)}>
                       <option value=""> TRADE ADVICE</option>
                       <option value="spot">Spot </option>
                       <option value="sequence">Sequnce </option>
@@ -644,7 +840,7 @@ function Custom() {
                       </select> 
                       </div>
                   <div className="col-4">
-                    <input type="number" className="form-control"  onChange={(e)=>setspotpricel1(e.target.value)} placeholder='Spot Price' />
+                    <input type="number" className="form-control"  onChange={(e)=>setspotprice(e.target.value)} placeholder='Spot Price' />
                   </div>
                   {(advice === 'cover' || advice === 'sequence') && (
                       <DropdownMenu>
@@ -652,26 +848,17 @@ function Custom() {
                         <Button variant="outline" className="w-32 bgreen-600">Leg No</Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="w-56">
-                        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                        <DropdownMenuLabel>Leg</DropdownMenuLabel>
                         <DropdownMenuSeparator />
+                        {sublegid.map((Item)=>
                         <DropdownMenuCheckboxItem
-                          checked={showStatusBar}
-                          onCheckedChange={setShowStatusBar}
-                        >
-                          1
+                        checked={Item.checked}
+                       onCheckedChange={()=>handlelegselect(Item.sublegid)}>
+                        {Item.sublegid}
                         </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem
-                          checked={showActivityBar}
-                          onCheckedChange={setShowActivityBar}
-                        >
-                          2
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem
-                          checked={showPanel}
-                          onCheckedChange={setShowPanel}
-                        >
-                          3
-                        </DropdownMenuCheckboxItem>
+                        
+
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                     )}
@@ -683,7 +870,7 @@ function Custom() {
                 {advice === 'sequence' && (
       <div className="flex w-1/2 gap-3">
         <button className="btn btn-light w-32">Correction</button>
-        <input type="text" placeholder="value" className="bg-white w-32 text-black rounded-sm px-1"/>
+        <input type="text" onChange={(e)=>setcorrection(e.target.value)} placeholder="value" className="bg-white w-32 text-black rounded-sm px-1"/>
       </div>
                 )}
                 </div>
@@ -694,18 +881,14 @@ function Custom() {
             <div className="col-lg-3 col-sm-5 col-9 mt-3">
               <div className="row">
                 <div className="col-6">
-                  {strikePrices.length !== 0 ?
-                    <select id="strikePriceSelect" className='form-select' onChange={() => setIsStrikeSelected(true)}>
+                  
+                    <select id="strikePriceSelect" className='form-select' onChange={(e) => setstrikeprice(e.target.value)}>
                       <option>Select Strike Price</option>
                       {strikePrices.map((Price, index) =>
                         <option key={index} value={Price}>{Price}</option>
                       )}
                     </select>
-                    :
-                    <select id="strikePriceSelect" className='form-select'>
-                      <option>Select Strike Price</option>
-                    </select>
-                  }
+                  
                 </div>
                 <div className="col-6">
                   <button type="button" className="btn btn-success w-100">Automatic</button>
@@ -716,7 +899,7 @@ function Custom() {
               <input type="text" className='form-control' placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
             </div>
             <div className="col-lg-3 col-sm-5 mt-3">
-              <input type="number" className='form-control' onChange={(e)=>setNearestatml1(e.target.value)}  placeholder='Nearest ATM' />
+              <input type="number" className='form-control' onChange={(e)=>handlenearestatm(e)}  placeholder='Nearest ATM' />
             </div>
             <div className="col-lg-2 col-6 mt-3">
               
@@ -762,7 +945,7 @@ function Custom() {
               </div>
             </div>
             <div className="col-lg-2 col-3 mt-3">
-              <input type="text" className='form-control' placeholder='Value' />
+              <input type="text"  value= {strikeprice!=='Select Strike Price'?strikeprice:''}className='form-control' placeholder='Value'  />
             </div>
             <div className="col-lg-3 col-sm-6 mt-3">
               <div className="row">
@@ -776,7 +959,7 @@ function Custom() {
                 </select>
                         </div>
                 <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
+                  <input type="text" onChange={(e)=>setblocksl(e.target.value)} value = {blocksl} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
             </div>
@@ -790,7 +973,7 @@ function Custom() {
                       </select>
                       </div>
                 <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
+                  <input type="text" onChange={(e)=>setblocktrail(e.target.value)} value = {blocktrail} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
             </div>
@@ -798,7 +981,7 @@ function Custom() {
               <div className="row">
                 <div className="col-6">
                 <select  className='form-select'onChange={handleTargettype}>
-                      <option value="">Target</option>
+                      <option value="">Target</option>  
                       <option value="Points">Spot Points </option>
                       <option value="Percentage">Points</option>
                       <option value="Percentage">Value</option>
@@ -807,7 +990,7 @@ function Custom() {
 
                   </div>
                 <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
+                  <input type="text"  onChange={(e)=>setblocktarget(e.target.value)} value = {blocktarget} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
             </div>
@@ -825,7 +1008,7 @@ function Custom() {
                   </Dropdown>
                 </div>
                 <div className="col-6">
-                  <input type="text" placeholder='Manual Entry' className='form-control' />
+                  <input type="text" onChange={(e)=>setblocktimer(e.target.value)} value = {blocktimer} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
             </div>
@@ -837,16 +1020,16 @@ function Custom() {
             <div >
               <div className="row">
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onchange = { handlesetactive} placeholder='Active' />
+                  <input type="number" className='form-control' onchange = {()=> handlesetactive()} placeholder='Active' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onChange={handlesetlock} placeholder='Lock' />
+                  <input type="number" className='form-control' onChange={()=> handlesetlock()} placeholder='Lock' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onchange= {handletslleg} placeholder='Trail Profit' />
+                  <input type="number" className='form-control'  onchange= {()=> handletslleg()} placeholder='Trail Profit' />
                 </div>
                 <div className="col-lg col-sm-6 mt-3">
-                  <input type="number" className='form-control' onchange={handleLegTarget} placeholder='TARGET' />
+                  <input type="number" className='form-control' onchange={()=> handleLegTarget()} placeholder='TARGET' />
                 </div>
                 <div className="col-lg col-sm-6 mt-3">
                   <button type="button" className="btn btn-success w-100" >+ Add Leg</button>
@@ -863,7 +1046,7 @@ function Custom() {
               <div className="row items-center">
                  <h2>Block settings </h2>
                 <div className="col-6 mt-3">
-                  <button onClick={()=>{setPaper(true),setLive(false)}} type="button" className= {Paper?"btn btn-success w-100":"btn btn-light w-100"}>Paper</button>
+                  <button onClick={()=>{setPaper(true),setLive(false)}} type="button" className= {paper?"btn btn-success w-100":"btn btn-light w-100"}>Paper</button>
                 </div>
                 <div className="col-6 mt-3">
                   <button  onClick={()=>{setLive(true),setPaper(false)}}type="button" className={live?"btn btn-success w-100":"btn btn-light w-100"}>Live</button>
@@ -894,29 +1077,7 @@ function Custom() {
                   </DropdownMenu>
                 </div> */}
                 <div className="col-6 mt-3">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full bgreen-600">Account</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel></DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {broker.map((item) => (
-                <DropdownMenuCheckboxItem
-                
-                onCheckedChange={()=>brokerstatus(item.id,!item.value)} 
-                checked={item.value}
-                >
-                {item.name}
-              </DropdownMenuCheckboxItem>
-
-                  ))}
-                  </DropdownMenuContent>
-                  </DropdownMenu>
-
-                  
-                  
-                  
+                <DropdownMenuCheckboxes stat="1"/>
                 </div>
               </div>
             </div>
@@ -930,7 +1091,7 @@ function Custom() {
               <input type="number" onchange={(e)=>setReentry(e.target.value)} className='w-100 form-control' />
             </div>
             <div className="col-lg-2 col-sm-4 mt-3">
-              <input type="number" onChange={(e)=>setLossblock(e.target.value)} className='w-100 form-control' placeholder='Overall Loss' />
+              <input type="number" onChange={(e)=>setoverallloss(e.target.value)} className='w-100 form-control' placeholder='Overall Loss' />
             </div>
           </div>
 
@@ -957,9 +1118,6 @@ function Custom() {
           </div>
           
         </div>
-        {/* <div className="col-sm-4 mt-3"> */}
-            {/* <button type="button"  onClick={() => settings()} className="btn btn-success w-100 btn-lg"><i className="fa fa-save" /> Save</button> */}
-          {/* </div> */}
       </div>
 
         </>
@@ -971,7 +1129,7 @@ function Custom() {
       <div className='mt-3' style={{ maxWidth: '500px', margin: 'auto' }}>
         <div className="flex items-center gap-4 flex-wrap w-full ">
           <div className="col-sm-4 mt-3">
-            <button type="button" className="btn btn-success w-100 btn-lg"><i className="fa fa-save" /> Save</button>
+            <button type="button" onClick= {()=>settings()}className="btn btn-success w-100 btn-lg"><i className="fa fa-save" /> Save</button>
           </div>
           <div className="col-sm-4 mt-3">
             <button type="button" className="btn btn-secondary w-100 btn-lg">Approved</button>
@@ -993,7 +1151,7 @@ function Custom() {
     </>
     )}
 
-{viewall&&(<Strategy1_form onCancel={handleCancelViewAll}/>)}
+{viewall&&(<Strategy1_form onCancel={handleCancelViewAll} blockid={currentblock}/>)}
 
 
     </>
