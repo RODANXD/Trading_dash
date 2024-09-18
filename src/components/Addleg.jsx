@@ -32,7 +32,7 @@ const [expiries, setExpiries] = useState([]);
   const [datevalue, SetDatevalue] = useState(new Date());
   const [datevalue1, SetDatevalue1] = useState(new Date());
   const [segment,SetSegment]=useState('')
-  const [strikePrices, setStrikePrices] = useState([]);
+  const [strikePrice, setStrikePrice] = useState([]);
   const [toggleStatus, setToggleStatus] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
   // const [selectVertical, setSelectVertical] = useState('');
@@ -66,9 +66,9 @@ const [expiries, setExpiries] = useState([]);
   const [targettype,settargettype]=useState('')
   const [Activeleg,setActiveleg]=useState('')
   const [tslleg,setTslleg]=useState('')
-  const [Paper,setPaper]= useState(false)
+  const [action, setAction] = useState('');
   const[live,setLive]= useState(false)
-  console.log(live,Paper)
+ 
   const [targetleg,setTargetleg]=useState('')
   
   const [lockleg,setLockleg]=useState('')
@@ -92,6 +92,44 @@ const [expiries, setExpiries] = useState([]);
   const [blocktrail,setblocktrail]=useState(0)
   const [blocktarget,setblocktarget]=useState('')
   const [blocktimer,setblocktimer]=useState('')
+  const [paper, setpaper]= useState(false)
+  const [strikeprice,setstrikeprice]= useState('')
+  const [optionlabel,setoptionlabel]= useState('')
+  const [call, setcall] = useState('');
+  const [put, setput] = useState('');
+  const   handlecallput = (type)=>{
+  
+    if (optionlabel==='Call'){
+      setcall(type)
+      setoptionlabel('')
+
+    } 
+    if (optionlabel==='Put'){
+      setput(type)
+      setoptionlabel('')
+    }
+  
+    }
+    const getButtonColor = (buttonType) => {
+      if (buttonType === 'Call') {
+        return optionlabel === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200';
+      } else if (buttonType === 'Put') {
+        return optionlabel === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200';
+      } else if (buttonType === 'Buy') {
+        return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200';
+      } else if (buttonType === 'Sell') {
+        return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200';
+      }
+      return 'bg-gray-200';
+    };
+    const handleOptionClick = (option) => {
+      if (option !== optionlabel) {
+        setoptionlabel(option);
+        setcall('');
+        setput('');
+      }
+    };
+
 
 
 
@@ -141,8 +179,8 @@ const [expiries, setExpiries] = useState([]);
   const legadd = ()=>{
     const endpoint = advice
     
-    const payload = JSON.stringify({advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrices,sltype,blocksl,blocktrail,
-      targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg})
+    const payload = JSON.stringify({advice,spotpricel1, strikeprice, Nearestatml1, sublegid, correction,sltype,blocksl,blocktrail,
+      targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg,optionlabel})
     
       const type = "POST"
     
@@ -184,6 +222,9 @@ const [expiries, setExpiries] = useState([]);
 
  const handledatecahnge= (e)=>{
     SetDatevalue(e.target.value)
+  }
+  const handlemode = () =>{
+    setpaper(!paper)
   }
 
   const handletradetype =(e)=>{
@@ -283,6 +324,11 @@ const [expiries, setExpiries] = useState([]);
     });
   };
 
+  const  handlenearestatm=(e)=>{
+    const strikenear= e.target.value
+    setstrikeprice(defaultstrikePrices+strikenear)
+
+  }
   const brokerstatus= (id,val) =>{
 
     setBroker((prevData) =>
@@ -359,10 +405,10 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
   <div className="col-lg-3 col-sm-5 col-9 mt-3">
     <div className="row">
       <div className="col-6">
-        {strikePrices.length !== 0 ?
-          <select id="strikePriceSelect" className='form-select' onChange={() => setStrikePrices=(true)}>
+        {strikePrice.length !== 0 ?
+          <select id="strikePriceSelect" className='form-select' onChange={() => setStrikePrice=(e.target.value)}>
             <option>Select Strike Price</option>
-            {strikePrices.map((Price, index) =>
+            {strikePrice.map((Price, index) =>
               <option key={index} value={Price}>{Price}</option>
             )}
           </select>
@@ -381,7 +427,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     <input type="text" className='form-control' placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
   </div>
   <div className="col-lg-3 col-sm-5 mt-3">
-    <input type="number" className='form-control' onChange={(e)=>setNearestatml1(e.target.value)}  placeholder='Nearest ATM' />
+    <input type="number" className='form-control' onChange={(e)=>handlenearestatm(e)}  placeholder='Nearest ATM' />
   </div>
   <div className="col-lg-2 col-6 mt-3">
     
@@ -397,20 +443,30 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
   <div className="col-lg-2 col-6 mt-3">
     <div className="row">
       <div className="col-6">
-        <button type="button" className="btn btn-light w-100">Call</button>
+      <button  onClick={() => {
+              setoptionlabel('Call');
+              setput('');
+            }}
+            type="button"  className={`px-4 text-black py-2 rounded ${getButtonColor('Call')}`}>Call</button>
+
       </div>
       <div className="col-6">
-        <button type="button" className="btn btn-light w-100">Buy</button>
+      <button  onClick={()=>handlecallput('BUY')} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
       </div>
     </div>
   </div>
   <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
     <div className="row">
       <div className="col-6">
-        <button type="button" className="btn btn-light w-100">Put</button>
+      <button onClick={() => {
+              setoptionlabel('Put');
+              setcall('');
+            }} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Put')}`}>Put</button>
+
       </div>
       <div className="col-6">
-        <button type="button" className="btn btn-light w-100">Sell</button>
+      <button  onClick={()=>handlecallput('SELL')} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
+
       </div>
     </div>
   </div>
