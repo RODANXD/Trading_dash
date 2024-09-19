@@ -17,16 +17,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-
-
-
-
-
-
-
-
-
-
 import DropdownMenuCheckboxes from './ui/dropdown'
 import Strategy1_form from "./Strategy1_form";
 
@@ -37,10 +27,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-
-
-
 
 import {handleexchangerequest} from '../utility/Api'
 
@@ -69,12 +55,6 @@ function Custom() {
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
   const [currentblock,setcurrentblock]= useState('')
-
-  
-
-
-
-
   // const [value, setValue] = useState<Date | null>(null);
 
   const [showAddleg, setShowAddleg] = useState(false);
@@ -118,30 +98,32 @@ const   handlecallput = (type)=>{
   if (optionlabel==='Call'){
     setcall(type)
     setoptionlabel('')
-
-
   }
-
   
   if (optionlabel==='Put'){
     setput(type)
     setoptionlabel('')
-
-
-    
-
-
   }
-
-
-
-
-
-
   }
-
-
-
+  const getButtonColor = (buttonType) => {
+    if (buttonType === 'Call') {
+      return optionlabel === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200';
+    } else if (buttonType === 'Put') {
+      return optionlabel === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200';
+    } else if (buttonType === 'Buy') {
+      return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200';
+    } else if (buttonType === 'Sell') {
+      return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200';
+    }
+    return 'bg-gray-200';
+  };
+  const handleOptionClick = (option) => {
+    if (option !== optionlabel) {
+      setoptionlabel(option);
+      setcall('');
+      setput('');
+    }
+  };
 
   const [showStatusBar, setShowStatusBar] = React.useState(true);
   const [showActivityBar, setShowActivityBar] = React.useState(false);
@@ -291,28 +273,15 @@ const   handlecallput = (type)=>{
 
 }
 
-
-
-
     if  (e.target.value==='FUTIDX'){
       setisContentDisabled(true)
       setshowsymbol(false)
-  
-
-
-  
       }
     
     if (e.target.value==='OPTIDX'){
       setisContentDisabled(false)
       setshowsymbol(false)
-
-
     }
-
-  
-
-
 
     const sdd = localStorage.getItem("token");
     const t = "token " + sdd;
@@ -371,13 +340,7 @@ const   handlecallput = (type)=>{
     console.log(response)
     window.location.reload()
     })
-
-
-
-
   }
-  
-
   const tradeblocklist= async () =>{
     const endpoint = "tradeblock"
     const payload = 'strategy=1'
@@ -393,11 +356,7 @@ const   handlecallput = (type)=>{
       }
 
     console.log(response,'resposnse')
-    
-    
     })
-
-
   }
   useState(()=>{
     tradeblocklist()
@@ -956,20 +915,28 @@ const   handlecallput = (type)=>{
             <div className="col-lg-2 col-6 mt-3">
               <div className="row">
                 <div className="col-6">
-                  <button  onClick={()=>setoptionlabel('Call')} type="button" className="btn btn-light w-100">Call</button>
+                <button  onClick={() => {
+              setoptionlabel('Call');
+              setput('');
+            }}
+            type="button"  className={`px-4 text-black py-2 rounded ${getButtonColor('Call')}`}>Call</button>
                 </div>
                 <div className="col-6">
-                  <button  onClick={()=>handlecallput('BUY')} type="button" className="btn btn-light w-100">Buy</button>
+                <button  onClick={()=>handlecallput('BUY')} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
                 </div>
               </div>
             </div>
             <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
               <div className="row">
                 <div className="col-6">
-                  <button onClick={()=>setoptionlabel('Put')} type="button" className="btn btn-light w-100">Put</button>
+                <button onClick={() => {
+              setoptionlabel('Put');
+              setcall('');
+            }} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Put')}`}>Put</button>
                 </div>
                 <div className="col-6">
-                  <button  onClick={()=>handlecallput('SELL')} type="button" className="btn btn-light w-100">Sell</button>
+                <button  onClick={()=>handlecallput('SELL')} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
+
                 </div>
               </div>
             </div>
