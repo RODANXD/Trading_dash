@@ -171,11 +171,14 @@ const [expiries, setExpiries] = useState([]);
     const endpoint = 'addleg'
     const Blockid= id
     const strategy= 1
-    const sublegdata= {advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrices,sltype,blocksl,blocktrail,
-      tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg
+    const sublegdata= {advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrice,sltype,blocksl,blocktrail,
+      tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg,call,put
     }
+    console.log(sublegdata)
     const payload = JSON.stringify({sublegdata,Blockid,strategy
       })
+
+    
     
       const type = "POST"
     
