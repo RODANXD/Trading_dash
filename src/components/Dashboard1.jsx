@@ -40,6 +40,8 @@ import {
 
 
 
+
+
 import {handleexchangerequest} from '../utility/Api'
 
 function Custom() {
@@ -178,10 +180,11 @@ const   handlecallput = (type)=>{
   const settings =  ()=>{
     const endpoint = "saveblockst1"
     const strategy= 1
-    const payload = JSON.stringify({tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,advice,spotprice,
-      correction,sltype,tsltype,targettype,blocksl,blocktarget,blocktimer,blocktrail,
-      paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl
-      ,Activeleg,lockleg,targetleg,tslleg,strategy,selectsymbol,call,put})
+    const sublegdata= {advice,spotprice,correction,sltype,tsltype,targettype,blocksl,blocktarget,blocktimer,blocktrail,call,
+      put,Activeleg,lockleg,targetleg,tslleg}
+    const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
+    const payload = JSON.stringify({strategy,tradetool,sublegdata
+  })
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
@@ -416,6 +419,7 @@ const   handlecallput = (type)=>{
 
   }
 
+
  const handledatecahnge= (e)=>{
     Settradevalidity(e.target.value)
   }
@@ -521,6 +525,11 @@ const   handlecallput = (type)=>{
 
   }
 
+  const handleviewaddleg=(id)=>{
+
+    setShowAddleg(true)
+    setcurrentblock(id)
+  }
 
   const handleCheckboxChange = (id) => {
       setbrokerselect((prevData) =>
@@ -646,7 +655,7 @@ const   handlecallput = (type)=>{
                   </button>
                 </div>
                 <div className="flex items-center justify-center h-24">
-                  <button className="btn btn-info w-24" onClick={() => setShowAddleg(true)}>
+                  <button className="btn btn-info w-24" onClick={() => handleviewaddleg(item.Blockid)}>
                     Add Leg
                   </button>
                 </div>
@@ -659,7 +668,7 @@ const   handlecallput = (type)=>{
         <div >
           <div >
             
-           { showAddleg && <Addleg onClose={toggleAddleg} />}
+           { showAddleg && <Addleg onClose={toggleAddleg} Blockid={currentblock} />}
           </div>
         </div>
       )}
@@ -1052,16 +1061,16 @@ const   handlecallput = (type)=>{
             <div >
               <div className="row">
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onchange = {()=> handlesetactive()} placeholder='Active' />
+                  <input type="number" className='form-control' onchange = {(e)=> handlesetactive(e)} placeholder='Active' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onChange={()=> handlesetlock()} placeholder='Lock' />
+                  <input type="number" className='form-control' onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onchange= {()=> handletslleg()} placeholder='Trail Profit' />
+                  <input type="number" className='form-control'  onchange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
                 </div>
                 <div className="col-lg col-sm-6 mt-3">
-                  <input type="number" className='form-control' onchange={()=> handleLegTarget()} placeholder='TARGET' />
+                  <input type="number" className='form-control' onchange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
                 </div>
                 <div className="col-lg col-sm-6 mt-3">
                   <button type="button" className="btn btn-success w-100" >+ Add Leg</button>

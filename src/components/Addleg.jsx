@@ -25,7 +25,10 @@ import {
 } from "@/components/ui/popover";
 import { handleexchangerequest } from '../utility/Api';
 
-const Addleg = ({ onClose }) => {
+const Addleg = ({ onClose,Blockid }) => {
+  const bid= Blockid
+  console.log(bid,'bid')
+
 
 const [expiries, setExpiries] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -62,7 +65,7 @@ const [expiries, setExpiries] = useState([]);
 
 
   const [sltype,setsltype]=useState('')
-  const [sltytpe,settsltype]=useState('')
+  const [tsltype,settsltype]=useState('')
   const [targettype,settargettype]=useState('')
   const [Activeleg,setActiveleg]=useState('')
   const [tslleg,setTslleg]=useState('')
@@ -124,25 +127,17 @@ const [expiries, setExpiries] = useState([]);
     localStorage.setItem('numberOfLegs', numberOfLegs.toString());
   }, [numberOfLegs, legPLTs]);
 
-  const settings = ()=>{
-    const endpoint = "settings"
-    const payload = JSON.stringify({datevalue,datevalue1,tradetype,segment,selectVertical,sltype,
-      brokerselect,Paper,live,rentry,lossblock,Activeblock,pnlblock,lossblock,lockblock,targetblock,tslblock,pnlblock})
-    const type = "POST"
-    handleexchangerequest(type, payload, endpoint)
-    .then(response => {
-    console.log(response)
-    })
-  }
 
-
-
-  
-  const legadd = ()=>{
-    const endpoint = advice
-    
-    const payload = JSON.stringify({advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrices,sltype,blocksl,blocktrail,
-      targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg})
+  const legadd = (id=bid)=>{
+    console.log(bid,'bid')
+    const endpoint = 'addleg'
+    const Blockid= id
+    const strategy= 1
+    const sublegdata= {advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrices,sltype,blocksl,blocktrail,
+      tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg
+    }
+    const payload = JSON.stringify({sublegdata,Blockid,strategy
+      })
     
       const type = "POST"
     
@@ -502,16 +497,16 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
   <div >
     <div className="row">
       <div className="col-lg col-sm-4 mt-3">
-        <input type="number" className='form-control' onchange = { handlesetactive} placeholder='Active' />
+        <input type="number" className='form-control' onChange = {(e)=> handlesetactive(e)} placeholder='Active' />
       </div>
       <div className="col-lg col-sm-4 mt-3">
-        <input type="number" className='form-control' onChange={handlesetlock} placeholder='Lock' />
+        <input type="number" className='form-control' onChange={(e)=>handlesetlock(e)} placeholder='Lock' />
       </div>
       <div className="col-lg col-sm-4 mt-3">
-        <input type="number" className='form-control'  onchange= {handletslleg} placeholder='Trail Profit' />
+        <input type="number" className='form-control'  onChange= {(e)=>handletslleg(e)} placeholder='Trail Profit' />
       </div>
       <div className="col-lg col-sm-6 mt-3">
-        <input type="number" className='form-control' onchange={handleLegTarget} placeholder='TARGET' />
+        <input type="number" className='form-control' onChange={(e)=>handleLegTarget(e)} placeholder='TARGET' />
       </div>
       <div className="col-lg col-sm-6 mt-3">
         <button type="button" onClick={()=>legadd()} className="btn btn-success w-100" >save</button>
