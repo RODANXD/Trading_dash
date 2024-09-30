@@ -197,7 +197,7 @@ const   handlecallput = (type)=>{
     const fetchData = async () => {
       try {
         // const response = await axios.get(`http://127.0.0.1:5000/option_chain?option_type=${event.target.value}`);
-        const response = await fetch (`http://52.66.78.108:8000/option_type?option_type=${e.target.value}&segment=${segment}&instrument=${fno}`,
+        const response = await fetch (`http://3.111.155.182:8000/option_type?option_type=${e.target.value}&segment=${segment}&instrument=${fno}`,
           {
             method: 'GET',
             headers: {  
@@ -291,7 +291,7 @@ const   handlecallput = (type)=>{
     const fetchData = async () => {
       try {
         // const response = await axios.get(`http://127.0.0.1:5000/option_chain?option_type=${event.target.value}`);
-        const response = await fetch (`http://52.66.78.108:8000/option_type?option_type=${selectVertical}&segment=${segment}&instrument=${e.target.value}`,
+        const response = await fetch (`http://3.111.155.182:8000/option_type?option_type=${selectVertical}&segment=${segment}&instrument=${e.target.value}`,
           {
             method: 'GET',
             headers: {  
@@ -535,93 +535,98 @@ const   handlecallput = (type)=>{
     {!viewall && (
       <>
     <div className="container-xl my-3">
-      <div className="row">
-        <div className="col-md-4 col-6">
-          <button type="button" className="btn btn-success" 
-          onClick={()=>handleAddTrade()} disabled={isExpirySelected || isStrikeSelected}>+ Add Trade</button>
-          
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+        <div className="flex justify-center sm:justify-start">
+          <Button 
+            onClick={handleAddTrade} 
+            disabled={isExpirySelected || isStrikeSelected}
+            className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white"
+          >
+            + Add Trade
+          </Button>
         </div>
         
-        <div className="col-md-4 col-6 d-flex gap-3 justify-content-end order-md-2">
-          <Button>Exit All</Button>
-          <Button onClick={()=>(Deleteblock(0))} className=" bg-red-600">Delete All</Button>
-          </div>
-        <div className="col-md-4 col-12 text-center mt-md-0 mt-3">
-          {/* <button type="button" className="btn w-100" style={{ backgroundColor: '#e6e6e9', width: 'fit-content', borderRadius: '5px' }}><b>Terminal ON/OFF</b>&ensp; {toggleStatus ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus(true)} />}</button> */}
-          <div className="col-lg-6 w-full">
-            <div className="flex flex-wrap gap-3 w-96">
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Max Moving High {890}</button>
-              </div>
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Avg Moving</button>       
-              </div>
-              <div className="col-lg-4 col-6  mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Max Drawdown</button>
-              </div>
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Up Avg Moving</button>
-              </div>
-            </div>
+        <div className="flex justify-center sm:justify-end gap-3 order-3 sm:order-2 lg:order-3">
+          <Button className="w-full sm:w-auto">Exit All</Button>
+          <Button 
+            onClick={() => Deleteblock(0)} 
+            className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
+          >
+            Delete All
+          </Button>
+        </div>
+        
+        <div className="col-span-1 sm:col-span-2 lg:col-span-1 order-2 sm:order-3 lg:order-2">
+          <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
+            <Button variant="outline" className="w-100 text-xs sm:text-sm">
+              Max Moving High {890}
+            </Button>
+            <Button variant="outline" className="w-full text-xs sm:text-sm">
+              Avg Moving
+            </Button>
+            <Button variant="outline" className="w-full text-xs sm:text-sm">
+              Max Drawdown
+            </Button>
+            <Button variant="outline" className="w-full text-xs sm:text-sm">
+              Up Avg Moving
+            </Button>
           </div>
         </div>
-      </div >
+      </div>
 
       {!addtrade && (
       
       Tradeblockno.map((item)=>(
      
      <div>
+     <div className="h-full mt-3 flex flex-col gap-3">
+            <div className="w-full border border-white rounded-sm p-2 text-xs text-white">
       <p className="text-white">{item.Blockid}</p>
-     <div className="h-[65%] border border-emerald-900 mt-3">
-            <div className="w-full p-2 text-xs text-white">
-              <div className="h-32 w-full flex justify-evenly">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
                
-                <div className="flex items-center justify-center h-24">
+                <div className="flex items-center justify-center">
                   <Popover>
-                    <PopoverTrigger>
-                      <button  className="btn btn-danger w-32">Delete</button>
+                    <PopoverTrigger asChild>
+                    <Button variant="destructive" className="w-full sm:w-32">Delete</Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-72">
                       <div className="grid place-items-center gap-4">
                         <div className="space-y-2 flex items-center gap-3">
                           <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-                          <button  onClick={()=>Deleteblock(item.Blockid)} className="btn btn-danger w-32">confirm</button>
+                          <Button variant="destructive" className="w-full sm:w-32"  onClick={()=>Deleteblock(item.Blockid)}>confirm</Button>
                         </div>
                       </div>
                     </PopoverContent>
                   </Popover>
                 </div>
-                <div className="flex items-center justify-center h-24">
-                  <button
-                    className={`btn w-44 ${item.Activate ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
-                    onClick= {()=> toggleActivation(item.Blockid,!item.Activate)}
-                  >
-                    {!item.Activate ? "Deactivate" : "Activate"}
-                  </button>
+                <div className="flex items-center justify-center">
+                <Button
+        className={`w-full sm:w-44 ${item.Activate ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
+       onClick= {()=> toggleActivation(item.Blockid,!item.Activate)}                  >
+        {item.Activate ? "Deactivate" : "Activate"}
+      </Button>
                 </div>
-                <div className="pt-1 flex flex-col gap-3 h-32">
-                  <button className="btn btn-danger">Exit All</button>
-                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                <div className="flex flex-col gap-3">
+                <Button variant="destructive" className="w-full">Exit All</Button>
+                  <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="email">PNL</Label>
-                    <Input type="number" placeholder="Value" />
+                    <Input type="number" className=" text-" placeholder="Value" />
                   </div>
                 </div>
-                <div className="flex items-center justify-center h-24">
-                  <button className="btn btn-info w-24" onClick={()=>handleviewall(item.Blockid)}>
+                <div className="flex items-center justify-center">
+                  <Button className="w-full sm:w-24"  onClick={()=>handleviewall(item.Blockid)}>
                     View Detail
-                  </button>
+                  </Button>
                 </div>
-                <div className="flex items-center justify-center h-24">
-                  <button className="btn btn-info w-24" onClick={() => handleviewaddleg(item.Blockid)}>
+                <div className="flex items-center justify-center">
+                  <Button className="w-full sm:w-24" onClick={() => handleviewaddleg(item.Blockid)}>
                     Add Leg
-                  </button>
+                  </Button>
                 </div>
-                <div className="flex items-center justify-center h-24">
-                  <button className="btn btn-info w-24" >
+                <div className="flex items-center justify-center">
+                  <Button className="btn btn-info w-24" >
                     View Leg
-                  </button>
+                  </Button>
                 
                   {showAddleg && (
         <div >
@@ -730,93 +735,66 @@ const   handlecallput = (type)=>{
       </div>
 
       <div className="mt-2">
-        <div className="row">
-          <div className="col-lg-6 mt-3">
-            <div className="flex justify-around gap-5 w-full">
-              <div className="col-4">
-              <select  className='form-select'
-                onChange={handlesegment}
-                      
-                    >
-                      <option value=""> select segment</option>
-                      <option value="Cash">NSE </option>
-                      <option value="NFO">NFO</option>
-                      <option value="BFO">BFO</option>
-                      <option value="BSE">BSE</option>
-
-
-                      </select>
-                    </div>
-              
-              <div className="col-4">
-                
-                  <select id="selectVertical" className='form-select' onChange={(e) => handleSelectChange(e)} value={selectVertical}>
-                    <option value="">Select Vertical</option>
-                    <option value="NIFTY">Nifty</option>
-                    <option value="BANKNIFTY">BANKNIFTY</option>
-                    <option value="SENSEX">SENSEX</option>
-                    <option value="FINNIFTY">FINNIFTY</option>
-
-                  </select>
-                  :
-                  <div className="text-center">
-                    <div className="spinner-border" role="status">
-                      <span className="visually-hidden">Loading...</span>
-                    </div>
-                  </div>
-                
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="col-span-1 sm:col-span-2 lg:col-span-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              <div className="col-span-1">
+                <select
+                  className='form-select w-full'
+                  onChange={handlesegment}
+                >
+                  <option value=""> select segment</option>
+                  <option value="Cash">NSE </option>
+                  <option value="NFO">NFO</option>
+                  <option value="BFO">BFO</option>
+                  <option value="BSE">BSE</option>
+                </select>
               </div>
-              <div className="col-4">
               
-                <select id="selectVertical" className='form-select' onChange={(e)=>handleSelectdisable(e)} value={fno}>
+              <div className="col-span-1">
+                <select id="selectVertical" className='form-select w-full' onChange={(e) => handleSelectChange(e)} value={selectVertical}>
+                  <option value="">Select Vertical</option>
+                  <option value="NIFTY">Nifty</option>
+                  <option value="BANKNIFTY">BANKNIFTY</option>
+                  <option value="SENSEX">SENSEX</option>
+                  <option value="FINNIFTY">FINNIFTY</option>
+                </select>
+              </div>
+              <div className="col-span-1">
+                <select id="selectVertical" className='form-select w-full' onChange={(e)=>handleSelectdisable(e)} value={fno}>
                   <option value="">Select FNO</option>
                   <option value="FUTIDX">FUTURE</option>
                   <option value="OPTIDX">OPTION</option>
                   <option value="FUTSTK">STOCK FUTURE</option>
                   <option value="OPTSTK"> STOCK OPTION</option>
-
                 </select>
-                :
-                <div className="text-center">
-                  <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                </div>
-              
-            </div>
-            <div className="col-4">
-              {  showsymbol ?
-              
-              
-                  <select id="SymbolSelect" className='form-select' onChange={(e) => handleselectsymbol(e)}value={selectsymbol}>
+              </div>
+              <div className="col-span-1">
+                {showsymbol ?
+                  <select id="SymbolSelect" className='form-select w-full' onChange={(e) => handleselectsymbol(e)} value={selectsymbol}>
                     <option>Select Symbol</option>
                     {Symbol.map((val, index) =>
                       <option key={index} value={val}>{val}</option>
                     )}
                   </select>
-                
-              :<></>}
-
+                : <></>}
               </div>
-            
-              <div className="col-4">
+              <div className="col-span-1">
                 {expiries.length !== 0 ?
-
-                  <select id="expirySelect" className='form-select' onChange={(e) => sethandleexpiry(e)}value={expiry}>
+                  <select id="expirySelect" className='form-select w-full' onChange={(e) => sethandleexpiry(e)} value={expiry}>
                     <option>Select Expiry</option>
                     {expiries.map((date, index) =>
                       <option key={index} value={date}>{date}</option>
                     )}
                   </select>
                   :
-                  <select id="expirySelect" className='form-select'>
+                  <select id="expirySelect" className='form-select w-full'>
                     <option>Select Expiry</option>
                   </select>
                 }
               </div>
             </div>
           </div>
-          
         </div>
       </div>
       

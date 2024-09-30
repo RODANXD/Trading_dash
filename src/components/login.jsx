@@ -22,7 +22,7 @@ const LoginPage = () => {
     
     
     try {
-      const response = await fetch('http://52.66.78.108:8000/login', {
+      const response = await fetch('http://3.111.155.182:8000/login', {
         
         method: 'POST',
         headers: {
@@ -58,7 +58,12 @@ const LoginPage = () => {
       console.error('Login error:', error);
     }
 
+
+
     // Reset the form after submission
+    
+
+
     setUsername('');
     setPassword('');
   };

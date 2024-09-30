@@ -230,16 +230,16 @@ tradeblocklist()
     <>
     {!viewall && (
       <>
-    <div className="flex justify-between">
-          <button type="button" className="btn btn-success" onClick={()=>Addform()}>
-            + Add Trade
-          </button>
-            <div className="col-md-4 col-6 d-flex gap-3 justify-content-end order-md-2">
-            <Button>Exit All</Button>
-            <Button onClick={()=>(Deleteblock(0))} className=" bg-red-600">Delete All</Button>
-
-          </div>
+      <div className="container mx-auto px-4 py-8">
+ <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0">
+        <Button onClick={Addform} className="w-full bg-green-600 hover:bg-green-700 sm:w-auto">
+          + Add Trade
+        </Button>
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <Button className="w-full sm:w-auto">Exit All</Button>
+          <Button variant="destructive" className="w-full sm:w-auto">Delete All</Button>
         </div>
+      </div>
 
 
         
@@ -280,8 +280,8 @@ tradeblocklist()
       </div>
 
 
-      <div className="overflow-y-scroll  w-full h-56 rounded-lg">
-        <table className="min-w-full border border-gray-300 text- bg-white rounded-sm">
+      <div className="overflow-y-scroll w-full rounded-lg">
+        <table className="min-w-full border border-gray-300 text-sm bg-white rounded-sm">
           <thead>
             <tr>
               <th className="py-2 px-4 border-b border-r text-left">Script Name</th>
@@ -314,14 +314,14 @@ tradeblocklist()
                   </span>
                 </td>
                 <td className="py-2 px-2 border-b border-r">
-                  <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">
+                  <Button variant="destructive" size="sm" className="w-full">
                     {script.cancel}
-                  </button>
+                  </Button>
                 </td>
                 <td className="py-2 px-2 border-b">
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">
+                  <Button size="sm" className="w-full ">
                     {script.exit}
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -338,80 +338,79 @@ tradeblocklist()
           
      <div className="h-full mt-3 flex flex-col gap-3">
 
-            <div className="w-full p-2 text-xs border border-white  text-white">
-              <div className="h-32 w-full flex justify-evenly">
+            <div className="w-full border border-white rounded-sm p-2 text-xs text-white">
               <p className="text-white">Block Id:{item.Blockid}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
 
-                <div className="flex items-center justify-center h-24 w-64">
+                <div className="flex items-center justify-center">
                   <Popover>
-                    <PopoverTrigger>
-                      <button className="btn btn-danger w-32">Delete</button>
+                    <PopoverTrigger asChild>
+                    <Button variant="destructive" className="w-full sm:w-32">Delete</Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-72">
                       <div className="grid place-items-center gap-4">
-                        <div className="space-y-2 flex items-center gap-3">
+                        <div className="space-y-2 flex flex-col sm:flex-row items-center gap-3">
                           <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-                          <button  onClick={()=>Deleteblock(item.Blockid)} className="btn btn-danger w-32">confirm</button>
+                          <Button variant="destructive" className="w-full sm:w-32"  onClick={()=>Deleteblock(item.Blockid)}>confirm</Button>
                         </div>
                       </div>
                     </PopoverContent>
                   </Popover>
                 </div>
-                <div className="flex items-center justify-center h-24 w-64">
-                  <button
-                    className={`btn w-44 ${item.Activate ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
+                <div className="flex items-center justify-center">
+                  <Button
+                    className={`w-full sm:w-44 ${item.Activate ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
                    onClick= {()=> toggleActivation(item.Blockid,!item.Activate)}                  >
                     {item.Activate ? "Deactivate" : "Activate"}
-                  </button>
+                  </Button>
                 </div>
-                <div className="pt-1 flex flex-col gap-3 h-32 w-64">
-                  <button className="btn btn-danger">Exit All</button>
-                  <div className="grid w-full max-w-sm items-center gap-1.5">
+                <div className="flex flex-col gap-3">
+                <Button variant="destructive" className="w-full">Exit All</Button>
+                  <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="email">PNL</Label>
-                    <Input type="number" placeholder="Value" />
+                    <Input type="number" className=" text-" placeholder="Value" />
                   </div>
                 </div>
-                <div className="flex items-center justify-center h-24 w-64">
-                  <button className="btn btn-info w-24" onClick={()=>handleviewall(item.Blockid)}>
+                <div className="flex items-center justify-center">
+                  <Button className="w-full sm:w-24" onClick={()=>handleviewall(item.Blockid)}>
                   View Detail
-                  </button>
+                  </Button>
                 </div>
               </div>
              
               
-              <div></div>
-              <div className="overflow-y-scroll w-full h-28">
-                <table className="w-full border-collapse border border-gray-300 table-fixed">
-                  <thead>
-                    <tr className="bg-gray-300 text-black">
-                      <th className="border border-gray-300 p-2 w-[12%]">ID</th>
-                      <th className="border border-gray-300 p-2">Side</th>
-                      <th className="border border-gray-300 p-1">LOT</th>
-                      <th className="border border-gray-300 p-1">Status</th>
-                      <th className="border border-gray-300 p-1">Symbol </th>
-                      <th className="border border-gray-300 p-1">Action</th>
-                      <th className="border border-gray-300 p-1">Action Button</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {scriptData.map((item) => (
-                      <tr key={item.name} className="text-gray-800">
-                        <td className="border border-gray-300 p-1 text-white">{item.name}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.status}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
-                        <td className="border border-gray-300 p-1">
-                          <Button className="text-xs p-2">{item.exit}</Button>
-        
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                
-              </div>
+              
+              <div className="overflow-y-scroll h-28 ">
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-300 text-black">
+                <th className="border border-gray-300 p-2">ID</th>
+                <th className="border border-gray-300 p-2">Side</th>
+                <th className="border border-gray-300 p-1">LOT</th>
+                <th className="border border-gray-300 p-1">Status</th>
+                <th className="border border-gray-300 p-1">Symbol</th>
+                <th className="border border-gray-300 p-1">Action</th>
+                <th className="border border-gray-300 p-1">Action Button</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {scriptData.map((item) => (
+                <tr key={item.name} className="text-gray-800 ">
+                  <td className="border border-gray-300 p-1 text-white">{item.name}</td>
+                  <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
+                  <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
+                  <td className="border border-gray-300 p-1 text-white">{item.status}</td>
+                  <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
+                  <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
+                  <td className="border border-gray-300 p-1 items-center flex justify-center">
+                    <Button size="sm" className="">{item.exit}</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
             </div>
           </div>
           </div>
@@ -419,6 +418,7 @@ tradeblocklist()
         </div>
 
     )}
+    </div>
 
     
 

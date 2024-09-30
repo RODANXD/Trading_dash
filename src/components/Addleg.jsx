@@ -344,6 +344,7 @@ const [expiries, setExpiries] = useState([]);
 
     
      <div className=" bg-blue-600 rounded-md absolute right-14 bottom-10 w-9/12 p-3">
+     <div className="w-[98%]">
      <div className=" flex flex-row-reverse">
      <Button onClick={onClose}  className="bg-red-600">X</Button>
      </div>
@@ -399,9 +400,9 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     </div>
   </div>
 </div>
-<div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
+<div className={`flex flex-wrap ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
   <div className="col-lg-3 col-sm-5 col-9 mt-3">
-    <div className="row">
+    <div className="flex gap-3">
       <div className="col-6">
         {strikePrice.length !== 0 ?
           <select id="strikePriceSelect" className='form-select' onChange={() => setStrikePrice=(e.target.value)}>
@@ -417,7 +418,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
         }
       </div>
       <div className="col-6">
-        <button type="button" className="btn btn-success w-100">Automatic</button>
+        <button type="button" className="btn btn-success">Automatic</button>
       </div>
     </div>
   </div>
@@ -476,7 +477,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
         <button type="button" className="btn btn-light w-100">Strike</button>
       </div>
       <div className="col-6">
-        <button type="button" className="btn btn-success w-100">Automatic</button>
+        <button type="button" className="btn btn-success">Automatic</button>
       </div>
     </div>
   </div>
@@ -571,6 +572,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
         <button type="button" onClick={()=>legadd()} className="btn btn-success w-100" >save</button>
       </div>
     </div>
+  </div>
   </div>
 
 </div>

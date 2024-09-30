@@ -222,7 +222,7 @@ console.log(broker,'broker')
           </div>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {["Nifty", "Bank Nifty", "Sensex", "Midcap", "Finnifty", "PNL"].map((item) => (
               <div key={item} className="flex flex-col items-center gap-2">
                 <Label variant="outline" className="w-full text-teal-50 text-lg">
@@ -242,81 +242,83 @@ console.log(broker,'broker')
         
 
         
-          <div className="h-[60%] border border-emerald-900">
-            <div className="w-full border border-white rounded-sm h-[10%] p-2 text-xs text-white">
-              <div className="h-32 w-full flex justify-evenly">
-            <p className="text-white">Block Id:{item.Blockid}</p>
-               
-                <div className="flex items-center justify-center h-24 w-64">
-                  
-                  <Popover>
-                    <PopoverTrigger>
-                      <button className="btn btn-danger w-32">Delete</button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-72">
-                      <div className="grid place-items-center gap-4">
-                        <div className="space-y-2 flex items-center gap-3">
-                          <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-                          <button  onClick={()=>Deleteblock(item.Blockid)} className="btn btn-danger w-32">confirm</button>
-                        </div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <div className="flex items-center justify-center h-24 w-64">
-                  <button
-                    className={`btn w-44 ${item.Activate ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
-                    onClick= {()=> toggleActivation(item.Blockid,!item.Activate)}                  >
-                    {item.Activate ? "Deactivate" : "Activate"}
-                  </button>
-                </div>
-                <div className="pt-1 flex flex-col gap-3 h-32 w-64">
-                  <button className="btn btn-danger">Exit All</button>
-                  <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="email">PNL</Label>
-                    <Input type="number" placeholder="Value" />
-                  </div>
-                </div>
-                <div className="flex items-center justify-center h-24 w-64">
-                  <button className="btn btn-info w-24" onClick={()=>handleviewall(item.Blockid)}>
-                  View Detail
+            <div className="h-full mt-3 flex flex-col gap-3">
 
-                  </button>
-                </div>
-              </div>
+<div className="w-full border border-white rounded-sm p-2 text-xs text-white">
+  <p className="text-white">Block Id:{item.Blockid}</p>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
 
-              <div className="overflow-y-scroll w-full h-28">
-                <table className="w-full border-collapse border border-gray-300 table-fixed">
-                  <thead>
-                    <tr className="bg-gray-300 text-black">
-                      <th className="border border-gray-300 p-2 w-[12%]">ID</th>
-                      <th className="border border-gray-300 p-2">Side</th>
-                      <th className="border border-gray-300 p-1">LOT</th>
-                      <th className="border border-gray-300 p-1">Status</th>
-                      <th className="border border-gray-300 p-1">Symbol </th>
-                      <th className="border border-gray-300 p-1">Action</th>
-                      <th className="border border-gray-300 p-1">Action Button</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {scriptData.map((item) => (
-                      <tr key={item.name} className="text-gray-800">
-                        <td className="border border-gray-300 p-1 text-white">{item.name}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.status}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
-                        <td className="border border-gray-300 p-1">
-                          <Button className="text-xs p-2">{item.exit}</Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+    <div className="flex items-center justify-center">
+      <Popover>
+        <PopoverTrigger asChild>
+        <Button variant="destructive" className="w-full sm:w-32">Delete</Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-72">
+          <div className="grid place-items-center gap-4">
+            <div className="space-y-2 flex flex-col sm:flex-row items-center gap-3">
+              <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
+              <Button variant="destructive" className="w-full sm:w-32"  onClick={()=>Deleteblock(item.Blockid)}>confirm</Button>
             </div>
           </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+    <div className="flex items-center justify-center">
+      <Button
+        className={`w-full sm:w-44 ${item.Activate ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"} text-white`}
+       onClick= {()=> toggleActivation(item.Blockid,!item.Activate)}                  >
+        {item.Activate ? "Deactivate" : "Activate"}
+      </Button>
+    </div>
+    <div className="flex flex-col gap-3">
+    <Button variant="destructive" className="w-full">Exit All</Button>
+      <div className="grid w-full items-center gap-1.5">
+        <Label htmlFor="email">PNL</Label>
+        <Input type="number" className=" text-" placeholder="Value" />
+      </div>
+    </div>
+    <div className="flex items-center justify-center">
+      <Button className="w-full sm:w-24" onClick={()=>handleviewall(item.Blockid)}>
+      View Detail
+      </Button>
+    </div>
+  </div>
+ 
+  
+  
+  <div className="overflow-y-scroll h-28 ">
+<table className="w-full border-collapse border border-gray-300">
+<thead>
+  <tr className="bg-gray-300 text-black">
+    <th className="border border-gray-300 p-2">ID</th>
+    <th className="border border-gray-300 p-2">Side</th>
+    <th className="border border-gray-300 p-1">LOT</th>
+    <th className="border border-gray-300 p-1">Status</th>
+    <th className="border border-gray-300 p-1">Symbol</th>
+    <th className="border border-gray-300 p-1">Action</th>
+    <th className="border border-gray-300 p-1">Action Button</th>
+  </tr>
+</thead>
+<tbody>
+
+  {scriptData.map((item) => (
+    <tr key={item.name} className="text-gray-800 ">
+      <td className="border border-gray-300 p-1 text-white">{item.name}</td>
+      <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
+      <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
+      <td className="border border-gray-300 p-1 text-white">{item.status}</td>
+      <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
+      <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
+      <td className="border border-gray-300 p-1 items-center flex justify-center">
+        <Button size="sm" className="">{item.exit}</Button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+</table>
+</div>
+</div>
+</div>
           </div>
           </div>
              ))
