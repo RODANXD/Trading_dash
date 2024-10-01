@@ -208,21 +208,31 @@ console.log(broker,'broker')
 
       <>
       
-    <div className="container mx-auto px-4 py-8 space-y-8">
+    <div className="container mx-auto px-4 py-8 space-y-8 ">
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-center text-white">Index Price</h2>
-        <div className="flex justify-between">
-          <button type="button" className="btn btn-success" onClick={()=>Addform()}>
-            + Add Trade
-          </button>
-            <div className="col-md-4 col-6 d-flex gap-3 justify-content-end order-md-2">
-            <Button>Exit All</Button>
-            <Button onClick={()=>(Deleteblock(0))} className=" bg-red-600">Delete All</Button>
-
-          </div>
-        </div>
+        <h2 className="text-2xl font-bold text-center text-white max-xs:text-sm">Index Price</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-xs:w-[75%]">
+      <div className="flex justify-start">
+        <Button 
+          type="button" 
+          className="btn btn-success w-full sm:w-auto text-sm sm:text-base max-xs:text-xs" 
+          onClick={Addform}
+        >
+          + Add Trade
+        </Button>
+      </div>
+      <div className="grid grid-cols-2 gap-4 max-xs:flex max-xs:flex-col">
+        <Button className="w-full text-sm sm:text-base">Exit All</Button>
+        <Button 
+          onClick={() => Deleteblock(0)} 
+          className="w-full bg-red-600 text-sm sm:text-base"
+        >
+          Delete All
+        </Button>
+      </div>
+    </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 max-xs:w-3/4 lg:grid-cols-6 gap-4">
             {["Nifty", "Bank Nifty", "Sensex", "Midcap", "Finnifty", "PNL"].map((item) => (
               <div key={item} className="flex flex-col items-center gap-2">
                 <Label variant="outline" className="w-full text-teal-50 text-lg">
@@ -244,20 +254,20 @@ console.log(broker,'broker')
         
             <div className="h-full mt-3 flex flex-col gap-3">
 
-<div className="w-full border border-white rounded-sm p-2 text-xs text-white">
+<div className="w-full border border-white rounded-sm p-2 max-xs:w-3/4 text-xs text-white">
   <p className="text-white">Block Id:{item.Blockid}</p>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
 
     <div className="flex items-center justify-center">
       <Popover>
         <PopoverTrigger asChild>
-        <Button variant="destructive" className="w-full sm:w-32">Delete</Button>
+        <Button variant="destructive" className="w-full max-xs:text-sm sm:w-32">Delete</Button>
         </PopoverTrigger>
         <PopoverContent className="w-72">
           <div className="grid place-items-center gap-4">
             <div className="space-y-2 flex flex-col sm:flex-row items-center gap-3">
               <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-              <Button variant="destructive" className="w-full sm:w-32"  onClick={()=>Deleteblock(item.Blockid)}>confirm</Button>
+              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  onClick={()=>Deleteblock(item.Blockid)}>confirm</Button>
             </div>
           </div>
         </PopoverContent>
@@ -372,7 +382,7 @@ console.log(broker,'broker')
         
       {/* ))} */}
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+<div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
             {/* <div>
             <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -394,6 +404,7 @@ console.log(broker,'broker')
       </DropdownMenuContent>
     </DropdownMenu>
             </div> */}
+            <div><Button className='bg-green-700'>Automatic Strike</Button></div>
             <div>
             <DropdownMenuCheckboxes stat="2"/>
             </div>

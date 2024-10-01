@@ -41,6 +41,7 @@ function Custom() {
 
 
   const [strikeprice,setstrikeprice]= useState('')
+  const [Quantprice,setQuantprice]= useState('')
 
   const [toggleStatus, setToggleStatus] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
@@ -69,6 +70,7 @@ function Custom() {
   const [blocktarget,setblocktarget]=useState('')
   const [blocktimer,setblocktimer]=useState('')
   const [showsymbol,setshowsymbol]=useState(false)
+  const [showsymbolEXP,setshowsymbolEXP]=useState(false)
   const [selectsymbol,setselectsymbol]=useState('')
 
   
@@ -79,6 +81,7 @@ function Custom() {
   const[live,setLive]= useState(false)
   const [targetleg,setTargetleg]=useState(0)
   const [isContentDisabled,setisContentDisabled]= useState(false)
+  const [isContentDisabledEXP,setisContentDisabledEXP]= useState(false)
   const [lockleg,setLockleg]=useState(0)
   const [overallTARGET,setoverallTARGET]=useState(0)
   const [overallActive,setoverallActive]=useState(0)
@@ -165,7 +168,7 @@ const   handlecallput = (type)=>{
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,targettype,blocksl,blocktarget,blocktimer,blocktrail,call,
       put,Activeleg,lockleg,targetleg,tslleg}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
-    const payload = JSON.stringify({strategy,tradetool,sublegdata
+    const payload = JSON.stringify({strategy,tradetool,sublegdata,Quantprice,
   })
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
@@ -252,13 +255,7 @@ const   handlecallput = (type)=>{
   
   const handleSelectdisable = (e) => {
     setFno(e.target.value);
-    
-    // if  (e.target.value==='FUTSTK'||'OPTSTK'){
-        // setSelectVertical('stock')
-// 
-// 
-// 
-    // }
+
   if  (e.target.value==='FUTSTK'){
       // setshowsymbol(false)
       setshowsymbol(true)
@@ -281,6 +278,13 @@ const   handlecallput = (type)=>{
     if (e.target.value==='OPTIDX'){
       setisContentDisabled(false)
       setshowsymbol(false)
+    }
+    if (e.target.value==='CASH'){
+      setisContentDisabledEXP(true)
+      setshowsymbolEXP(false)
+    }
+    else {
+      setisContentDisabledEXP(false);
     }
 
     const sdd = localStorage.getItem("token");
@@ -610,7 +614,7 @@ const   handlecallput = (type)=>{
                 <Button variant="destructive" className="w-full">Exit All</Button>
                   <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="email">PNL</Label>
-                    <Input type="number" className=" text-" placeholder="Value" />
+                    <Input type="number" className=" text-black" placeholder="Value" />
                   </div>
                 </div>
                 <div className="flex items-center justify-center">
@@ -767,9 +771,10 @@ const   handlecallput = (type)=>{
                   <option value="OPTIDX">OPTION</option>
                   <option value="FUTSTK">STOCK FUTURE</option>
                   <option value="OPTSTK"> STOCK OPTION</option>
+                  <option value="CASH"> CASH</option>
                 </select>
               </div>
-              <div className="col-span-1">
+              <div className={`col-span-1 ${showsymbol ? '' : 'hidden'}`}>
                 {showsymbol ?
                   <select id="SymbolSelect" className='form-select w-full' onChange={(e) => handleselectsymbol(e)} value={selectsymbol}>
                     <option>Select Symbol</option>
@@ -779,9 +784,11 @@ const   handlecallput = (type)=>{
                   </select>
                 : <></>}
               </div>
-              <div className="col-span-1">
+
+
+              <div className={`col-span-1 ${isContentDisabledEXP ? 'opacity-50 pointer-events-none' : ''}`}>
                 {expiries.length !== 0 ?
-                  <select id="expirySelect" className='form-select w-full' onChange={(e) => sethandleexpiry(e)} value={expiry}>
+                  <select id="expirySelect" className='form-select w-full' disabled={isContentDisabledEXP}  onChange={(e) => sethandleexpiry(e)} value={expiry}>
                     <option>Select Expiry</option>
                     {expiries.map((date, index) =>
                       <option key={index} value={date}>{date}</option>
@@ -793,6 +800,8 @@ const   handlecallput = (type)=>{
                   </select>
                 }
               </div>
+
+
             </div>
           </div>
         </div>
@@ -874,7 +883,7 @@ const   handlecallput = (type)=>{
               </div>
             </div>
             <div className="col-lg-2 col-sm-2 col-3 mt-3">
-              <input type="text" className='form-control' placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
+              <input type="text" className='form-control' value= {strikeprice!=='Select Strike Price'?strikeprice:''} placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
             </div>
             <div className="col-lg-3 col-sm-5 mt-3">
               <input type="number" className='form-control' onChange={(e)=>handlenearestatm(e)}  placeholder='Nearest ATM' />
@@ -923,7 +932,8 @@ const   handlecallput = (type)=>{
             <div className="col-lg-3 col-9 mt-3">
               <div className="row">
                 <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Strike</button>
+                  <button type="button" className="btn btn-light w-100">Quantity</button>
+                  <Input className="mt-1" value= {Quantprice!=='Select Strike Price'?Quantprice:''} placeholder="Value" type="number"/>
                 </div>
                 <div className="col-6">
                   <button type="button" className="btn btn-success w-100">Automatic</button>
@@ -931,7 +941,7 @@ const   handlecallput = (type)=>{
               </div>
             </div>
             <div className="col-lg-2 col-3 mt-3">
-              <input type="text"  value= {strikeprice!=='Select Strike Price'?strikeprice:''}className='form-control' placeholder='Value'  />
+              <input type="text"  className='form-control'  placeholder='Value'  />
             </div>
             <div className="col-lg-3 col-sm-6 mt-3">
               <div className="row">

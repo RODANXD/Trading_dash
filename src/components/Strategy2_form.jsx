@@ -120,7 +120,7 @@ const Strategy2_form = ({ onCancel,blockid }) => {
       </div>
 
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+<div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
             {/* <div>
             <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -150,6 +150,7 @@ const Strategy2_form = ({ onCancel,blockid }) => {
       </DropdownMenuContent>
     </DropdownMenu>
             </div> */}
+            <div><Button className='bg-green-700'>Automatic Strike</Button></div>
             <div>
             <DropdownMenuCheckboxes/>
             </div>
