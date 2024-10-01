@@ -50,6 +50,7 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [isActivated, setIsActivated] = useState(false);
 
   const [selectDisable, setSelectDisable] = useState("");
+  const [Quantprice,setQuantprice]= useState('')
 
 
   // const [isOpen, setIsOpen] = React.useState(false)
@@ -603,9 +604,10 @@ useEffect(()=>{
         <div className="row">
           <div className="col-lg-3 col-9 mt-3">
             <div className="row">
-              <div className="col-6">
-                <button type="button" className="btn btn-light w-100">Strike</button>
-              </div>
+            <div className="col-6">
+                  <button type="button" className="btn btn-light w-100">Quantity</button>
+                  <Input className="mt-1 text-black" value= {Quantprice!=='Select Strike Price'?Quantprice:''} placeholder="Value" type="number"/>
+                </div>
               <div className="col-6">
                 <button type="button" className="btn btn-success w-100">Automatic</button>
               </div>
