@@ -141,7 +141,7 @@ const   handlecallput = (type)=>{
   ])
   const [Lockleg,setlogleg]=useState(0)
   const [optiondata,setoptiondata]= useState({type:'',side:''})
-  const [Amountblock,setAmountblock]= useState('')
+  const [Amount,setAmount]= useState('')
   const [addtrade,setAddtrade]= useState(false)
   const [advice,Setadvice]= useState('')
   const[brokerselect,setbrokerselect]= useState('')
@@ -166,10 +166,9 @@ const   handlecallput = (type)=>{
     const endpoint = "saveblockst1"
     const strategy= 1
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,targettype,blocksl,blocktarget,blocktimer,blocktrail,call,
-      put,Activeleg,lockleg,targetleg,tslleg}
+      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
-    const payload = JSON.stringify({strategy,tradetool,sublegdata,Quantprice,
-  })
+    const payload = JSON.stringify({strategy,tradetool,sublegdata})
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
@@ -493,6 +492,7 @@ const   handlecallput = (type)=>{
     setShowAddleg(true)
     setcurrentblock(id)
   }
+
 
   const handleCheckboxChange = (id) => {
       setbrokerselect((prevData) =>
@@ -941,15 +941,15 @@ const   handlecallput = (type)=>{
               <div className="row">
                 <div className="col-6">
                   <button type="button" className="btn btn-light w-100">Quantity</button>
-                  <Input className="mt-1 text-black" value= {Quantprice!=='Select Strike Price'?Quantprice:''} placeholder="Value" type="number"/>
+                  <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Value" type="number"/>
                 </div>
                 <div className="col-6">
-                  <button type="button" className="btn btn-success w-100">Automatic</button>
+                  <button type="button" className="btn btn-success w-100">AMOUNT</button>
                 </div>
               </div>
             </div>
             <div className="col-lg-2 col-3 mt-3">
-              <input type="text"  className='form-control'  placeholder='Value'  />
+              <input onChange={(e)=>setAmount(e.target.value)} value={Amount}   type="text"  className='form-control'  placeholder='Value'  />
             </div>
             <div className="col-lg-3 col-sm-6 mt-3">
               <div className="row">
