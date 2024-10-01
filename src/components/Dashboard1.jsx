@@ -727,11 +727,11 @@ const   handlecallput = (type)=>{
             {showCalender ? 
                 // <div style={{ position: 'absolute', zIndex: '999' }}><Calendar onChange={onChange} value={value} /></div>
                 
-          <div style={{ position: 'absolute', zIndex: '999' }}><input  onChange={handledatecahnge} className =" bg-white w-2/3 rounded-sm mt-2"value={tradevalidity} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
+          <div style={{ position: 'absolute', zIndex: '999' }}><input  onChange={(e)=>handledatecahnge(e)} className =" bg-white w-2/3 rounded-sm mt-2"value={tradevalidity} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
           : <></>}
             <div className='d-flex justify-content-end' style={{ position: 'relative' }}>
               {showCalender2 ?
-          <div style={{ position: 'absolute', zIndex: '999', right: "-40px" }}><input className=' bg-white w-2/3 rounded-sm mt-2'  onChange={handledatecahnge1} value={Notradingzone} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
+          <div style={{ position: 'absolute', zIndex: '999', right: "-40px" }}><input className=' bg-white w-2/3 rounded-sm mt-2'  onChange={(e)=>handledatecahnge1(e)} value={Notradingzone} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
 
              : <></>}</div>
           </div>
@@ -753,7 +753,7 @@ const   handlecallput = (type)=>{
               <div className="col-span-1">
                 <select
                   className='form-select w-full'
-                  onChange={handlesegment}
+                  onChange={(e)=>handlesegment(e)}
                 >
                   <option value=""> select segment</option>
                   <option value="Cash">NSE </option>
@@ -954,7 +954,7 @@ const   handlecallput = (type)=>{
             <div className="col-lg-3 col-sm-6 mt-3">
               <div className="row">
                 <div className="col-6">
-                <select  className='form-select'onChange={handlesltype}>
+                <select  className='form-select'onChange={(e)=>handlesltype(e)}>
                       <option value=""> SL</option>
                       <option value="Points">Spot Points </option>
                       <option value="Percentage">Points</option>
@@ -970,7 +970,7 @@ const   handlecallput = (type)=>{
             <div className="col-lg-4 col-sm-6 mt-3">
               <div className="row">
                 <div className="col-6">
-                <select  className='form-select'onChange={handletsltype}>
+                <select  className='form-select'onChange={(e)=>handletsltype(e)}>
                       <option value=""> TRAILSL</option>
                       <option value="Points">Points </option>
                       <option value="Percentage">%</option>
@@ -984,7 +984,7 @@ const   handlecallput = (type)=>{
             <div className="col-lg-3 col-sm-6 mt-3 offset-lg-5">
               <div className="row">
                 <div className="col-6">
-                <select  className='form-select'onChange={handleTargettype}>
+                <select  className='form-select'onChange={(e)=>handleTargettype(e)}>
                       <option value="">Target</option>  
                       <option value="Points">Spot Points </option>
                       <option value="Percentage">Points</option>
@@ -1103,19 +1103,19 @@ const   handlecallput = (type)=>{
 
           <div className="row">
             <div className="col-lg col-sm-4 mt-3">
-              <input type="text"  onChange={ handleblockactive} className='form-control' placeholder='Active' />
+              <input type="text"  onChange={(e)=> handleblockactive(e)} className='form-control' placeholder='Active' />
             </div>
             <div className="col-lg col-sm-4 mt-3">
-              <input type="number"  onChange={handleblockLock} className='form-control' placeholder='Lock' />
+              <input type="number"  onChange={(e)=>handleblockLock(e)} className='form-control' placeholder='Lock' />
             </div>
             <div className="col-lg col-sm-4 mt-3">
-              <input type="number"  onChange={handlebloctsl} className='form-control' placeholder='Trail Profit' />
+              <input type="number"  onChange={(e)=>handlebloctsl(e)} className='form-control' placeholder='Trail Profit' />
             </div>
             <div className="col-lg col-sm-6 mt-3">
-              <input type="number"  onChange={handleblockTarget}  className='form-control' placeholder='Overall TARGET' />
+              <input type="number"  onChange={(e)=>handleblockTarget(e)}  className='form-control' placeholder='Overall TARGET' />
             </div>
             <div className="col-lg col-sm-6 mt-3">
-              <input  onChange={handleBlockpnl} type="text" className='form-control' placeholder='Overall PNL' />
+              <input  onChange={(e)=>handleBlockpnl(e)} type="text" className='form-control' placeholder='Overall PNL' />
             </div>
           </div>
           
