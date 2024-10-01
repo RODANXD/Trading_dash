@@ -405,7 +405,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     <div className="flex gap-3">
       <div className="col-6">
         {strikePrice.length !== 0 ?
-          <select id="strikePriceSelect" className='form-select' onChange={() => setStrikePrice=(e.target.value)}>
+          <select id="strikePriceSelect" className='form-select' onChange={() => setStrikePrice(e.target.value)}>
             <option>Select Strike Price</option>
             {strikePrice.map((Price, index) =>
               <option key={index} value={Price}>{Price}</option>

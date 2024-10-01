@@ -1063,7 +1063,7 @@ const   handlecallput = (type)=>{
                   </DropdownMenu>
                 </div> */}
                 <div className="col-6 mt-3">
-                <DropdownMenuCheckboxes stat="1"/>
+                <DropdownMenuCheckboxes stat="1" />
                 </div>
               </div>
             </div>

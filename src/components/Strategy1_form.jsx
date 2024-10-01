@@ -98,8 +98,8 @@ useEffect(()=>{
     setSelectDisable(item.fno)
 
     setDefaultStrikePrices(item.ATM)
-    setTargetblock(item.blocktarget)
-    setTslblock(item.blocksl)
+    // setTargetblock(item.blocktarget)
+    // setTslblock(item.blocksl)
 
 
 
@@ -108,7 +108,7 @@ useEffect(()=>{
   })
 
 },[head,SetDatevalue,SetDatevalue1,setTradetype,,SetSegment,setSelectVertical,setSelectDisable,
-  setDefaultStrikePrices,setTargetblock,setTslblock])
+  setDefaultStrikePrices])
 
 
 
@@ -354,8 +354,8 @@ useEffect(()=>{
             <div className="col-4">
             <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
                   <option value="">Select Tradetype</option>
-                  <option value="NIFTY">Intrday</option>
-                  <option value="BANKNIFTY">Carryforward</option>
+                  <option value="Intrday">Intrday</option>
+                  <option value="Carryforward">Carryforward</option>
                 </select>
 
                 
@@ -436,8 +436,12 @@ useEffect(()=>{
               {!loading ?
                 <select id="selectVertical" className='form-select' onChange={(e)=>handleSelectdisable(e)} value={selectDisable}>
                   <option value="">Select FNO</option>
-                  <option value="Future">FUTURE</option>
-                  <option value="Option">OPTION</option>
+                  <option value="FUTIDX">FUTURE</option>
+                  <option value="OPTIDX">OPTION</option>
+                  <option value="FUTSTK">STOCK FUTURE</option>
+                  <option value="OPTSTK"> STOCK OPTION</option>
+
+
                 </select>
                 :
                 <div className="text-center">
@@ -613,7 +617,7 @@ useEffect(()=>{
           <div className="col-lg-3 col-sm-6 mt-3">
             <div className="row">
               <div className="col-6">
-              <select   value = {sltype} className='form-select'onChange={handlesltype}>
+              <select   value = {sltype} className='form-select'onChange={(e)=>handlesltype(e.target.value)}>
                     <option value=""> SL</option>
                     <option value="Points">Spot Points </option>
                     <option value="Percentage">Points</option>
@@ -629,7 +633,7 @@ useEffect(()=>{
           <div className="col-lg-4 col-sm-6 mt-3">
             <div className="row">
               <div className="col-6">
-              <select value = {sltytpe}  className='form-select'onChange={handletsltype}>
+              <select value = {sltytpe}  className='form-select'onChange={(e)=>handletsltype(e.target.value)}>
                     <option value=""> TRAILSL</option>
                     <option value="Points">Points </option>
                     <option value="Percentage">%</option>
@@ -643,7 +647,7 @@ useEffect(()=>{
           <div className="col-lg-3 col-sm-6 mt-3 offset-lg-5">
             <div className="row">
               <div className="col-6">
-              <select value={targettype}  className='form-select'onChange={handleTargettype}>
+              <select value={targettype}  className='form-select'onChange={(e)=>handleTargettype(e.target.value)}>
                     <option value="">Target</option>
                     <option value="Points">Spot Points </option>
                     <option value="Percentage">Points</option>
@@ -683,16 +687,16 @@ useEffect(()=>{
           <div >
             <div className="row">
               <div className="col-lg col-sm-4 mt-3">
-                <input type="number" className='form-control'  value={Activeleg} onchange = { handlesetactive} placeholder='Active' />
+                <input type="number" className='form-control'  value={Activeleg} onchange = { (e)=>handlesetactive(e.target.value)} placeholder='Active' />
               </div>
               <div className="col-lg col-sm-4 mt-3">
-                <input type="number" className='form-control'  value={lockleg} onChange={handlesetlock} placeholder='Lock' />
+                <input type="number" className='form-control'  value={lockleg} onChange={(e)=>handlesetlock(e.target.value)} placeholder='Lock' />
               </div>
               <div className="col-lg col-sm-4 mt-3">
-                <input type="number" className='form-control'  value={tslleg}  onchange= {handletslleg} placeholder='Trail Profit' />
+                <input type="number" className='form-control'  value={tslleg}  onchange= {(e)=>handletslleg(e.target.value)} placeholder='Trail Profit' />
               </div>
               <div className="col-lg col-sm-6 mt-3">
-                <input type="number" className='form-control' value={targetleg} onchange={handleLegTarget} placeholder='TARGET' />
+                <input type="number" className='form-control' value={targetleg} onchange={(e)=>handleLegTarget(e.target.value)} placeholder='TARGET' />
               </div>
               <div className="col-lg col-sm-6 mt-3">
                 <button type="button" className="btn btn-success w-100" >+ Add Leg</button>
@@ -783,19 +787,19 @@ useEffect(()=>{
 
         <div className="row">
           <div className="col-lg col-sm-4 mt-3">
-            <input type="text" value={Activeblock}  onChange={ handleblockactive} className='form-control' placeholder='Active' />
+            <input type="text" value={Activeblock}  onChange={(e) =>handleblockactive(e.target.value)} className='form-control' placeholder='Active' />
           </div>
           <div className="col-lg col-sm-4 mt-3">
-            <input type="number"  value = {lockblock} onChange={handleblockLock} className='form-control' placeholder='Lock' />
+            <input type="number"  value = {lockblock} onChange={(e)=>handleblockLock(e.target.value)} className='form-control' placeholder='Lock' />
           </div>
           <div className="col-lg col-sm-4 mt-3">
-            <input type="number"  value={tslblock} onChange={handlebloctsl} className='form-control' placeholder='Trail Profit' />
+            <input type="number"  value={tslblock} onChange={(e)=>handlebloctsl(e.target.value)} className='form-control' placeholder='Trail Profit' />
           </div>
           <div className="col-lg col-sm-6 mt-3">
-            <input type="number" value={targetblock}  onChange={handleblockTarget}  className='form-control' placeholder='Overall TARGET' />
+            <input type="number" value={targetblock}  onChange={(e)=>handleblockTarget(e.target.value)}  className='form-control' placeholder='Overall TARGET' />
           </div>
           <div className="col-lg col-sm-6 mt-3">
-            <input  value={pnlblock} onChange={handleBlockpnl} type="text" className='form-control' placeholder='Overall PNL' />
+            <input  value={pnlblock} onChange={(e)=>handleBlockpnl(e.target.value)} type="text" className='form-control' placeholder='Overall PNL' />
           </div>
         </div>
         
