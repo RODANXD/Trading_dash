@@ -53,8 +53,12 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
-  		}
+  		},
+		  screens: {
+			'max-xs': {'max': '570px'}, // Add custom breakpoint for max-width 570px
+		  },
   	}
+	 
   },
   plugins: [require("tailwindcss-animate")],
 }

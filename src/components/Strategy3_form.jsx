@@ -255,7 +255,7 @@ useEffect(() => {
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">Movement</label>
               <div className="relative rounded-md shadow-sm">
-                <input type="number" value={movement} onChange={(e) => setMovement(e.target.value)} className="form-input w-full py-2 px-3 text-black bg-white rounded-sm" placeholder="Active" />
+                <input type="number" value={movement} onChange={(e) => setMovement(e.target.value)} className="form-input w-full py-2 px-3 text-black bg-white max-xs:w-3/4 rounded-sm" placeholder="Active" />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                   <span className="text-gray-500 sm:text-sm">%</span>
                 </div>
@@ -263,11 +263,11 @@ useEffect(() => {
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">From Time</label>
-              <TimeInput value={fromTime} onChange={(e) => setFromTime(e.target.value)} className="w-full text-black" />
+              <TimeInput value={fromTime} onChange={(e) => setFromTime(e.target.value)} className="w-full text-black max-xs:w-3/4" />
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">To Time</label>
-              <TimeInput value={toTime} onChange={(e) => setToTime(e.target.value)} className="w-full text-black" />
+              <TimeInput value={toTime} onChange={(e) => setToTime(e.target.value)} className="w-full text-black max-xs:w-3/4" />
             </div>
           </div>
         </div>
@@ -278,7 +278,7 @@ useEffect(() => {
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">IO Change below</label>
               <div className="relative rounded-md shadow-sm">
-                <input type="number" value={ioChange} onChange={(e) => setIoChange(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+                <input type="number" value={ioChange} onChange={(e) => setIoChange(e.target.value)} className="form-input w-full max-xs:w-3/4 py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                   <span className="text-gray-500 sm:text-sm">%</span>
                 </div>
@@ -286,11 +286,11 @@ useEffect(() => {
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">Same direction day</label>
-              <input type="number" value={sameDirectionDay} onChange={(e) => setSameDirectionDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" value={sameDirectionDay} onChange={(e) => setSameDirectionDay(e.target.value)} className="form-input w-full max-xs:w-3/4 py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1">Monthly expiry day</label>
-              <input type="number" value={monthlyExpiryDay} onChange={(e) => setMonthlyExpiryDay(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" value={monthlyExpiryDay} onChange={(e) => setMonthlyExpiryDay(e.target.value)} className="form-input w-full max-xs:w-3/4 py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
             </div>
           </div>
         </div>
@@ -298,12 +298,12 @@ useEffect(() => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Candle high/low time</label>
-            <TimeInput value={candleHighLowTime} onChange={(e) => setCandleHighLowTime(e.target.value)} className="w-full" />
+            <TimeInput value={candleHighLowTime} onChange={(e) => setCandleHighLowTime(e.target.value)} className="w-full max-xs:w-3/4" />
           </div>
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Retracement</label>
             <div className="relative rounded-md shadow-sm">
-              <input type="number" value={retracement} onChange={(e) => setRetracement(e.target.value)} className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
+              <input type="number" value={retracement} onChange={(e) => setRetracement(e.target.value)} className="form-input max-xs:w-3/4 w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
               <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <span className="text-gray-500 sm:text-sm">%</span>
               </div>
@@ -314,24 +314,24 @@ useEffect(() => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Nifty time</label>
-            <TimeInput value={niftyTime} onChange={(e) => setNiftyTime(e.target.value)} className="w-full" />
+            <TimeInput value={niftyTime} onChange={(e) => setNiftyTime(e.target.value)} className="w-full max-xs:w-3/4" />
           </div>
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">Entry duration time</label>
-            <TimeInput value={entryDurationTime} onChange={(e) => setEntryDurationTime(e.target.value)} className="w-full" />
+            <TimeInput value={entryDurationTime} onChange={(e) => setEntryDurationTime(e.target.value)} className="w-full max-xs:w-3/4" />
           </div>
         </div>
 
         <div>
           <h2 className="text-xl font-semibold mb-4 text-center text-white">Entry and Exit</h2>
-          <p className="text-white mb-4">Entry will be once bal stock break of its high or low marked spot price of Candle High/low time</p>
+          <p className="text-white mb-4 max-xs:text-sm max-xs:w-3/4">Entry will be once bal stock break of its high or low marked spot price of Candle High/low time</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {head.map((item)=>(
 
               <div key={item}>
 
                 <label className="block text-lg font-medium text-zinc-300 mb-1">{item.key}</label>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 max-xs:w-3/4">
                   <input type="number" value={item.value}   onChange= {(e)=>handleheadchange(item.id,e.target.value)} className="form-input flex-grow py-2 px-3 text- bg-white rounded-sm" placeholder="Value" />
 
                 </div>
@@ -372,7 +372,7 @@ useEffect(() => {
     </DropdownMenu>
               
             </div> */}
-            <div>
+            <div className='max-xs:w-3/4'>
             <DropdownMenuCheckboxes/>
               {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
             </div>
@@ -386,7 +386,7 @@ useEffect(() => {
         
       </div>
       <Button onClick={onCancel} className="mt-4" > Cancel </Button>
-      <Button onClick={()=>savedatta()} className="w-full sm:w-auto">Save</Button>
+      <Button onClick={()=>savedatta()} className="ml-3 sm:w-auto">Save</Button>
 
       
     </div>
