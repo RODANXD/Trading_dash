@@ -239,9 +239,19 @@ export default function TradingForm() {
               <div className="flex flex-col sm:flex-row max-xs:w-full gap-3 sm:w-auto">
                 {" "}
                 <Button className="sm:w-auto max-xs:w-full">Exit All</Button>{" "}
-                <Button variant="destructive" className="sm:w-auto max-xs:w-full">
-                  Delete All
-                </Button>{" "}
+                <Popover>
+        <PopoverTrigger asChild>
+        <Button variant="destructive" className="w-full max-xs:text-sm sm:w-32">Delete All</Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-72">
+          <div className="grid place-items-center gap-4">
+            <div className="space-y-2 flex flex-col sm:flex-row items-center gap-3">
+              <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
+              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  onClick={()=>Deleteblock(item.Blockid)}>confirm</Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>{" "}
               </div>{" "}
             </div>
             </div>
@@ -319,7 +329,7 @@ export default function TradingForm() {
                             className="py-2 px-4 border-b text-left"
                             colSpan={2}
                           >
-                            Manual cancel or exit
+                             cancel 
                           </th>
                         </tr>
                       </thead>
@@ -375,11 +385,7 @@ export default function TradingForm() {
                                 {script.cancel}
                               </Button>
                             </td>
-                            <td className="py-2 px-2 border-b">
-                              <Button size="sm" className="w-full ">
-                                {script.exit}
-                              </Button>
-                            </td>
+                            
                           </tr>
                         ))}
                       </tbody>
@@ -443,7 +449,7 @@ export default function TradingForm() {
                               <Label htmlFor="email">PNL</Label>
                               <Input
                                 type="number"
-                                className=" text-"
+                                className=" text-black"
                                 placeholder="Value"
                               />
                             </div>

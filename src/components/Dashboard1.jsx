@@ -552,12 +552,20 @@ const   handlecallput = (type)=>{
         
         <div className="flex justify-center sm:justify-end gap-3 order-3 sm:order-2 lg:order-3">
           <Button className="w-full sm:w-auto">Exit All</Button>
-          <Button 
-            onClick={() => Deleteblock(0)} 
-            className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
-          >
-            Delete All
-          </Button>
+          
+          <Popover>
+        <PopoverTrigger asChild>
+        <Button variant="destructive" className="w-full max-xs:text-sm sm:w-32">Delete All</Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-72">
+          <div className="grid place-items-center gap-4">
+            <div className="space-y-2 flex flex-col sm:flex-row items-center gap-3">
+              <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
+              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  onClick={() => Deleteblock(0)}>confirm</Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
         </div>
         
         <div className="col-span-1 sm:col-span-2 lg:col-span-1 order-2 sm:order-3 lg:order-2">
@@ -933,7 +941,7 @@ const   handlecallput = (type)=>{
               <div className="row">
                 <div className="col-6">
                   <button type="button" className="btn btn-light w-100">Quantity</button>
-                  <Input className="mt-1" value= {Quantprice!=='Select Strike Price'?Quantprice:''} placeholder="Value" type="number"/>
+                  <Input className="mt-1 text-black" value= {Quantprice!=='Select Strike Price'?Quantprice:''} placeholder="Value" type="number"/>
                 </div>
                 <div className="col-6">
                   <button type="button" className="btn btn-success w-100">Automatic</button>
@@ -1027,9 +1035,7 @@ const   handlecallput = (type)=>{
                 <div className="col-lg col-sm-6 mt-3">
                   <input type="number" className='form-control' onchange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
                 </div>
-                <div className="col-lg col-sm-6 mt-3">
-                  <button type="button" className="btn btn-success w-100" >+ Add Leg</button>
-                </div>
+                
               </div>
             </div>
         

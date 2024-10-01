@@ -28,8 +28,13 @@ export default function Strategy() {
   const [isActivated, setIsActivated] = useState(false);
   const [viewall, setviewall]= useState(false)
   const [paper, setpaper]= useState(false)
+  const [paper1, setpaper1]= useState(false)
+  const [Automatic_strike, setAutomatic_strike]= useState(0)
   const [Tradeblockno,settradeblockno]= useState([])
   const [currentblock,setcurrentblock]= useState('')
+  const [isContentDisabled,setisContentDisabled]= useState(false)
+  
+
 
   
 
@@ -192,6 +197,11 @@ console.log(broker,'broker')
   const handlemode = () =>{
     setpaper(!paper)
   }
+  const handlemode2 = () =>{
+    setpaper1(!paper1)
+    setisContentDisabled(!isContentDisabled)
+    setAutomatic_strike(true)
+  }
   console.log(head,'head')
   const handleheadchange= (id,val)=>{
     
@@ -215,7 +225,7 @@ console.log(broker,'broker')
       <div className="flex justify-start">
         <Button 
           type="button" 
-          className="btn btn-success w-full sm:w-auto text-sm sm:text-base max-xs:text-xs" 
+          className=" bg-green-600 w-full sm:w-auto text-sm sm:text-base max-xs:text-xs" 
           onClick={Addform}
         >
           + Add Trade
@@ -223,12 +233,19 @@ console.log(broker,'broker')
       </div>
       <div className="grid grid-cols-2 gap-4 max-xs:flex max-xs:flex-col">
         <Button className="w-full text-sm sm:text-base">Exit All</Button>
-        <Button 
-          onClick={() => Deleteblock(0)} 
-          className="w-full bg-red-600 text-sm sm:text-base"
-        >
-          Delete All
-        </Button>
+        <Popover>
+        <PopoverTrigger asChild>
+        <Button variant="destructive" className="w-full max-xs:text-sm sm:w-32">Delete All</Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-72">
+          <div className="grid place-items-center gap-4">
+            <div className="space-y-2 flex flex-col sm:flex-row items-center gap-3">
+              <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
+              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  onClick={()=>Deleteblock(item.Blockid)}>confirm</Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
       </div>
     </div>
         
@@ -284,7 +301,7 @@ console.log(broker,'broker')
     <Button variant="destructive" className="w-full">Exit All</Button>
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="email">PNL</Label>
-        <Input type="number" className=" text-" placeholder="Value" />
+        <Input type="number" className=" text-black" placeholder="Value" />
       </div>
     </div>
     <div className="flex items-center justify-center">
@@ -342,31 +359,15 @@ console.log(broker,'broker')
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {head.map((item) => (
           <div key={item} className="flex flex-col items-center gap-2">
-            <Button variant="outline" className="w-full bg-green-600">{item.key}</Button>
-            <Input placeholder="Value" className="w-full" type="number" onChange= {(e)=>handleheadchange(item.id,e.target.value)}/>
+            <Button variant="outline"
+            disabled={item.key === 'Spike' && isContentDisabled}
+             className={`w-full ${item.key === 'Spike' && isContentDisabled ? ' opacity-1' : 'bg-green-600'}`}>{item.key}</Button>
+            <Input placeholder="Value" disabled={item.key === 'Spike' && isContentDisabled} className="w-full" type="number" onChange= {(e)=>handleheadchange(item.id,e.target.value)}/>
           </div>
         ))}
       </div>
       
       
-
-      {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4"> */}
-        {/* <div className="flex flex-col items-center gap-2"> */}
-          {/* <Button variant="outline" className="w-full bg-green-600">Spike in Index</Button> */}
-          {/* <Input placeholder="Value" value= {spike}onChange={(e)=>setSpike(e.target.value)} className="w-full" defaultValue="0.20%" /> */}
-        {/* </div> */}
-        {/* <div className="flex flex-col items-center gap-2"> */}
-          {/* <Button variant="outline" className="w-full bg-green-600">Strike Price</Button> */}
-          {/* <div className="flex w-full gap-2"> */}
-            {/* <Input placeholder="Value" type="number" value= {Strike} onChange={(e)=>setStrike(e.target.value)} className="flex-grow" /> */}
-            {/*  */}
-          {/* </div> */}
-        {/* </div> */}
-        {/* <div className="flex flex-col items-center gap-2"> */}
-          {/* <Button variant="outline" className="w-full bg-green-600">Target</Button> */}
-          {/* <Input placeholder="Value" className="w-full"  value= {target} onChange={(e)=>setTarget(e.target.value)} /> */}
-        {/* </div> */}
-      {/* </div> */}
       
       <h2 className=" text-white text-xl">Select Broker</h2>
       {/* {['SL', 'Active'].map((section, index) => ( */}
@@ -383,28 +384,8 @@ console.log(broker,'broker')
       {/* ))} */}
 
 <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
-            {/* <div>
-            <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-full bgreen-600">Broker</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel></DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {broker.map((item) => (
-                <DropdownMenuCheckboxItem
-                
-                onCheckedChange={()=>showStatusBar(item.id,!item.value)} 
-                checked={item.value}
-                >
-                {item.name}
-              </DropdownMenuCheckboxItem>
-
-                  ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-            </div> */}
-            <div><Button className='bg-green-700'>Automatic Strike</Button></div>
+            
+            <div><Button onClick={()=>handlemode2()} className={paper1 ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper1?"Automatic Strike":"Automatic Strike"}</Button></div>
             <div>
             <DropdownMenuCheckboxes stat="2"/>
             </div>

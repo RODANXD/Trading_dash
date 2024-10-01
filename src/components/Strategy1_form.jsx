@@ -698,9 +698,6 @@ useEffect(()=>{
               <div className="col-lg col-sm-6 mt-3">
                 <input type="number" className='form-control' value={targetleg} onchange={(e)=>handleLegTarget(e.target.value)} placeholder='TARGET' />
               </div>
-              <div className="col-lg col-sm-6 mt-3">
-                <button type="button" className="btn btn-success w-100" >+ Add Leg</button>
-              </div>
             </div>
           </div>
       
