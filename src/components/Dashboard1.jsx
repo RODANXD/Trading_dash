@@ -65,10 +65,10 @@ function Custom() {
   const [tsltype,settsltype]=useState('')
   const [targettype,settargettype]=useState('')
   const [Activeleg,setActiveleg]=useState(0)
-  const [blocksl,setblocksl]=useState(0)
-  const [blocktrail,setblocktrail]=useState(0)
-  const [blocktarget,setblocktarget]=useState('')
-  const [blocktimer,setblocktimer]=useState('')
+  const [sl,setsl]=useState(0)
+  const [trail,settrail]=useState(0)
+  const [target,settarget]=useState('')
+  const [timer,settimer]=useState('')
   const [showsymbol,setshowsymbol]=useState(false)
   const [showsymbolEXP,setshowsymbolEXP]=useState(false)
   const [selectsymbol,setselectsymbol]=useState('')
@@ -100,6 +100,7 @@ const   handlecallput = (type)=>{
   
   if (optionlabel==='Call'){
     setcall(type)
+    
     setoptionlabel('')
   }
   
@@ -146,7 +147,7 @@ const   handlecallput = (type)=>{
   const [advice,Setadvice]= useState('')
   const[brokerselect,setbrokerselect]= useState('')
   const [spotprice,setspotprice]= useState(0)
-  const[Nearestatml1,setNearestatml1]= useState('')
+  const[nearestatm,setNearestatm]= useState(0)
   console.log(brokerselect)
   const [numberOfLegs, setNumberOfLegs] = useState(() => {
     const storedNumberOfLegs = localStorage.getItem('numberOfLegs');
@@ -165,8 +166,8 @@ const   handlecallput = (type)=>{
   const settings =  ()=>{
     const endpoint = "saveblockst1"
     const strategy= 1
-    const sublegdata= {advice,spotprice,correction,sltype,tsltype,targettype,blocksl,blocktarget,blocktimer,blocktrail,call,
-      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount}
+    const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
+      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
     const payload = JSON.stringify({strategy,tradetool,sublegdata})
     const type = "POST"
@@ -375,11 +376,11 @@ const   handlecallput = (type)=>{
     setviewall(false);
   };
 
-  const  handlenearestatm=(e)=>{
-    const strikenear= e.target.value
-    setstrikeprice(defaultstrikePrices+strikenear)
+  
+  
+  
 
-  }
+  
 
 
  const handledatecahnge= (e)=>{
@@ -624,6 +625,7 @@ const   handlecallput = (type)=>{
                     <Label htmlFor="email">PNL</Label>
                     <Input type="number" className=" text-black" placeholder="Value" />
                   </div>
+                  ++
                 </div>
                 <div className="flex items-center justify-center">
                   <Button className="w-full sm:w-24"  onClick={()=>handleviewall(item.Blockid)}>
@@ -894,7 +896,7 @@ const   handlecallput = (type)=>{
               <input type="text" className='form-control' value= {strikeprice!=='Select Strike Price'?strikeprice:''} placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
             </div>
             <div className="col-lg-3 col-sm-5 mt-3">
-              <input type="number" className='form-control' onChange={(e)=>handlenearestatm(e)}  placeholder='Nearest ATM' />
+              <input type="number" value={nearestatm} className='form-control' onChange={(e)=>setNearestatm(e.target.value)}  placeholder='Nearest ATM' />
             </div>
             <div className="col-lg-2 col-6 mt-3">
               
@@ -954,47 +956,47 @@ const   handlecallput = (type)=>{
             <div className="col-lg-3 col-sm-6 mt-3">
               <div className="row">
                 <div className="col-6">
-                <select  className='form-select'onChange={handlesltype}>
+                <select  className='form-select'onChange={(e)=>handlesltype(e)}>
                       <option value=""> SL</option>
-                      <option value="Points">Spot Points </option>
-                      <option value="Percentage">Points</option>
-                      <option value="Percentage">Value</option>
-                      <option value="">%</option>
+                      <option value="SpotPoints">Spot Points </option>
+                      <option value="Points">Points</option>
+                      <option value="value">Value</option>
+                      <option value="Percentage">%</option>
                 </select>
                         </div>
                 <div className="col-6">
-                  <input type="text" onChange={(e)=>setblocksl(e.target.value)} value = {blocksl} placeholder='Manual Entry' className='form-control' />
+                  <input type="text" onChange={(e)=>setsl(e.target.value)} value = {sl} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
             </div>
             <div className="col-lg-4 col-sm-6 mt-3">
               <div className="row">
                 <div className="col-6">
-                <select  className='form-select'onChange={handletsltype}>
+                <select  className='form-select'onChange={(e)=>handletsltype(e)}>
                       <option value=""> TRAILSL</option>
                       <option value="Points">Points </option>
                       <option value="Percentage">%</option>
                       </select>
                       </div>
                 <div className="col-6">
-                  <input type="text" onChange={(e)=>setblocktrail(e.target.value)} value = {blocktrail} placeholder='Manual Entry' className='form-control' />
+                  <input type="text" onChange={(e)=>settrail(e.target.value)} value = {trail} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
             </div>
             <div className="col-lg-3 col-sm-6 mt-3 offset-lg-5">
               <div className="row">
                 <div className="col-6">
-                <select  className='form-select'onChange={handleTargettype}>
+                <select  className='form-select'onChange={(handleTargettype)}>
                       <option value="">Target</option>  
                       <option value="Points">Spot Points </option>
-                      <option value="Percentage">Points</option>
-                      <option value="Percentage">Value</option>
-                      <option value="">%</option>
+                      <option value="Points">Points</option>
+                      <option value="Value">Value</option>
+                      <option value="Percentage">%</option>
                 </select>
 
                   </div>
                 <div className="col-6">
-                  <input type="text"  onChange={(e)=>setblocktarget(e.target.value)} value = {blocktarget} placeholder='Manual Entry' className='form-control' />
+                  <input type="text"  onChange={(e)=>settarget(e.target.value)} value = {target} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
             </div>
@@ -1012,7 +1014,7 @@ const   handlecallput = (type)=>{
                   </Dropdown>
                 </div>
                 <div className="col-6">
-                  <input type="text" onChange={(e)=>setblocktimer(e.target.value)} value = {blocktimer} placeholder='Manual Entry' className='form-control' />
+                  <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
             </div>
@@ -1103,7 +1105,7 @@ const   handlecallput = (type)=>{
 
           <div className="row">
             <div className="col-lg col-sm-4 mt-3">
-              <input type="text"  onChange={ handleblockactive} className='form-control' placeholder='Active' />
+              <input type="text"  onChange={(e)=> handleblockactive(e)} className='form-control' placeholder='Active' />
             </div>
             <div className="col-lg col-sm-4 mt-3">
               <input type="number"  onChange={handleblockLock} className='form-control' placeholder='Lock' />

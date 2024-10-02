@@ -247,7 +247,7 @@ export default function TradingForm() {
           <div className="grid place-items-center gap-4">
             <div className="space-y-2 flex flex-col sm:flex-row items-center gap-3">
               <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  onClick={()=>Deleteblock(item.Blockid)}>confirm</Button>
+              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  onClick={()=>Deleteblock(0)}>confirm</Button>
             </div>
           </div>
         </PopoverContent>
