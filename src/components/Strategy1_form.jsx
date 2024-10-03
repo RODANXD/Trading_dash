@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
 import DropdownMenuCheckboxes from './ui/dropdown'
 
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,9 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [datevalue1, SetDatevalue1] = useState(new Date());
   const [segment,SetSegment]=useState('')
   const [strikePrices, setStrikePrices] = useState([]);
+  const [isContentDisabled,setisContentDisabled]= useState(false)
+  const [strikeprice,setstrikeprice]= useState('')
+
   const [toggleStatus, setToggleStatus] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
   const [selectVertical, setSelectVertical] = useState('');
@@ -48,6 +52,7 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [expiry, setExpiry] = useState("")
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
+  const [fno, setFno] = useState("");
 
   const [selectDisable, setSelectDisable] = useState("");
   const [Quantprice,setQuantprice]= useState('')
@@ -101,6 +106,9 @@ const Strategy1_form = ({onCancel,blockid}) => {
 
 
 
+  const handledatecahnge= (e)=>{
+    Settradevalidity(e.target.value)
+  }
 
 
   
@@ -146,6 +154,89 @@ const Strategy1_form = ({onCancel,blockid}) => {
 
   const handlemap=()=>{
 }
+
+  const handleSelectdisable = (e) => {
+    setFno(e.target.value);
+
+  if  (e.target.value==='FUTSTK'){
+      // setshowsymbol(false)
+      setshowsymbol(true)
+      setisContentDisabled(true)
+      setSelectVertical('stock')}
+
+  if  (e.target.value==='OPTSTK'){
+      // setshowsymbol(false)
+      setshowsymbol(true)
+      setSelectVertical('stock')
+      setisContentDisabled(false)
+
+}
+
+    if  (e.target.value==='FUTIDX'){
+      setisContentDisabled(true)
+      setshowsymbol(false)
+      }
+    
+    if (e.target.value==='OPTIDX'){
+      setisContentDisabled(false)
+      setshowsymbol(false)
+    }
+    if (e.target.value==='CASH'){
+      setisContentDisabledEXP(true)
+      setshowsymbolEXP(false)
+      setshowsymbol(true)
+
+    }
+    else {
+      setisContentDisabledEXP(false);
+    }
+
+    const sdd = localStorage.getItem("token");
+    const t = "token " + sdd;
+
+
+    setLoading(true)
+    const fetchData = async () => {
+      try {
+        // const response = await axios.get(`http://127.0.0.1:5000/option_chain?option_type=${event.target.value}`);
+        const response = await fetch (`http://3.111.155.182:8000/option_type?option_type=${selectVertical}&segment=${segment}&instrument=${e.target.value}`,
+          {
+            method: 'GET',
+            headers: {  
+              "Content-Type": "application/json",
+              Authorization: t,
+            },
+          }
+        );
+        const data = await response.json();
+
+        console.log(data,'expiry')
+        const removeDuplicates = [...new Set(data.message.Expiry)];
+        const removeDuplicatesstrike = [...new Set(data.message.StrikePrice)];
+        const removeDuplicatsymbol = [...new Set(data.message.Symbol)];
+
+
+
+        setExpiries(removeDuplicates);
+        setsymbol(removeDuplicatsymbol);
+        setStrikePrices(removeDuplicatesstrike);
+        // setDefaultStrikePrices(response.message.underlyingValue)
+        setLoading(false)
+      } catch (error) {
+        alert("Getting Error While Fetching API! Please Try Again!!!",)
+        console.log(error)
+        setLoading(false)
+      }
+    };
+    fetchData();
+
+
+
+
+
+  };
+
+
 useEffect(()=>{
   head.map((item)=>{
     console.log(item,'value1')
@@ -254,9 +345,7 @@ useEffect(()=>{
   }
 
 
- const handledatecahnge= (e)=>{
-    SetDatevalue(e.target.value)
-  }
+ 
 
   const handletradetype =(e)=>{
     setTradetype(e.target.value)
@@ -364,10 +453,6 @@ useEffect(()=>{
     fetchData();
   };
 
-  const isContentDisabled = selectDisable === "Future";
-  const handleSelectdisable = (e) => {
-    setSelectDisable(e.target.value);
-  };
 
   const scriptData = [
     { name: "RAMCOCEM", candleHighLow: "826.15", longshort: "LONG", status: "EXECUTED", pnl: "+200", cancel: "CANCEL", exit: "EXIT" },
