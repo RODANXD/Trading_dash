@@ -360,9 +360,9 @@ console.log(broker,'broker')
         {head.map((item) => (
           <div key={item} className="flex flex-col items-center gap-2">
             <Button variant="outline"
-            disabled={item.key === 'Spike' && isContentDisabled}
-             className={`w-full ${item.key === 'Spike' && isContentDisabled ? ' opacity-1' : 'bg-green-600'}`}>{item.key}</Button>
-            <Input placeholder="Value" disabled={item.key === 'Spike' && isContentDisabled} className="w-full" type="number" onChange= {(e)=>handleheadchange(item.id,e.target.value)}/>
+            disabled={item.key === 'Strike' && isContentDisabled}
+             className={`w-full ${item.key === 'Strike' && isContentDisabled ? ' opacity-1' : 'bg-green-600'}`}>{item.key}</Button>
+            <Input placeholder="Value" disabled={item.key === 'Strike' && isContentDisabled} className="w-full" type="number" onChange= {(e)=>handleheadchange(item.id,e.target.value)}/>
           </div>
         ))}
       </div>

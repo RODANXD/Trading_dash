@@ -282,6 +282,8 @@ const   handlecallput = (type)=>{
     if (e.target.value==='CASH'){
       setisContentDisabledEXP(true)
       setshowsymbolEXP(false)
+      setshowsymbol(true)
+
     }
     else {
       setisContentDisabledEXP(false);
@@ -1128,22 +1130,17 @@ const   handlecallput = (type)=>{
       
 
 
+
       <div className='mt-3' style={{ maxWidth: '500px', margin: 'auto' }}>
-        <div className="flex items-center gap-4 flex-wrap w-full ">
-          <div className="col-sm-4 mt-3">
+        <div className="flex items-center gap-4 max-xs:flex-col w-full ">
+          <div className="col-sm-6 mt-3">
             <button type="button" onClick= {()=>settings()}className="btn btn-success w-100 btn-lg"><i className="fa fa-save" /> Save</button>
           </div>
-          <div className="col-sm-4 mt-3">
-            <button type="button" className="btn btn-secondary w-100 btn-lg">Approved</button>
-          </div>
-          <div className="col-sm-4 mt-3">
-            <button type="button" className="btn btn-secondary w-100 btn-lg">Deployed</button>
-          </div>
-          <div className="col-sm-4 mt-3 ">
+          
+          <div className="col-sm-6 mt-3 ">
         <button onClick={() => {
                 setAddtrade(false);
               }} type="button" className="btn btn-danger w-100 btn-lg">Cancel</button>
-          
         </div>
         </div>
       </div>
