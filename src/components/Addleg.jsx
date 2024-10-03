@@ -48,6 +48,19 @@ const [expiries, setExpiries] = useState([]);
   const [expiry, setExpiry] = useState("")
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
+  const [Quantprice,setQuantprice]= useState('')
+  const [Amount,setAmount]= useState('')
+  const [sl,setsl]=useState(0)
+  const [trail,settrail]=useState(0)
+  const [target,settarget]=useState('')
+  const [timer,settimer]=useState('')
+  const [strikeprice,setstrikeprice]= useState('')
+
+
+
+
+
+
   const[blockno,setblockno]= useState('')
   const [broker,setBroker]= useState([
     {id:1,name:'Shoonya',value:true},
@@ -96,7 +109,7 @@ const [expiries, setExpiries] = useState([]);
   const [blocktarget,setblocktarget]=useState('')
   const [blocktimer,setblocktimer]=useState('')
   const [paper, setpaper]= useState(false)
-  const [strikeprice,setstrikeprice]= useState('')
+
   const [optionlabel,setoptionlabel]= useState('')
   const [call, setcall] = useState('');
   const [put, setput] = useState('');
@@ -150,6 +163,8 @@ const [expiries, setExpiries] = useState([]);
   const[brokerselect,setbrokerselect]= useState('')
   const [spotpricel1,setspotpricel1]= useState('')
   const[Nearestatml1,setNearestatml1]= useState('')
+  const[nearestatm,setNearestatm]= useState(0)
+
   console.log(brokerselect)
   const [numberOfLegs, setNumberOfLegs] = useState(() => {
     const storedNumberOfLegs = localStorage.getItem('numberOfLegs');
@@ -172,7 +187,7 @@ const [expiries, setExpiries] = useState([]);
     const Blockid= id
     const strategy= 1
     const sublegdata= {advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrice,sltype,blocksl,blocktrail,
-      tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg,call,put
+      tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg,call,put,Quantprice,Amount,nearestatm,trail,sl,target,timer,
     }
     console.log(sublegdata)
     const payload = JSON.stringify({sublegdata,Blockid,strategy
@@ -181,6 +196,8 @@ const [expiries, setExpiries] = useState([]);
     
     
       const type = "POST"
+
+
     
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
@@ -343,18 +360,18 @@ const [expiries, setExpiries] = useState([]);
     <>
 
     
-     <div className=" bg-blue-600 rounded-md absolute right-14 bottom-10 w-9/12 p-3">
+     <div className=" bg-blue-600 rounded-md absolute right-14 bottom-10 w-9/12 max-xs:bottom-0 max-xs:h-full p-3 max-xs:overflow-y-scroll">
      <div className="w-[98%]">
      <div className=" flex flex-row-reverse">
      <Button onClick={onClose}  className="bg-red-600">X</Button>
      </div>
 
 <div className="mt-4">
-  <div className="flex rounded-sm px-2 " style={{ background: '#CCCCCC' }}>
+  <div className="flex rounded-sm px-2 max-xs:flex-col " style={{ background: '#CCCCCC' }}>
     <div className="col-lg-6 my-3">
       <div className="row">
         <div className="col-sm-4 col-5">
-        <select  className='form-select' onChange={handleTradeadvice}>
+        <select  className='form-select'  onChange={(e)=>handleTradeadvice(e)}>
             <option value=""> TRADE ADVICE</option>
             <option value="spot">Spot </option>
             <option value="sequence">Sequnce </option>
@@ -404,7 +421,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
   <div className="col-lg-3 col-sm-5 col-9 mt-3">
     <div className="flex gap-3">
       <div className="col-6">
-        {strikePrice.length !== 0 ?
+        
           <select id="strikePriceSelect" className='form-select' onChange={() => setStrikePrice(e.target.value)}>
             <option>Select Strike Price</option>
             {strikePrice.map((Price, index) =>
@@ -415,7 +432,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
           <select id="strikePriceSelect" className='form-select'>
             <option>Select Strike Price</option>
           </select>
-        }
+        
       </div>
       <div className="col-6">
         <button type="button" className="btn btn-success">Automatic</button>
@@ -423,10 +440,10 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     </div>
   </div>
   <div className="col-lg-2 col-sm-2 col-3 mt-3">
-    <input type="text" className='form-control' placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
+  <input type="text" className='form-control' value= {strikeprice!=='Select Strike Price'?strikeprice:''} placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
   </div>
   <div className="col-lg-3 col-sm-5 mt-3">
-    <input type="number" className='form-control' onChange={(e)=>handlenearestatm(e)}  placeholder='Nearest ATM' />
+  <input type="number" value={nearestatm} className='form-control' onChange={(e)=>setNearestatm(e.target.value)}  placeholder='Nearest ATM' />
   </div>
   <div className="col-lg-2 col-6 mt-3">
     
@@ -470,64 +487,68 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     </div>
   </div>
 </div>
+
 <div className="row">
   <div className="col-lg-3 col-9 mt-3">
     <div className="row">
       <div className="col-6">
-        <button type="button" className="btn btn-light w-100">Strike</button>
+      <button type="button" className="btn btn-light w-100">Quantity</button>
+      <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Value" type="number"/>
+
       </div>
       <div className="col-6">
-        <button type="button" className="btn btn-success">Automatic</button>
+        <button type="button" className="btn btn-success w-100">AMOUNT</button>
       </div>
     </div>
   </div>
   <div className="col-lg-2 col-3 mt-3">
-    <input type="text" className='form-control' placeholder='Value' />
+  <input onChange={(e)=>setAmount(e.target.value)} value={Amount}   type="text"  className='form-control'  placeholder='Value'  />
+
   </div>
   <div className="col-lg-3 col-sm-6 mt-3">
     <div className="row">
       <div className="col-6">
-      <select  className='form-select'onChange={handlesltype}>
-            <option value=""> SL</option>
-            <option value="Points">Spot Points </option>
-            <option value="Percentage">Points</option>
-            <option value="Percentage">Value</option>
-            <option value="">%</option>
-      </select>
+      <select  className='form-select'onChange={(e)=>handlesltype(e)}>
+                      <option value=""> SL</option>
+                      <option value="SpotPoints">Spot Points </option>
+                      <option value="Points">Points</option>
+                      <option value="value">Value</option>
+                      <option value="Percentage">%</option>
+                </select>
               </div>
       <div className="col-6">
-        <input type="text"  onChange={(e)=>setblocksl(e.target.value)} value = {blocksl} placeholder='Manual Entry' className='form-control' />
+      <input type="text" onChange={(e)=>setsl(e.target.value)} value = {sl} placeholder='Manual Entry' className='form-control' />
       </div>
     </div>
   </div>
   <div className="col-lg-4 col-sm-6 mt-3">
     <div className="row">
       <div className="col-6">
-      <select  className='form-select'onChange={handletsltype}>
-            <option value=""> TRAILSL</option>
-            <option value="Points">Points </option>
-            <option value="Percentage">%</option>
-            </select>
+      <select  className='form-select'onChange={(e)=>handletsltype(e)}>
+                      <option value=""> TRAILSL</option>
+                      <option value="Points">Points </option>
+                      <option value="Percentage">%</option>
+      </select>
             </div>
       <div className="col-6">
-        <input type="text"  onChange={(e)=>setblocktrail(e.target.value)} value = {blocktrail}  placeholder='Manual Entry' className='form-control' />
+      <input type="text" onChange={(e)=>settrail(e.target.value)} value = {trail} placeholder='Manual Entry' className='form-control' />
       </div>
     </div>
   </div>
   <div className="col-lg-3 col-sm-6 mt-3 offset-lg-5">
     <div className="row">
       <div className="col-6">
-      <select  className='form-select'onChange={handleTargettype}>
-            <option value="">Target</option>
-            <option value="Points">Spot Points </option>
-            <option value="Percentage">Points</option>
-            <option value="Percentage">Value</option>
-            <option value="">%</option>
-      </select>
+      <select  className='form-select'onChange={(e)=>handleTargettype(e)}>
+                      <option value="">Target</option>  
+                      <option value="Points">Spot Points </option>
+                      <option value="Points">Points</option>
+                      <option value="Value">Value</option>
+                      <option value="Percentage">%</option>
+                </select>
 
         </div>
       <div className="col-6">
-        <input type="text" onChange={(e)=>setblocktarget(e.target.value)} value = {blocktarget} placeholder='Manual Entry' className='form-control' />
+      <input type="text"  onChange={(e)=>settarget(e.target.value)} value = {target} placeholder='Manual Entry' className='form-control' />
       </div>
     </div>
   </div>
@@ -545,7 +566,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
         </Dropdown>
       </div>
       <div className="col-6">
-        <input type="text" onChange={(e)=>setblocktimer(e.target.value)} value = {blocktimer} placeholder='Manual Entry' className='form-control' />
+      <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='Manual Entry' className='form-control' />
       </div>
     </div>
   </div>
