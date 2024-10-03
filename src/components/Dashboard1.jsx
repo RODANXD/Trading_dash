@@ -625,7 +625,7 @@ const   handlecallput = (type)=>{
                     <Label htmlFor="email">PNL</Label>
                     <Input type="number" className=" text-black" placeholder="Value" />
                   </div>
-                  ++
+                
                 </div>
                 <div className="flex items-center justify-center">
                   <Button className="w-full sm:w-24"  onClick={()=>handleviewall(item.Blockid)}>
@@ -662,21 +662,19 @@ const   handlecallput = (type)=>{
                       <th className="border border-gray-300 p-1">LOT</th>
                       <th className="border border-gray-300 p-1">Status</th>
                       <th className="border border-gray-300 p-1">Symbol </th>
-                      <th className="border border-gray-300 p-1">Action</th>
                       <th className="border border-gray-300 p-1">Action Button</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {scriptData.map((item) => (
-                      <tr key={item.name} className="text-gray-800">
-                        <td className="border border-gray-300 p-1 text-white">{item.name}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.status}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
+                    {item.orderdata.map((item) => (
+                      <tr key={item.id} className="text-gray-800">
+                        <td className="border border-gray-300 p-1 text-white">{item.id}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.side}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.quantity}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.status?"ACTIVE":"OFF"}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.tradingsymbol}</td>
                         <td className="border border-gray-300 p-1">
-                          <Button className="text-xs p-2">{item.exit}</Button>
+                          <Button className="text-xs p-2">EXIT</Button>  
         
                         </td>
                       </tr>
