@@ -414,7 +414,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
 </div>
       )}
       </div>
-    </div>
+    </div>        
   </div>
 </div>
 <div className={`flex flex-wrap ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
