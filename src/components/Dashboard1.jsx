@@ -2,12 +2,15 @@
 import * as React from "react";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { DatePickerInput } from '@mantine/dates';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Addleg from "./Addleg";
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
+import TimeRangePicker from "shadcn-time-range-picker";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -15,7 +18,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react"
+import TimePicker from 'react-time-picker';
+import 'react-time-picker/dist/TimePicker.css';
+import 'react-clock/dist/Clock.css';
+import Select from 'react-select';
+
 
 import DropdownMenuCheckboxes from './ui/dropdown'
 import Strategy1_form from "./Strategy1_form";
@@ -29,6 +39,7 @@ import {
 } from "@/components/ui/popover";
 
 import {handleexchangerequest} from '../utility/Api'
+
 
 function Custom() {
 
@@ -95,6 +106,16 @@ function Custom() {
   const [optionlabel,setoptionlabel]= useState('')
   const [call,setcall]= useState('')
   const [put,setput]= useState('')
+  const [value, onChange] = useState('10:00');
+
+
+// new usestate
+
+const [buysell, setbuysell] = useState(false)
+const [selectedOption, setSelectedOption] = useState(null)
+
+
+
 
 const   handlecallput = (type)=>{
   
@@ -167,7 +188,7 @@ const   handlecallput = (type)=>{
     const endpoint = "saveblockst1"
     const strategy= 1
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
-      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm}
+      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm, buysell}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
     const payload = JSON.stringify({strategy,tradetool,sublegdata})
     const type = "POST"
@@ -260,34 +281,49 @@ const   handlecallput = (type)=>{
       // setshowsymbol(false)
       setshowsymbol(true)
       setisContentDisabled(true)
-      setSelectVertical('stock')}
+      setSelectVertical('stock')
+      setbuysell(true)
+    }
 
-  if  (e.target.value==='OPTSTK'){
+  else if  (e.target.value==='OPTSTK'){
       // setshowsymbol(false)
       setshowsymbol(true)
       setSelectVertical('stock')
       setisContentDisabled(false)
+      setbuysell(true)
 
 }
 
-    if  (e.target.value==='FUTIDX'){
+    else if  (e.target.value==='FUTIDX'){
       setisContentDisabled(true)
       setshowsymbol(false)
+      setbuysell(true)
       }
     
-    if (e.target.value==='OPTIDX'){
+    else if (e.target.value==='OPTIDX'){
       setisContentDisabled(false)
       setshowsymbol(false)
+      setbuysell(true)
     }
-    if (e.target.value==='CASH'){
+    else if (e.target.value==='CASH'){
       setisContentDisabledEXP(true)
+      setbuysell(true)
+      setisContentDisabled(true)
       setshowsymbolEXP(false)
       setshowsymbol(true)
 
     }
+    else if (e.target.value === 'SLEFNO'){
+      setisContentDisabled(true)
+      setshowsymbol(true)
+      setbuysell(false)
+
+    }
     else {
       setisContentDisabledEXP(false);
+      setbuysell(false)
     }
+  
 
     const sdd = localStorage.getItem("token");
     const t = "token " + sdd;
@@ -537,6 +573,10 @@ const   handlecallput = (type)=>{
     { name: "RAMCOCEM", candleHighLow: "826.15", longshort: "LONG", status: "EXECUTED", pnl: "+200", cancel: "CANCEL", exit: "EXIT" },
     { name: "EXIDEIND", candleHighLow: "504.90", longshort: "SHORT", status: "PENDING", pnl: "", cancel: "CANCEL", exit: "EXIT" },
   ];
+
+  const handleTimeRangeChange = (timeRange) => {
+    console.log(`Selected time range: ${timeRange}`);
+  };
   return (
     <>
     {!viewall && (
@@ -571,22 +611,7 @@ const   handlecallput = (type)=>{
       </Popover>
         </div>
         
-        <div className="col-span-1 sm:col-span-2 lg:col-span-1 order-2 sm:order-3 lg:order-2">
-          <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
-            <Button variant="outline" className="w-100 text-xs sm:text-sm">
-              Max Moving High {890}
-            </Button>
-            <Button variant="outline" className="w-full text-xs sm:text-sm">
-              Avg Moving
-            </Button>
-            <Button variant="outline" className="w-full text-xs sm:text-sm">
-              Max Drawdown
-            </Button>
-            <Button variant="outline" className="w-full text-xs sm:text-sm">
-              Up Avg Moving
-            </Button>
-          </div>
-        </div>
+        
       </div>
 
       {!addtrade && (
@@ -595,8 +620,27 @@ const   handlecallput = (type)=>{
      
      <div>
      <div className="h-full mt-3 flex flex-col gap-3">
+      
+      
             <div className="w-full border border-white rounded-sm p-2 text-xs text-white">
-      <p className="text-white">{item.Blockid}</p>
+            <p className="text-white">{item.Blockid}</p>
+            <div className="col-span-1 sm:col-span-2 lg:col-span-1 order-2 sm:order-3 lg:order-2">
+          <div className="grid grid-cols-2 place-items-center mb-2 sm:grid-cols-2 gap-2">
+            <Button variant="outline" className="w-1/2 text-xs text-black sm:text-sm">
+              Max Moving High {890}
+            </Button>
+            <Button variant="outline" className="w-1/2 text-xs text-black sm:text-sm">
+              Avg Moving
+            </Button>
+            <Button variant="outline" className="w-1/2 text-xs text-black sm:text-sm">
+              Max Drawdown
+            </Button>
+            <Button variant="outline" className="w-1/2 text-xs text-black sm:text-sm">
+              Up Avg Moving
+            </Button>
+          </div>
+        </div>
+      
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
                
                 <div className="flex items-center justify-center">
@@ -627,7 +671,7 @@ const   handlecallput = (type)=>{
                     <Label htmlFor="email">PNL</Label>
                     <Input type="number" className=" text-black" placeholder="Value" />
                   </div>
-                  ++
+                 
                 </div>
                 <div className="flex items-center justify-center">
                   <Button className="w-full sm:w-24"  onClick={()=>handleviewall(item.Blockid)}>
@@ -704,14 +748,17 @@ const   handlecallput = (type)=>{
           <div className="col-lg-6 mt-3">
             <div className="row">
               <div className="col-4">
-                <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender(!showCalender), setShowCalender2(false))}>Trade Validity <i className="fa fa-angle-down" /></button>
-                {/* <DatePickerInput className='text-white'
-      valueFormat="YYYY MMM DD"
-      type="multiple"
-      label="Pick date"
-      placeholder="Pick date"
-    /> */}
+                {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender(!showCalender), setShowCalender2(false))}>Trade Validity <i className="fa fa-angle-down" /></button> */}
+                <DatePicker
+                className="bg-white text-black"
+          selected={tradevalidity}
+          onChange={(date) => Settradevalidity(date)}
+          
+          dateFormat="MMMM d, yyyy h:mm aa"
+          customInput={<button className="btn btn-outline-secondary w-100">Trade Validity</button>}
+        />
               </div>
+
               
               <div className="col-4">
               <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
@@ -724,8 +771,16 @@ const   handlecallput = (type)=>{
                 
               </div>
               <div className="col-4">
+              <DatePicker
+              className="bg-white text-black"
 
-                <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender2(!showCalender2), setShowCalender(false))}>No Trading Zone <i className="fa fa-angle-down" /></button>
+          selected={Notradingzone}
+          onChange={(date) => SetNotradingzone(date)}
+          showTimeSelect
+          dateFormat="MMMM d, yyyy h:mm aa"
+          customInput={<button className="btn btn-outline-secondary w-100">No Trading Zone</button>}
+        />
+                {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender2(!showCalender2), setShowCalender(false))}>No Trading Zone <i className="fa fa-angle-down" /></button> */}
               </div>
             </div>
             {showCalender ? 
@@ -777,8 +832,8 @@ const   handlecallput = (type)=>{
                 </select>
               </div>
               <div className="col-span-1">
-                <select id="selectVertical" className='form-select w-full' onChange={(e)=>handleSelectdisable(e)} value={fno}>
-                  <option value="">Select FNO</option>
+                <select id="selectVertical" className='form-select w-full' multiple="" onChange={(e)=>handleSelectdisable(e)} value={fno}>
+                  <option value="SLEFNO">Select FNO</option>
                   <option value="FUTIDX">FUTURE</option>
                   <option value="OPTIDX">OPTION</option>
                   <option value="FUTSTK">STOCK FUTURE</option>
@@ -788,7 +843,7 @@ const   handlecallput = (type)=>{
               </div>
               <div className={`col-span-1 ${showsymbol ? '' : 'hidden'}`}>
                 {showsymbol ?
-                  <select id="SymbolSelect" className='form-select w-full' onChange={(e) => handleselectsymbol(e)} value={selectsymbol}>
+                  <select id="SymbolSelect"  className='form-select w-full' onChange={(e) => handleselectsymbol(e)} value={selectsymbol}>
                     <option>Select Symbol</option>
                     {Symbol.map((val, index) =>
                       <option key={index} value={val}>{val}</option>
@@ -855,7 +910,6 @@ const   handlecallput = (type)=>{
                        onCheckedChange={()=>handlelegselect(Item.sublegid)}>
                         {Item.sublegid}
                         </DropdownMenuCheckboxItem>
-                        
 
                         )}
                       </DropdownMenuContent>
@@ -876,8 +930,9 @@ const   handlecallput = (type)=>{
               </div>
             </div>
           </div>
+          <div className=" flex justify-between flex-wrap">
           <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
-            <div className="col-lg-3 col-sm-5 col-9 mt-3">
+            <div className="col-lg-5 col-sm-5 col-9 mt-3">
               <div className="row">
                 <div className="col-6">
                   
@@ -894,23 +949,19 @@ const   handlecallput = (type)=>{
                 </div>
               </div>
             </div>
-            <div className="col-lg-2 col-sm-2 col-3 mt-3">
+            <div className="col-lg-3 col-sm-2 col-3 mt-3">
               <input type="text" className='form-control' value= {strikeprice!=='Select Strike Price'?strikeprice:''} placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
             </div>
             <div className="col-lg-3 col-sm-5 mt-3">
               <input type="number" value={nearestatm} className='form-control' onChange={(e)=>setNearestatm(e.target.value)}  placeholder='Nearest ATM' />
             </div>
-            <div className="col-lg-2 col-6 mt-3">
-              
-              <div className="row">
-                {/* <div className="col-6"> */}
-                  {/* <button type="button" className="btn btn-light w-100">(-)</button> */}
-                {/* </div> */}
-                {/* <div className="col-6"> */}
-                  {/* <button type="button" className="btn btn-danger w-100">(+)</button> */}
-                {/* </div> */}
-              </div>
             </div>
+            
+            
+            
+               
+             
+            
             <div className="col-lg-2 col-6 mt-3">
               <div className="row">
                 <div className="col-6">
@@ -918,28 +969,38 @@ const   handlecallput = (type)=>{
               setoptionlabel('Call');
               setput('');
             }}
-            type="button"  className={`px-4 text-black py-2 rounded ${getButtonColor('Call')}`}>Call</button>
+            type="button"  className={`px-4 text-black  py-2 rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Call')}`}>Call</button>
                 </div>
+                {buysell &&(
                 <div className="col-6">
                 <button  onClick={()=>handlecallput('BUY')} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
                 </div>
+                )}
               </div>
             </div>
+            </div>
+            
             <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
               <div className="row">
                 <div className="col-6">
                 <button onClick={() => {
               setoptionlabel('Put');
               setcall('');
-            }} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Put')}`}>Put</button>
+            }} type="button"  className={`px-4 py-2 text-black rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Put')}`}>Put</button>
                 </div>
+                {buysell && (
                 <div className="col-6">
                 <button  onClick={()=>handlecallput('SELL')} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
 
                 </div>
+                )}
               </div>
             </div>
-          </div>
+            </>
+
+            <>
+             
+          
           <div className="row">
             <div className="col-lg-3 col-9 mt-3">
               <div className="row">
@@ -1004,17 +1065,42 @@ const   handlecallput = (type)=>{
             </div>
             <div className="col-lg-4 col-sm-6 mt-3">
               <div className="row">
-                <div className="col-6">
-                  <Dropdown>
-                    <Dropdown.Toggle variant="light" id="dropdown-basic" className="w-100">
-                      Timer
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {/* <Dropdown.Item href='#'>Point</Dropdown.Item> */}
-                      {/* <Dropdown.Item href='#'>Percentage</Dropdown.Item> */}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
+              <div className="col-6">
+      <Popover  >
+        <PopoverTrigger asChild>
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="w-full justify-between">
+                  Timer <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onSelect={() => setSelectedOption('time')}>
+                  Time
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setSelectedOption('hours')}>
+                  Hrs/Min
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </PopoverTrigger>
+        <PopoverContent className="w-80" >
+          {selectedOption === 'time' && <TimeRangePicker applyButtonText="ok" />}
+          {selectedOption === 'hours' &&  <TimePicker
+        onChange={onChange}
+        value={value}
+        clearIcon={null}
+        clockIcon={null}
+        disableClock={true}
+        format="HH:mm"
+        className="bg-white"
+      />}
+         
+        </PopoverContent>
+      </Popover>
+    </div>
                 <div className="col-6">
                   <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='Manual Entry' className='form-control' />
                 </div>
