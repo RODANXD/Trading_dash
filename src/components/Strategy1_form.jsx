@@ -7,6 +7,10 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { DatePickerInput } from '@mantine/dates';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import DatePicker from 'react-datepicker'
+import TimeRangePicker from "shadcn-time-range-picker";
+import "react-datepicker/dist/react-datepicker.css"
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -100,6 +104,10 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [trail,settrail]=useState(0)
   const [target,settarget]=useState('')
   const [timer,settimer]=useState('')
+  const [call,setcall]= useState('')
+  const [Notradingzone, SetNotradingzone] = useState(new Date());
+  
+
 
 
 
@@ -308,6 +316,8 @@ useEffect(()=>{
     })
   }
 
+  
+
   const handleviewdetail = (Blockid=blockid)=>
   
     {
@@ -343,6 +353,8 @@ useEffect(()=>{
     console.log(response)
     })
   }
+
+  
 
 
  
@@ -487,32 +499,42 @@ useEffect(()=>{
       <div className="row">
         <div className="col-lg-6 mt-3">
           <div className="row">
-            <div className="col-4">
-              <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender(!showCalender), setShowCalender2(false))}>Trade Validity <i className="fa fa-angle-down" /></button>
-              {/* <DatePickerInput className='text-white'
-    valueFormat="YYYY MMM DD"
-    type="multiple"
-    label="Pick date"
-    placeholder="Pick date"
-  /> */}
-            </div>
-            
-            
-            <div className="col-4">
-            <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
-                  <option value="">Select Tradetype</option>
-                  <option value="Intrday">Intrday</option>
-                  <option value="Carryforward">Carryforward</option>
-                </select>
+              <div className="col-4">
+                {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender(!showCalender), setShowCalender2(false))}>Trade Validity <i className="fa fa-angle-down" /></button> */}
+                <DatePicker
+                className="bg-white text-black"
+          selected={tradevalidity}
+          onChange={(date) => Settradevalidity(date)}
+          
+          dateFormat="MMMM d, yyyy h:mm aa"
+          customInput={<button className="btn btn-outline-secondary w-100">Trade Validity</button>}
+        />
+              </div>
 
-                
               
-            </div>
-            <div className="col-4">
+              <div className="col-4">
+              <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
+                    <option value="">Select Tradetype</option>
+                    <option value="Intrday">Intrday</option>
+                    <option value="Carryforward">Carryforward</option>
+                  </select>
 
-              <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender2(!showCalender2), setShowCalender(false))}>No Trading Zone <i className="fa fa-angle-down" /></button>
+                  
+                
+              </div>
+              <div className="col-4">
+              <DatePicker
+              className="bg-white text-black"
+
+          selected={Notradingzone}
+          onChange={(date) => SetNotradingzone(date)}
+          showTimeSelect
+          dateFormat="MMMM d, yyyy h:mm aa"
+          customInput={<button className="btn btn-outline-secondary w-100">No Trading Zone</button>}
+        />
+                {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender2(!showCalender2), setShowCalender(false))}>No Trading Zone <i className="fa fa-angle-down" /></button> */}
+              </div>
             </div>
-          </div>
           {showCalender ? 
               // <div style={{ position: 'absolute', zIndex: '999' }}><Calendar onChange={onChange} value={value} /></div>
               
@@ -618,7 +640,7 @@ useEffect(()=>{
       </div>
     </div>
     
-    {defaultstrikePrices !== '' ? <h1 className='mt-3'>Current Spot Price <span className='bg-secondary text-white px-2 py-1 fs-3'>₹ {defaultstrikePrices}</span></h1> : <></>}
+    {/* {defaultstrikePrices !== '' ? <h1 className='mt-3'>Current Spot Price <span className='bg-secondary text-white px-2 py-1 fs-3'>₹ {defaultstrikePrices}</span></h1> : <></>} */}
     
    
     
@@ -681,19 +703,15 @@ useEffect(()=>{
         <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
           <div className="col-lg-3 col-sm-5 col-9 mt-3">
             <div className="row">
-              <div className="col-6">
-                {strikePrices.length !== 0 ?
-                  <select id="strikePriceSelect" className='form-select' onChange={() => setIsStrikeSelected(true)}>
+            <div className="col-6">
+                  
+                  <select id="strikePriceSelect" className='form-select' onChange={(e) => setstrikeprice(e.target.value)}>
                     <option>Select Strike Price</option>
                     {strikePrices.map((Price, index) =>
                       <option key={index} value={Price}>{Price}</option>
                     )}
                   </select>
-                  :
-                  <select id="strikePriceSelect" className='form-select'>
-                    <option>Select Strike Price</option>
-                  </select>
-                }
+                
               </div>
               <div className="col-6">
                 <button type="button" className="btn btn-success w-100">Automatic</button>
@@ -835,20 +853,21 @@ useEffect(()=>{
         </h2>
         
           <div >
-            <div className="row">
-              <div className="col-lg col-sm-4 mt-3">
-                <input type="number" className='form-control'  value={Activeleg} onchange = { (e)=>handlesetactive(e.target.value)} placeholder='Active' />
+          <div className="row">
+                <div className="col-lg col-sm-4 mt-3">
+                  <input type="number" className='form-control' onchange = {(e)=> handlesetactive(e)} placeholder='Active' />
+                </div>
+                <div className="col-lg col-sm-4 mt-3">
+                  <input type="number" className='form-control' onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
+                </div>
+                <div className="col-lg col-sm-4 mt-3">
+                  <input type="number" className='form-control'  onchange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
+                </div>
+                <div className="col-lg col-sm-6 mt-3">
+                  <input type="number" className='form-control' onchange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
+                </div>
+                
               </div>
-              <div className="col-lg col-sm-4 mt-3">
-                <input type="number" className='form-control'  value={lockleg} onChange={(e)=>handlesetlock(e.target.value)} placeholder='Lock' />
-              </div>
-              <div className="col-lg col-sm-4 mt-3">
-                <input type="number" className='form-control'  value={tslleg}  onchange= {(e)=>handletslleg(e.target.value)} placeholder='Trail Profit' />
-              </div>
-              <div className="col-lg col-sm-6 mt-3">
-                <input type="number" className='form-control' value={targetleg} onchange={(e)=>handleLegTarget(e.target.value)} placeholder='TARGET' />
-              </div>
-            </div>
           </div>
       
       </>

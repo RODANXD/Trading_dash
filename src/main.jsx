@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@mantine/core/styles.css';
 import './index.css'
 
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
