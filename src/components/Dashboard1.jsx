@@ -81,7 +81,6 @@ function Custom() {
   const [target,settarget]=useState('')
   const [timer,settimer]=useState('')
   const [showsymbol,setshowsymbol]=useState(false)
-  const [showsymbolEXP,setshowsymbolEXP]=useState(false)
   const [selectsymbol,setselectsymbol]=useState('')
 
   
@@ -111,8 +110,9 @@ function Custom() {
 
 // new usestate
 
-const [buysell, setbuysell] = useState(false)
-const [selectedOption, setSelectedOption] = useState(null)
+
+const [selectedOption, setSelectedOption] = useState('')
+const [instruction, setinstruction] = useState('')
 
 
 
@@ -129,6 +129,19 @@ const   handlecallput = (type)=>{
     setput(type)
     setoptionlabel('')
   }
+  if (fno==='EQ'){
+    setinstruction(type)
+    setoptionlabel('')
+  }
+  
+  if (fno==='FUTIDX'){
+    setinstruction(type)
+    setoptionlabel('')
+  }
+  if (fno==='STXIDX'){
+    setinstruction(type)
+    setoptionlabel('')
+  }
   }
   const getButtonColor = (buttonType) => {
     if (buttonType === 'Call') {
@@ -142,6 +155,7 @@ const   handlecallput = (type)=>{
     }
     return 'bg-gray-200';
   };
+
   const handleOptionClick = (option) => {
     if (option !== optionlabel) {
       setoptionlabel(option);
@@ -188,7 +202,7 @@ const   handlecallput = (type)=>{
     const endpoint = "saveblockst1"
     const strategy= 1
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
-      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm, buysell}
+      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm, instruction}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
     const payload = JSON.stringify({strategy,tradetool,sublegdata})
     const type = "POST"
@@ -282,46 +296,47 @@ const   handlecallput = (type)=>{
       setshowsymbol(true)
       setisContentDisabled(true)
       setSelectVertical('stock')
-      setbuysell(true)
+   
     }
 
-  else if  (e.target.value==='OPTSTK'){
+   if  (e.target.value==='OPTSTK'){
       // setshowsymbol(false)
       setshowsymbol(true)
       setSelectVertical('stock')
       setisContentDisabled(false)
-      setbuysell(true)
+    
 
 }
 
-    else if  (e.target.value==='FUTIDX'){
+   if  (e.target.value==='FUTIDX'){
       setisContentDisabled(true)
       setshowsymbol(false)
-      setbuysell(true)
+ 
       }
     
-    else if (e.target.value==='OPTIDX'){
+   if (e.target.value==='OPTIDX'){
       setisContentDisabled(false)
       setshowsymbol(false)
-      setbuysell(true)
+    
     }
-    else if (e.target.value==='CASH'){
+   if (e.target.value==='EQ'){
       setisContentDisabledEXP(true)
-      setbuysell(true)
+     
       setisContentDisabled(true)
-      setshowsymbolEXP(false)
+      
+      setSelectVertical('stock')
       setshowsymbol(true)
 
     }
-    else if (e.target.value === 'SLEFNO'){
+   if (e.target.value === 'SLEFNO'){
       setisContentDisabled(true)
       setshowsymbol(true)
-      setbuysell(false)
+     
 
     }
     else {
       setisContentDisabledEXP(false);
-      setbuysell(false)
+      
     }
   
 
@@ -671,7 +686,7 @@ const   handlecallput = (type)=>{
                     <Label htmlFor="email">PNL</Label>
                     <Input type="number" className=" text-black" placeholder="Value" />
                   </div>
-                 
+                
                 </div>
                 <div className="flex items-center justify-center">
                   <Button className="w-full sm:w-24"  onClick={()=>handleviewall(item.Blockid)}>
@@ -708,21 +723,19 @@ const   handlecallput = (type)=>{
                       <th className="border border-gray-300 p-1">LOT</th>
                       <th className="border border-gray-300 p-1">Status</th>
                       <th className="border border-gray-300 p-1">Symbol </th>
-                      <th className="border border-gray-300 p-1">Action</th>
                       <th className="border border-gray-300 p-1">Action Button</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {scriptData.map((item) => (
-                      <tr key={item.name} className="text-gray-800">
-                        <td className="border border-gray-300 p-1 text-white">{item.name}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.status}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
-                        <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
+                    {item.orderdata.map((item) => (
+                      <tr key={item.id} className="text-gray-800">
+                        <td className="border border-gray-300 p-1 text-white">{item.id}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.side}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.quantity}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.status?"ACTIVE":"OFF"}</td>
+                        <td className="border border-gray-300 p-1 text-white">{item.tradingsymbol}</td>
                         <td className="border border-gray-300 p-1">
-                          <Button className="text-xs p-2">{item.exit}</Button>
+                          <Button className="text-xs p-2">EXIT</Button>  
         
                         </td>
                       </tr>
@@ -815,7 +828,7 @@ const   handlecallput = (type)=>{
                   onChange={(e)=>handlesegment(e)}
                 >
                   <option value=""> select segment</option>
-                  <option value="Cash">NSE </option>
+                  <option value="NSE">NSE </option>
                   <option value="NFO">NFO</option>
                   <option value="BFO">BFO</option>
                   <option value="BSE">BSE</option>
@@ -838,7 +851,7 @@ const   handlecallput = (type)=>{
                   <option value="OPTIDX">OPTION</option>
                   <option value="FUTSTK">STOCK FUTURE</option>
                   <option value="OPTSTK"> STOCK OPTION</option>
-                  <option value="CASH"> CASH</option>
+                  <option value="EQ"> CASH</option>
                 </select>
               </div>
               <div className={`col-span-1 ${showsymbol ? '' : 'hidden'}`}>
@@ -860,7 +873,7 @@ const   handlecallput = (type)=>{
                     {expiries.map((date, index) =>
                       <option key={index} value={date}>{date}</option>
                     )}
-                  </select>
+                  </select >
                   :
                   <select id="expirySelect" className='form-select w-full'>
                     <option>Select Expiry</option>
@@ -971,11 +984,11 @@ const   handlecallput = (type)=>{
             }}
             type="button"  className={`px-4 text-black  py-2 rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Call')}`}>Call</button>
                 </div>
-                {buysell &&(
+                
                 <div className="col-6">
                 <button  onClick={()=>handlecallput('BUY')} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
                 </div>
-                )}
+              
               </div>
             </div>
             </div>
@@ -988,12 +1001,12 @@ const   handlecallput = (type)=>{
               setcall('');
             }} type="button"  className={`px-4 py-2 text-black rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Put')}`}>Put</button>
                 </div>
-                {buysell && (
+               
                 <div className="col-6">
                 <button  onClick={()=>handlecallput('SELL')} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
 
                 </div>
-                )}
+               
               </div>
             </div>
             </>
@@ -1076,10 +1089,10 @@ const   handlecallput = (type)=>{
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onSelect={() => setSelectedOption('time')}>
+                <DropdownMenuItem onChange={() => setSelectedOption('time')}>
                   Time
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setSelectedOption('hours')}>
+                <DropdownMenuItem onChange={() => setSelectedOption('hours')}>
                   Hrs/Min
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -1089,8 +1102,8 @@ const   handlecallput = (type)=>{
         <PopoverContent className="w-80" >
           {selectedOption === 'time' && <TimeRangePicker applyButtonText="ok" />}
           {selectedOption === 'hours' &&  <TimePicker
-        onChange={onChange}
-        value={value}
+        
+        
         clearIcon={null}
         clockIcon={null}
         disableClock={true}

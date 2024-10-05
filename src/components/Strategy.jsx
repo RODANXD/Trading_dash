@@ -328,18 +328,18 @@ console.log(broker,'broker')
 </thead>
 <tbody>
 
-  {scriptData.map((item) => (
-    <tr key={item.name} className="text-gray-800 ">
-      <td className="border border-gray-300 p-1 text-white">{item.name}</td>
-      <td className="border border-gray-300 p-1 text-white">{item.candleHighLow}</td>
-      <td className="border border-gray-300 p-1 text-white">{item.longshort}</td>
-      <td className="border border-gray-300 p-1 text-white">{item.status}</td>
-      <td className="border border-gray-300 p-1 text-white">{item.pnl}</td>
-      <td className="border border-gray-300 p-1 text-white">{item.cancel}</td>
-      <td className="border border-gray-300 p-1 items-center flex justify-center">
-        <Button size="sm" className="">{item.exit}</Button>
+  {item.orderdata.map((item) => (
+    <tr key={item.id} className="text-gray-800 ">
+            <td className="border border-gray-300 p-1 text-white">{item.id}</td>
+      <td className="border border-gray-300 p-1 text-white">{item.side}</td>
+      <td className="border border-gray-300 p-1 text-white">{item.quantity}</td>
+      <td className="border border-gray-300 p-1 text-white">{item.status?"ACTIVE":"OFF"}</td>
+      <td className="border border-gray-300 p-1 text-white">{item.tradingsymbol}</td>
+      <td className="border border-gray-300 p-1">
+        <Button className="text-xs p-2">EXIT</Button>  
+
       </td>
-    </tr>
+      </tr>
   ))}
 </tbody>
 </table>
