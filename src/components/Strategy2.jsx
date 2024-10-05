@@ -16,7 +16,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuSeparator,  
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -42,6 +42,8 @@ export default function TradingForm() {
   const [viewall, setviewall] = useState(false);
   const [paper, setpaper] = useState(false);
   const [currentblock, setcurrentblock] = useState("");
+  const [scriptData,setscriptdata]=useState([])
+  const [headerData,setheaderData]=useState([])
 
   const [Tradeblockno, settradeblockno] = useState([]);
   const [head, Sethead] = useState([
@@ -96,53 +98,6 @@ export default function TradingForm() {
     entryDurationTime,
   ]);
 
-  const scriptData = [
-    {
-      name: "RAMCOCEM",
-      candleHighLow: "826.15",
-      longshort: "LONG",
-      status: "EXECUTED",
-      pnl: "+200",
-      cancel: "CANCEL",
-      exit: "EXIT",
-    },
-    {
-      name: "EXIDEIND",
-      candleHighLow: "504.90",
-      longshort: "SHORT",
-      status: "PENDING",
-      pnl: "",
-      cancel: "CANCEL",
-      exit: "EXIT",
-    },
-    {
-      name: "HINDALCO",
-      candleHighLow: "687.01",
-      longshort: "SHORT",
-      status: "CANCELLED",
-      pnl: "",
-      cancel: "CANCEL",
-      exit: "EXIT",
-    },
-    {
-      name: "BALKRISIND",
-      candleHighLow: "2865.04",
-      longshort: "LONG",
-      status: "REJECTED",
-      pnl: "",
-      cancel: "CANCEL",
-      exit: "EXIT",
-    },
-    {
-      name: "AMBUJACE",
-      candleHighLow: "630.32",
-      longshort: "LONG",
-      status: "EXECUTED",
-      pnl: "+300",
-      cancel: "CANCEL",
-      exit: "EXIT",
-    },
-  ];
 
   const [showStatusBar, setShowStatusBar] = React.useState(true);
   const [showActivityBar, setShowActivityBar] = React.useState(false);
@@ -209,9 +164,31 @@ export default function TradingForm() {
       }
     });
   };
-  useState(() => {
-    tradeblocklist();
-  }, []);
+
+
+// const [head,Sethead]= useState([{MovementTime:'', MovementContinuity:'',Amount:''}])
+const getindexdata = () => {
+  const endpoint = "momentumdata"
+  const strategy= 2
+  const payload = ''
+  const type = "GET"
+  handleexchangerequest(type, payload, endpoint)
+  .then(response => {
+    console.log(response,'eliminateddata')
+    setscriptdata(response.eliminateddata)
+    setheaderData(response.headerdata)
+
+// 
+  })
+
+};
+useState(() => {
+  tradeblocklist();
+  getindexdata()
+
+}, []);
+
+
 
   const handleviewall = (id) => {
     setviewall(true);
@@ -283,7 +260,8 @@ export default function TradingForm() {
                         </tr>
                       </thead>
                       <tbody className="text-white">
-                        <tr>
+                      { scriptData.map((script, index) =>(
+                         <tr key={index}>
                           <td className="border border-gray-300 p-2">
                             Long side
                           </td>
@@ -293,16 +271,9 @@ export default function TradingForm() {
                           <td className="border border-gray-300 p-2"></td>
                           <td className="border border-gray-300 p-2"></td>
                         </tr>
-                        <tr>
-                          <td className="border border-gray-300 p-2">
-                            Short Side
-                          </td>
-                          <td className="border border-gray-300 p-2">2</td>
-                          <td className="border border-gray-300 p-2">1</td>
-                          <td className="border border-gray-300 p-2"></td>
-                          <td className="border border-gray-300 p-2">1</td>
-                          <td className="border border-gray-300 p-2">+500</td>
-                        </tr>
+                        ))}
+
+                                                
                       </tbody>
                     </table>
                   </div>
@@ -335,7 +306,7 @@ export default function TradingForm() {
                         </tr>
                       </thead>
                       <tbody>
-                        {scriptData.map((script, index) => (
+                        { scriptData.map((script, index) => (
                           <tr
                             key={index}
                             className={
@@ -343,13 +314,13 @@ export default function TradingForm() {
                             }
                           >
                             <td className="py-2 px-4 border-b border-r">
-                              {script.name}
+                              {script.scriptname}
                             </td>
                             <td className="py-2 px-4 border-b border-r">
-                              {script.candleHighLow}
+                              {script.spotprice}
                             </td>
                             <td className="py-2 px-4 border-b border-r">
-                              {script.longshort}
+                              {script.side}
                             </td>
                             <td className="py-2 px-4 border-b border-r">
                               <span
@@ -383,7 +354,7 @@ export default function TradingForm() {
                                 size="sm"
                                 className="w-full"
                               >
-                                {script.cancel}
+                                
                               </Button>
                             </td>
                             
@@ -493,34 +464,21 @@ export default function TradingForm() {
                               </tr>
                             </thead>
                             <tbody>
-                              {scriptData.map((item) => (
-                                <tr key={item.name} className="text-gray-800 ">
-                                  <td className="border border-gray-300 p-1 text-white">
-                                    {item.name}
-                                  </td>
-                                  <td className="border border-gray-300 p-1 text-white">
-                                    {item.candleHighLow}
-                                  </td>
-                                  <td className="border border-gray-300 p-1 text-white">
-                                    {item.longshort}
-                                  </td>
-                                  <td className="border border-gray-300 p-1 text-white">
-                                    {item.status}
-                                  </td>
-                                  <td className="border border-gray-300 p-1 text-white">
-                                    {item.pnl}
-                                  </td>
-                                  <td className="border border-gray-300 p-1 text-white">
-                                    {item.cancel}
-                                  </td>
-                                  <td className="border border-gray-300 p-1 items-center flex justify-center">
-                                    <Button size="sm" className="">
-                                      {item.exit}
-                                    </Button>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
+                                {item.orderdata.map((item) => (
+                                  <tr key={item.id} className="text-gray-800 ">
+                                          <td className="border border-gray-300 p-1 text-white">{item.id}</td>
+                                    <td className="border border-gray-300 p-1 text-white">{item.side}</td>
+                                    <td className="border border-gray-300 p-1 text-white">{item.quantity}</td>
+                                    <td className="border border-gray-300 p-1 text-white">{item.status?"ACTIVE":"OFF"}</td>
+                                    <td className="border border-gray-300 p-1 text-white">{item.tradingsymbol}</td>
+                                    <td className="border border-gray-300 p-1">
+                                      <Button className="text-xs p-2">EXIT</Button>  
+                                                              
+                                    </td>
+                                    </tr>
+                                ))}
+                              
+                             </tbody>
                           </table>
                         </div>
                       </div>

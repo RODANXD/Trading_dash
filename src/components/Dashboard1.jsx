@@ -95,6 +95,7 @@ function Custom() {
   const [optionlabel,setoptionlabel]= useState('')
   const [call,setcall]= useState('')
   const [put,setput]= useState('')
+  const [instruction,setinstruction]= useState('')
 
 const   handlecallput = (type)=>{
   
@@ -107,7 +108,10 @@ const   handlecallput = (type)=>{
   if (optionlabel==='Put'){
     setput(type)
     setoptionlabel('')
+
   }
+
+  
   }
   const getButtonColor = (buttonType) => {
     if (buttonType === 'Call') {
@@ -260,7 +264,9 @@ const   handlecallput = (type)=>{
       // setshowsymbol(false)
       setshowsymbol(true)
       setisContentDisabled(true)
-      setSelectVertical('stock')}
+      setSelectVertical('stock')
+    
+    }
 
   if  (e.target.value==='OPTSTK'){
       // setshowsymbol(false)
@@ -269,6 +275,7 @@ const   handlecallput = (type)=>{
       setisContentDisabled(false)
 
 }
+
 
     if  (e.target.value==='FUTIDX'){
       setisContentDisabled(true)
@@ -279,10 +286,13 @@ const   handlecallput = (type)=>{
       setisContentDisabled(false)
       setshowsymbol(false)
     }
-    if (e.target.value==='CASH'){
+    if (e.target.value==='EQ'){
       setisContentDisabledEXP(true)
+      setisContentDisabled(true)
+
       setshowsymbolEXP(false)
       setshowsymbol(true)
+      setSelectVertical('stock')
 
     }
     else {
@@ -294,6 +304,8 @@ const   handlecallput = (type)=>{
 
 
     setLoading(true)
+
+
     const fetchData = async () => {
       try {
         // const response = await axios.get(`http://127.0.0.1:5000/option_chain?option_type=${event.target.value}`);
@@ -445,7 +457,7 @@ const   handlecallput = (type)=>{
   tradeblocklist()
   
   };
-
+  
   const handledatecahnge1= (e)=>{
     SetNotradingzone(e.target.value)
   }
@@ -527,8 +539,6 @@ const   handlecallput = (type)=>{
 
   const handleSelectChange = async (event) => {
     setSelectVertical(event.target.value)
-    const sdd = localStorage.getItem("token");
-    const t = "token " + sdd;
 
 
   };
@@ -758,7 +768,7 @@ const   handlecallput = (type)=>{
                   onChange={(e)=>handlesegment(e)}
                 >
                   <option value=""> select segment</option>
-                  <option value="Cash">NSE </option>
+                  <option value="NSE">NSE </option>
                   <option value="NFO">NFO</option>
                   <option value="BFO">BFO</option>
                   <option value="BSE">BSE</option>
@@ -768,10 +778,10 @@ const   handlecallput = (type)=>{
               <div className="col-span-1">
                 <select id="selectVertical" className='form-select w-full' onChange={(e) => handleSelectChange(e)} value={selectVertical}>
                   <option value="">Select Vertical</option>
-                  <option value="NIFTY">Nifty</option>
+                  <option  value="NIFTY">Nifty</option>
                   <option value="BANKNIFTY">BANKNIFTY</option>
-                  <option value="SENSEX">SENSEX</option>
                   <option value="FINNIFTY">FINNIFTY</option>
+                  <option   value="SENSEX">SENSEX</option>
                 </select>
               </div>
               <div className="col-span-1">
@@ -781,7 +791,7 @@ const   handlecallput = (type)=>{
                   <option value="OPTIDX">OPTION</option>
                   <option value="FUTSTK">STOCK FUTURE</option>
                   <option value="OPTSTK"> STOCK OPTION</option>
-                  <option value="CASH"> CASH</option>
+                  <option value="EQ"> CASH</option>
                 </select>
               </div>
               <div className={`col-span-1 ${showsymbol ? '' : 'hidden'}`}>
@@ -817,7 +827,7 @@ const   handlecallput = (type)=>{
         </div>
       </div>
       
-      {/* {defaultstrikePrices !== '' ? <h1 className='mt-3'>Current Spot Price <span className='bg-secondary text-white px-2 py-1 fs-3'>₹ {defaultstrikePrices}</span></h1> : <></>} */}
+      {defaultstrikePrices !== '' ? <h1 className='mt-3'>Current Spot Price <span className='bg-secondary text-white px-2 py-1 fs-3'>₹ {defaultstrikePrices}</span></h1> : <></>}
       
      
       
@@ -831,9 +841,9 @@ const   handlecallput = (type)=>{
                   <div className="col-sm-4 col-5">
                   <select  className='form-select' onChange={(e)=>handleTradeadvice(e)}>
                       <option value=""> TRADE ADVICE</option>
-                      <option value="spot">Spot </option>
-                      <option value="sequence">Sequnce </option>
-                      <option value="cover">cover </option>
+                      <option value="SPOT">Spot </option>
+                      <option value="SQUENCE">Sequnce </option>
+                      <option value="COVER">cover </option>
                       </select> 
                       </div>
                   <div className="col-4">

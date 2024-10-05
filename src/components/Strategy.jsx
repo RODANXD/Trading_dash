@@ -33,8 +33,18 @@ export default function Strategy() {
   const [Tradeblockno,settradeblockno]= useState([])
   const [currentblock,setcurrentblock]= useState('')
   const [isContentDisabled,setisContentDisabled]= useState(false)
-  
+  const [indexdata,setindexdata]= useState([
+    {NAME:"NIFTY",VALUE:0, },
+    {NAME:"BANKNIFTY",VALUE:0, },
+    {NAME:"FINNIFTY",VALUE:0, },
+    {NAME:"MIDCAP",VALUE:0, },
+    {NAME:"SENSEX",VALUE:0, },
+    {NAME:"PNL",VALUE:0, },
 
+
+
+  
+  ])
 
   
 
@@ -63,8 +73,29 @@ const [head,Sethead]= useState([{id:1,key:'MTime',value:0},
 
 
   )
+  
 
+
+  React.useEffect(()=>{
+
+  
+    getindexdata()
+  
+  
+  },[])
 // const [head,Sethead]= useState([{MovementTime:'', MovementContinuity:'',Amount:''}])
+const getindexdata = () => {
+  const endpoint = "indexscalpdata"
+  const strategy= 2
+  const payload = ''
+  const type = "GET"
+  handleexchangerequest(type, payload, endpoint)
+  .then(response => {
+    setindexdata(response)
+// 
+  })
+
+};
 
   
   const Addform = () => {
@@ -81,6 +112,9 @@ const [head,Sethead]= useState([{id:1,key:'MTime',value:0},
 
   };
 
+
+
+  
   const toggleActivation = (id,ac) => {
     const endpoint = "Activateblock"
     const Blockid= id
@@ -250,12 +284,12 @@ console.log(broker,'broker')
     </div>
         
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 max-xs:w-3/4 lg:grid-cols-6 gap-4">
-            {["Nifty", "Bank Nifty", "Sensex", "Midcap", "Finnifty", "PNL"].map((item) => (
+            {indexdata.map((item) => (
               <div key={item} className="flex flex-col items-center gap-2">
                 <Label variant="outline" className="w-full text-teal-50 text-lg">
-                  {item}
+                  {item.NAME}
                 </Label>
-                <Input placeholder="Value" type="number" className="w-full" />
+                  <Input  value={item.VALUE} placeholder="Value" type="number" className="w-full" />
               </div>
             ))}
           </div>
