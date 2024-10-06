@@ -260,16 +260,15 @@ useState(() => {
                         </tr>
                       </thead>
                       <tbody className="text-white">
-                      { scriptData.map((script, index) =>(
+                      { headerData.map((script, index) =>(
                          <tr key={index}>
-                          <td className="border border-gray-300 p-2">
-                            Long side
-                          </td>
-                          <td className="border border-gray-300 p-2">3</td>
-                          <td className="border border-gray-300 p-2">1</td>
-                          <td className="border border-gray-300 p-2">2</td>
-                          <td className="border border-gray-300 p-2"></td>
-                          <td className="border border-gray-300 p-2"></td>
+                          <td className="border border-gray-300 p-2">{script.side}</td>
+                          <td className="border border-gray-300 p-2">{script.Filteredscript}</td>
+                          <td className="border border-gray-300 p-2">{script.pending}</td>
+                          <td className="border border-gray-300 p-2">{script.executed}</td>
+                          <td className="border border-gray-300 p-2">{script.cancelled}</td>
+                          <td className="border border-gray-300 p-2">{script.pnl}</td>
+
                         </tr>
                         ))}
 

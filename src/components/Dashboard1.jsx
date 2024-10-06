@@ -114,7 +114,7 @@ function Custom() {
 const [selectedOption, setSelectedOption] = useState('')
 const [instruction, setinstruction] = useState('')
 
-
+console.log(selectedOption,'selectedOption')
 
 
 const   handlecallput = (type)=>{
@@ -831,27 +831,27 @@ const   handlecallput = (type)=>{
                   <option value="NSE">NSE </option>
                   <option value="NFO">NFO</option>
                   <option value="BFO">BFO</option>
-                  <option value="BSE">BSE</option>
                 </select>
               </div>
               
               <div className="col-span-1">
                 <select id="selectVertical" className='form-select w-full' onChange={(e) => handleSelectChange(e)} value={selectVertical}>
                   <option value="">Select Vertical</option>
-                  <option  value="NIFTY">Nifty</option>
-                  <option value="BANKNIFTY">BANKNIFTY</option>
-                  <option value="FINNIFTY">FINNIFTY</option>
-                  <option   value="SENSEX">SENSEX</option>
+                  {segment=='NFO'&&<option  value="NIFTY">Nifty</option>}
+                  {segment=='NFO'&&<option  value="BANKNIFTY">BANKNIFTY</option>}
+                  {segment=='NFO'&&<option  value="FINNIFTY">FINNIFTY</option>}
+                  {segment=='BFO'&& <option   value="SENSEX">SENSEX</option>}
                 </select>
-              </div>
+              </div>  
               <div className="col-span-1">
                 <select id="selectVertical" className='form-select w-full' multiple="" onChange={(e)=>handleSelectdisable(e)} value={fno}>
                   <option value="SLEFNO">Select FNO</option>
-                  <option value="FUTIDX">FUTURE</option>
-                  <option value="OPTIDX">OPTION</option>
-                  <option value="FUTSTK">STOCK FUTURE</option>
-                  <option value="OPTSTK"> STOCK OPTION</option>
-                  <option value="EQ"> CASH</option>
+                  {segment!='NSE' && <option value="FUTIDX">FUTURE</option>}
+                  {segment!='NSE' && <option value="OPTIDX">OPTION</option>}
+                  {segment!='NSE' &&<option value="FUTSTK">STOCK FUTURE</option>}
+                  {segment!='NSE' &&<option value="OPTSTK"> STOCK OPTION</option>}
+                  
+                  {segment=='NSE' && <option value="EQ"> CASH</option>}
                 </select>
               </div>
               <div className={`col-span-1 ${showsymbol ? '' : 'hidden'}`}>
@@ -1079,6 +1079,8 @@ const   handlecallput = (type)=>{
             <div className="col-lg-4 col-sm-6 mt-3">
               <div className="row">
               <div className="col-6">
+
+            
       <Popover  >
         <PopoverTrigger asChild>
           <div>
@@ -1089,10 +1091,10 @@ const   handlecallput = (type)=>{
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onChange={() => setSelectedOption('time')}>
+                <DropdownMenuItem onSelect={() => setSelectedOption('time')}>
                   Time
                 </DropdownMenuItem>
-                <DropdownMenuItem onChange={() => setSelectedOption('hours')}>
+                <DropdownMenuItem onSelect={() => setSelectedOption('hours')}>
                   Hrs/Min
                 </DropdownMenuItem>
               </DropdownMenuContent>
