@@ -20,11 +20,27 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils"
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command"
+import { Check, ChevronsUpDown } from "lucide-react"
+
 import { ChevronDown } from "lucide-react"
 import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
 import 'react-clock/dist/Clock.css';
-import Select from 'react-select';
+
+
+import DateRangePicker from "./ui/Datetimepicker";
 
 
 import DropdownMenuCheckboxes from './ui/dropdown'
@@ -107,14 +123,18 @@ function Custom() {
   const [put,setput]= useState('')
   const [value, onChange] = useState('10:00');
 
-
-// new usestate
-
-
-const [selectedOption, setSelectedOption] = useState('')
-const [instruction, setinstruction] = useState('')
+  
+  
+  // new usestate
+  
+  
+  const [selectedOption, setSelectedOption] = useState('')
+  const [instruction, setinstruction] = useState('')
+  const [Comboopen, setComboOpen] = React.useState(false)
+  const [Combovalue, setComboValue] = React.useState("")
 
 console.log(selectedOption,'selectedOption')
+
 
 
 const   handlecallput = (type)=>{
@@ -143,6 +163,38 @@ const   handlecallput = (type)=>{
     setoptionlabel('')
   }
   }
+
+  const frameworks = [
+    {
+      value: "next.js",
+      label: "Next.js",
+    },
+    {
+      value: "sveltekit",
+      label: "SvelteKit",
+    },
+    {
+      value: "nuxt.js",
+      label: "Nuxt.js",
+    },
+    {
+      value: "remix",
+      label: "Remix",
+    },
+    {
+      value: "astro",
+      label: "Astro",
+    },
+  ]
+
+  const handleSelectSymbol = (currentValue) => {
+    setValue(currentValue === value ? "" : currentValue)
+    setOpen(false)
+    if (onSymbolSelect) {
+      onSymbolSelect(currentValue)
+    }
+  }
+
   const getButtonColor = (buttonType) => {
     if (buttonType === 'Call') {
       return optionlabel === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200';
@@ -592,6 +644,9 @@ const   handlecallput = (type)=>{
   const handleTimeRangeChange = (timeRange) => {
     console.log(`Selected time range: ${timeRange}`);
   };
+
+  
+
   return (
     <>
     {!viewall && (
@@ -783,8 +838,11 @@ const   handlecallput = (type)=>{
                   
                 
               </div>
+              
               <div className="col-4">
-              <DatePicker
+              
+                <DateRangePicker className=" bg-white"/>
+              {/* <DatePicker
               className="bg-white text-black"
 
           selected={Notradingzone}
@@ -792,7 +850,9 @@ const   handlecallput = (type)=>{
           showTimeSelect
           dateFormat="MMMM d, yyyy h:mm aa"
           customInput={<button className="btn btn-outline-secondary w-100">No Trading Zone</button>}
-        />
+
+        /> */}
+        
                 {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender2(!showCalender2), setShowCalender(false))}>No Trading Zone <i className="fa fa-angle-down" /></button> */}
               </div>
             </div>
@@ -856,24 +916,107 @@ const   handlecallput = (type)=>{
               </div>
               <div className={`col-span-1 ${showsymbol ? '' : 'hidden'}`}>
                 {showsymbol ?
-                  <select id="SymbolSelect"  className='form-select w-full' onChange={(e) => handleselectsymbol(e)} value={selectsymbol}>
-                    <option>Select Symbol</option>
-                    {Symbol.map((val, index) =>
-                      <option key={index} value={val}>{val}</option>
-                    )}
-                  </select>
+                
+                  // <select id="SymbolSelect"  className='form-select w-full' onChange={(e) => handleselectsymbol(e)} value={selectsymbol}>
+                  //   <option>Select Symbol</option>
+                  //   {Symbol.map((val, index) =>
+                  //     <option key={index} value={val}>{val}</option>
+                  //   )}
+                  // </select>
+
+                  <Popover open={Comboopen} onOpenChange={setComboOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={Comboopen}
+                      className="w-[200px] justify-between"
+                    >
+                      {Combovalue || "Select Symbol"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search symbol..." />
+                      <CommandList>
+                        <CommandEmpty>No symbol found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem value="select-symbol" onSelect={() => handleSelectSymbol("")}>
+                            Select Symbol
+                          </CommandItem>
+                          {Symbol.map((symbol, index) => (
+                            <CommandItem
+                              key={index}
+                              value={symbol}
+                              onSelect={() => handleSelectSymbol(symbol)}
+                            >
+                              <Check
+                                className={`mr-2 h-4 w-4 ${
+                                  comboValue === symbol ? "opacity-100" : "opacity-0"
+                                }`}
+                              />
+                              {symbol}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
                 : <></>}
+                
               </div>
 
 
               <div className={`col-span-1 ${isContentDisabledEXP ? 'opacity-50 pointer-events-none' : ''}`}>
                 {expiries.length !== 0 ?
-                  <select id="expirySelect" className='form-select w-full' disabled={isContentDisabledEXP}  onChange={(e) => sethandleexpiry(e)} value={expiry}>
-                    <option>Select Expiry</option>
-                    {expiries.map((date, index) =>
-                      <option key={index} value={date}>{date}</option>
-                    )}
-                  </select >
+                  // <select id="expirySelect" className='form-select w-full' disabled={isContentDisabledEXP}  onChange={(e) => sethandleexpiry(e)} value={expiry}>
+                  //   <option>Select Expiry</option>
+                  //   {expiries.map((date, index) =>
+                  //     <option key={index} value={date}>{date}</option>
+                  //   )}
+                  // </select >
+                  <Popover open={Comboopen} onOpenChange={setComboOpen}>
+                   <PopoverTrigger asChild>
+                   <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={Comboopen}
+                      className="w-[200px] justify-between"
+                    >
+                      {Combovalue || "Select Symbol"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search symbol..." />
+                      <CommandList>
+                        <CommandEmpty>No symbol found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem value="select-symbol" onChange={(e) => sethandleexpiry(e)}>
+                            Select Symbol
+                          </CommandItem>
+                          {expiries.map((symbol, index) => (
+                            <CommandItem
+                              key={index}
+                              value={symbol}
+                              onSelect={() => handleSelectSymbol(symbol)}
+                            >
+                              <Check
+                                className={`mr-2 h-4 w-4 ${
+                                  Comboopen === symbol ? "opacity-100" : "opacity-0"
+                                }`}
+                              />
+                              {symbol}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
                   :
                   <select id="expirySelect" className='form-select w-full'>
                     <option>Select Expiry</option>
