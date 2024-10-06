@@ -1018,9 +1018,32 @@ const   handlecallput = (type)=>{
                   </PopoverContent>
                 </Popover>
                   :
-                  <select id="expirySelect" className='form-select w-full'>
-                    <option>Select Expiry</option>
-                  </select>
+                  <Popover open={Comboopen} onOpenChange={setComboOpen}>
+                   <PopoverTrigger asChild>
+                   <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={Comboopen}
+                      className="w-[200px] justify-between"
+                    >
+                      {Combovalue || "Select Expiry"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search symbol..." />
+                      <CommandList>
+                        <CommandEmpty>No Expiry.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem value="select-symbol" onChange={(e) => sethandleexpiry(e)}>
+                            Select Expiry
+                          </CommandItem>
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
                 }
               </div>
 
