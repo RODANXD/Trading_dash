@@ -327,7 +327,6 @@ useEffect(()=>{
       handleexchangerequest(type, payload, endpoint)
       .then(response => {
         if (response.length!=0){
-          console.log(response,'headres')
 
         Sethead(response)
         
@@ -493,8 +492,7 @@ useEffect(()=>{
             </div>
           </div>
 
-    
-    <div className=' flex flex-col gap-4'>
+        <div className=' flex flex-col gap-4'>
     <div className="mt-2">
       <div className="row">
         <div className="col-lg-6 mt-3">
@@ -592,6 +590,10 @@ useEffect(()=>{
                   <option value="">Select Vertical</option>
                   <option value="NIFTY">Nifty</option>
                   <option value="BANKNIFTY">BANKNIFTY</option>
+                  <option value="FINNIFTY">FINNIFTY</option>
+                  <option value="SENSEX">SENSEX</option>
+
+
                 </select>
                 :
                 <div className="text-center">
@@ -963,8 +965,8 @@ useEffect(()=>{
         </div>
         <div className="col-sm-6 mt-3 ">
         <button onClick={() => {
-                setAddtrade(false);
-              }} type="button" className="btn btn-danger w-100 btn-lg">Cancel</button>
+                onCancel();
+              }} type="button"  className="btn btn-danger w-100 btn-lg">Cancel</button>
           
         </div>
       </div>
