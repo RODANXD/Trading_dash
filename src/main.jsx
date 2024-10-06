@@ -4,6 +4,9 @@ import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@mantine/core/styles.css';
 import './index.css'
+import 'daterangepicker/daterangepicker.css'
+
+
 
 
 createRoot(document.getElementById('root')).render(
