@@ -130,8 +130,9 @@ function Custom() {
   
   const [selectedOption, setSelectedOption] = useState('')
   const [instruction, setinstruction] = useState('')
-  const [Comboopen, setComboOpen] = React.useState(false)
-  const [Combovalue, setComboValue] = React.useState("")
+  const [Comboopen, setComboOpen] = useState(false)
+  const [Combovalue, setComboValue] = useState(false)
+  const [Comsymbols, setComSymbols] = useState(false)
 
 console.log(selectedOption,'selectedOption')
 
@@ -164,36 +165,7 @@ const   handlecallput = (type)=>{
   }
   }
 
-  const frameworks = [
-    {
-      value: "next.js",
-      label: "Next.js",
-    },
-    {
-      value: "sveltekit",
-      label: "SvelteKit",
-    },
-    {
-      value: "nuxt.js",
-      label: "Nuxt.js",
-    },
-    {
-      value: "remix",
-      label: "Remix",
-    },
-    {
-      value: "astro",
-      label: "Astro",
-    },
-  ]
-
-  const handleSelectSymbol = (currentValue) => {
-    setValue(currentValue === value ? "" : currentValue)
-    setOpen(false)
-    if (onSymbolSelect) {
-      onSymbolSelect(currentValue)
-    }
-  }
+  
 
   const getButtonColor = (buttonType) => {
     if (buttonType === 'Call') {
@@ -208,17 +180,14 @@ const   handlecallput = (type)=>{
     return 'bg-gray-200';
   };
 
-  const handleOptionClick = (option) => {
-    if (option !== optionlabel) {
-      setoptionlabel(option);
-      setcall('');
-      setput('');
-    }
-  };
+  // const handleOptionClick = (option) => {
+  //   if (option !== optionlabel) {
+  //     setoptionlabel(option);
+  //     setcall('');
+  //     setput('');
+  //   }
+  // };
 
-  const [showStatusBar, setShowStatusBar] = React.useState(true);
-  const [showActivityBar, setShowActivityBar] = React.useState(false);
-  const [showPanel, setShowPanel] = React.useState(false);
 
   const [viewall, setviewall]= useState(false)
   const [Tradeblockno,settradeblockno]= useState([])
@@ -227,8 +196,7 @@ const   handlecallput = (type)=>{
   const [sublegid,setsublegid]= useState([
     {Blockid:'' ,sublegid:1,checked:false}
   ])
-  const [Lockleg,setlogleg]=useState(0)
-  const [optiondata,setoptiondata]= useState({type:'',side:''})
+
   const [Amount,setAmount]= useState('')
   const [addtrade,setAddtrade]= useState(false)
   const [advice,Setadvice]= useState('')
@@ -318,6 +286,12 @@ const   handlecallput = (type)=>{
     };
     fetchData();
 
+    useEffect(() => {
+      if (selectVertical && segment && Symbol) {
+        fetchData();
+      }
+    }, [selectVertical, segment, Symbol])
+
 
 
 
@@ -337,6 +311,8 @@ const   handlecallput = (type)=>{
 // 
 // 
   // },[])
+
+  
   
   
   
@@ -412,6 +388,7 @@ const   handlecallput = (type)=>{
           }
         );
         const data = await response.json();
+       
 
         console.log(data,'expiry')
         const removeDuplicates = [...new Set(data.message.Expiry)];
@@ -813,23 +790,25 @@ const   handlecallput = (type)=>{
 
      {addtrade?( <div className=' flex flex-col gap-4'>
       <div className="mt-2">
-        <div className="row">
+        <div className="flex gap-24 w-full">
           <div className="col-lg-6 mt-3">
-            <div className="row">
+            <div className="flex gap-24">
               <div className="col-4">
+           <label className="text-white">Trade Validity</label>
                 {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender(!showCalender), setShowCalender2(false))}>Trade Validity <i className="fa fa-angle-down" /></button> */}
                 <DatePicker
-                className="bg-white text-black"
+                className="bg-white text-black p-2 rounded-lg"
           selected={tradevalidity}
           onChange={(date) => Settradevalidity(date)}
           
           dateFormat="MMMM d, yyyy h:mm aa"
-          customInput={<button className="btn btn-outline-secondary w-100">Trade Validity</button>}
+          
         />
               </div>
 
               
-              <div className="col-4">
+              <div className="col-4 ml-5">
+                <label className="text-white">Tradetype</label>
               <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
                     <option value="">Select Tradetype</option>
                     <option value="Intrday">Intrday</option>
@@ -841,6 +820,7 @@ const   handlecallput = (type)=>{
               </div>
               
               <div className="col-4">
+                <lable className="text-white">No Trade zone</lable>
               
                 <DateRangePicker className=" bg-white"/>
               {/* <DatePicker
@@ -868,14 +848,7 @@ const   handlecallput = (type)=>{
 
              : <></>}</div>
           </div>
-          <div className="col-lg-6 mt-3">
-            <div className="row">
-              <div className="col-lg-4 col-sm-6 col-7 offset-lg-4">
-              </div>
-              <div className="col-lg-4 col-sm-6 col-5">
-              </div>
-            </div>
-          </div>
+          
         </div>
       </div>
 
@@ -933,7 +906,7 @@ const   handlecallput = (type)=>{
                       aria-expanded={Comboopen}
                       className="w-[200px] justify-between"
                     >
-                      {Combovalue || "Select Symbol"}
+                      {selectsymbol || "Select Symbol"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
@@ -943,18 +916,18 @@ const   handlecallput = (type)=>{
                       <CommandList>
                         <CommandEmpty>No symbol found.</CommandEmpty>
                         <CommandGroup>
-                          <CommandItem value="select-symbol" onSelect={() => handleSelectSymbol("")}>
+                          <CommandItem value="select-symbol" onChange={(e) => setselectsymbol(e)}>
                             Select Symbol
                           </CommandItem>
                           {Symbol.map((symbol, index) => (
                             <CommandItem
                               key={index}
                               value={symbol}
-                              onSelect={() => handleSelectSymbol(symbol)}
+                              onSelect={() => setselectsymbol(symbol)}
                             >
                               <Check
                                 className={`mr-2 h-4 w-4 ${
-                                  comboValue === symbol ? "opacity-100" : "opacity-0"
+                                  selectsymbol === symbol ? "opacity-100" : "opacity-0"
                                 }`}
                               />
                               {symbol}
@@ -978,15 +951,15 @@ const   handlecallput = (type)=>{
                   //     <option key={index} value={date}>{date}</option>
                   //   )}
                   // </select >
-                  <Popover open={Comboopen} onOpenChange={setComboOpen}>
+                  <Popover open={Comsymbols} onOpenChange={setComSymbols}>
                    <PopoverTrigger asChild>
                    <Button
                       variant="outline"
                       role="combobox"
-                      aria-expanded={Comboopen}
+                      aria-expanded={Comsymbols}
                       className="w-[200px] justify-between"
                     >
-                      {Combovalue || "Select Symbol"}
+                      {expiry || "Select Expiry"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
@@ -996,18 +969,18 @@ const   handlecallput = (type)=>{
                       <CommandList>
                         <CommandEmpty>No symbol found.</CommandEmpty>
                         <CommandGroup>
-                          <CommandItem value="select-symbol" onChange={(e) => sethandleexpiry(e)}>
+                          <CommandItem value="select-expiry" onChange={(e) => sethandleexpiry(e)}>
                             Select Symbol
                           </CommandItem>
                           {expiries.map((symbol, index) => (
                             <CommandItem
                               key={index}
                               value={symbol}
-                              onSelect={() => handleSelectSymbol(symbol)}
+                              onSelect={() => sethandleexpiry(symbol)}
                             >
                               <Check
                                 className={`mr-2 h-4 w-4 ${
-                                  Comboopen === symbol ? "opacity-100" : "opacity-0"
+                                  expiry === symbol ? "opacity-100" : "opacity-0"
                                 }`}
                               />
                               {symbol}
@@ -1019,15 +992,15 @@ const   handlecallput = (type)=>{
                   </PopoverContent>
                 </Popover>
                   :
-                  <Popover open={Comboopen} onOpenChange={setComboOpen}>
+                  <Popover open={Comsymbols} onOpenChange={setComSymbols}>
                    <PopoverTrigger asChild>
                    <Button
                       variant="outline"
                       role="combobox"
-                      aria-expanded={Comboopen}
+                      aria-expanded={Comsymbols}
                       className="w-[200px] justify-between"
                     >
-                      {Combovalue || "Select Expiry"}
+                      {expiry || "Select Expiry"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
@@ -1112,16 +1085,57 @@ const   handlecallput = (type)=>{
           </div>
           <div className=" flex justify-between flex-wrap">
           <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
-            <div className="col-lg-5 col-sm-5 col-9 mt-3">
+            <div className="col-lg-6 col-sm-5 col-9 mt-3">
               <div className="row">
                 <div className="col-6">
                   
-                    <select id="strikePriceSelect" className='form-select' onChange={(e) => setstrikeprice(e.target.value)}>
+                    {/* <select id="strikePriceSelect" className='form-select' onChange={(e) => setstrikeprice(e.target.value)}>
                       <option>Select Strike Price</option>
                       {strikePrices.map((Price, index) =>
                         <option key={index} value={Price}>{Price}</option>
                       )}
-                    </select>
+                    </select> */}
+
+                  <Popover open={Combovalue} onOpenChange={setComboValue}>
+                   <PopoverTrigger asChild>
+                   <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={Combovalue}
+                      className="w-[200px] justify-between"
+                    >
+                      {strikeprice || "Select Price"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search Price..." />
+                      <CommandList>
+                        <CommandEmpty>No symbol found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem value="select-symbol" onChange={(e) => setstrikeprice(e.target.value)}>
+                            Select Price
+                          </CommandItem>
+                          {strikePrices.map((symbol, index) => (
+                            <CommandItem
+                              key={index}
+                              value={symbol}
+                              onSelect={() => setstrikeprice(symbol)}
+                            >
+                              <Check
+                                className={`mr-2 h-4 w-4 ${
+                                  strikeprice === symbol ? "opacity-100" : "opacity-0"
+                                }`}
+                              />
+                              {symbol}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
                   
                 </div>
                 <div className="col-6">
