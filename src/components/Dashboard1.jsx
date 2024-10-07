@@ -131,8 +131,8 @@ function Custom() {
   const [selectedOption, setSelectedOption] = useState('')
   const [instruction, setinstruction] = useState('')
   const [Comboopen, setComboOpen] = useState(false)
-  const [Combovalue, setComboValue] = React.useState("")
-  const [Comsymbols, setComSymbols] = React.useState([])
+  const [Combovalue, setComboValue] = useState(false)
+  const [Comsymbols, setComSymbols] = useState(false)
 
 console.log(selectedOption,'selectedOption')
 
@@ -167,19 +167,6 @@ const   handlecallput = (type)=>{
 
   
 
-  const handleSelectSymbol = (currentValue) => {
-    setComboValue(currentValue === value ? "" : currentValue)
-    setComboOpen(false)
-    if (setComSymbols) {
-      setComSymbols(currentValue)
-    }
-  }
-  const handleSelectExpiry = (currentValue) => {
-    setExpiry(currentValue)
-    setComboOpen(false)
-  }
-  
-
   const getButtonColor = (buttonType) => {
     if (buttonType === 'Call') {
       return optionlabel === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200';
@@ -193,17 +180,14 @@ const   handlecallput = (type)=>{
     return 'bg-gray-200';
   };
 
-  const handleOptionClick = (option) => {
-    if (option !== optionlabel) {
-      setoptionlabel(option);
-      setcall('');
-      setput('');
-    }
-  };
+  // const handleOptionClick = (option) => {
+  //   if (option !== optionlabel) {
+  //     setoptionlabel(option);
+  //     setcall('');
+  //     setput('');
+  //   }
+  // };
 
-  const [showStatusBar, setShowStatusBar] = React.useState(true);
-  const [showActivityBar, setShowActivityBar] = React.useState(false);
-  const [showPanel, setShowPanel] = React.useState(false);
 
   const [viewall, setviewall]= useState(false)
   const [Tradeblockno,settradeblockno]= useState([])
@@ -212,8 +196,7 @@ const   handlecallput = (type)=>{
   const [sublegid,setsublegid]= useState([
     {Blockid:'' ,sublegid:1,checked:false}
   ])
-  const [Lockleg,setlogleg]=useState(0)
-  const [optiondata,setoptiondata]= useState({type:'',side:''})
+
   const [Amount,setAmount]= useState('')
   const [addtrade,setAddtrade]= useState(false)
   const [advice,Setadvice]= useState('')
@@ -922,7 +905,7 @@ const   handlecallput = (type)=>{
                       aria-expanded={Comboopen}
                       className="w-[200px] justify-between"
                     >
-                      {Combovalue || "Select Symbol"}
+                      {selectsymbol || "Select Symbol"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
@@ -932,18 +915,18 @@ const   handlecallput = (type)=>{
                       <CommandList>
                         <CommandEmpty>No symbol found.</CommandEmpty>
                         <CommandGroup>
-                          <CommandItem value="select-symbol" onSelect={() => handleSelectSymbol("")}>
+                          <CommandItem value="select-symbol" onChange={(e) => setselectsymbol(e)}>
                             Select Symbol
                           </CommandItem>
-                          {Comsymbols.map((symbol, index) => (
+                          {Symbol.map((symbol, index) => (
                             <CommandItem
                               key={index}
                               value={symbol}
-                              onSelect={() => handleSelectSymbol(symbol)}
+                              onSelect={() => setselectsymbol(symbol)}
                             >
                               <Check
                                 className={`mr-2 h-4 w-4 ${
-                                  Combovalue === symbol ? "opacity-100" : "opacity-0"
+                                  selectsymbol === symbol ? "opacity-100" : "opacity-0"
                                 }`}
                               />
                               {symbol}
@@ -967,12 +950,12 @@ const   handlecallput = (type)=>{
                   //     <option key={index} value={date}>{date}</option>
                   //   )}
                   // </select >
-                  <Popover open={Comboopen} onOpenChange={setComboOpen}>
+                  <Popover open={Comsymbols} onOpenChange={setComSymbols}>
                    <PopoverTrigger asChild>
                    <Button
                       variant="outline"
                       role="combobox"
-                      aria-expanded={Comboopen}
+                      aria-expanded={Comsymbols}
                       className="w-[200px] justify-between"
                     >
                       {expiry || "Select Expiry"}
@@ -985,14 +968,14 @@ const   handlecallput = (type)=>{
                       <CommandList>
                         <CommandEmpty>No symbol found.</CommandEmpty>
                         <CommandGroup>
-                          <CommandItem value="select-symbol" onChange={(e) => sethandleexpiry(e)}>
+                          <CommandItem value="select-expiry" onChange={(e) => sethandleexpiry(e)}>
                             Select Symbol
                           </CommandItem>
                           {expiries.map((symbol, index) => (
                             <CommandItem
                               key={index}
                               value={symbol}
-                              onSelect={() => handleSelectSymbol(symbol)}
+                              onSelect={() => sethandleexpiry(symbol)}
                             >
                               <Check
                                 className={`mr-2 h-4 w-4 ${
@@ -1008,12 +991,12 @@ const   handlecallput = (type)=>{
                   </PopoverContent>
                 </Popover>
                   :
-                  <Popover open={Comboopen} onOpenChange={setComboOpen}>
+                  <Popover open={Comsymbols} onOpenChange={setComSymbols}>
                    <PopoverTrigger asChild>
                    <Button
                       variant="outline"
                       role="combobox"
-                      aria-expanded={Comboopen}
+                      aria-expanded={Comsymbols}
                       className="w-[200px] justify-between"
                     >
                       {expiry || "Select Expiry"}
@@ -1101,16 +1084,57 @@ const   handlecallput = (type)=>{
           </div>
           <div className=" flex justify-between flex-wrap">
           <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
-            <div className="col-lg-5 col-sm-5 col-9 mt-3">
+            <div className="col-lg-6 col-sm-5 col-9 mt-3">
               <div className="row">
                 <div className="col-6">
                   
-                    <select id="strikePriceSelect" className='form-select' onChange={(e) => setstrikeprice(e.target.value)}>
+                    {/* <select id="strikePriceSelect" className='form-select' onChange={(e) => setstrikeprice(e.target.value)}>
                       <option>Select Strike Price</option>
                       {strikePrices.map((Price, index) =>
                         <option key={index} value={Price}>{Price}</option>
                       )}
-                    </select>
+                    </select> */}
+
+                  <Popover open={Combovalue} onOpenChange={setComboValue}>
+                   <PopoverTrigger asChild>
+                   <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={Combovalue}
+                      className="w-[200px] justify-between"
+                    >
+                      {strikeprice || "Select Price"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search Price..." />
+                      <CommandList>
+                        <CommandEmpty>No symbol found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem value="select-symbol" onChange={(e) => setstrikeprice(e.target.value)}>
+                            Select Price
+                          </CommandItem>
+                          {strikePrices.map((symbol, index) => (
+                            <CommandItem
+                              key={index}
+                              value={symbol}
+                              onSelect={() => setstrikeprice(symbol)}
+                            >
+                              <Check
+                                className={`mr-2 h-4 w-4 ${
+                                  strikeprice === symbol ? "opacity-100" : "opacity-0"
+                                }`}
+                              />
+                              {symbol}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
                   
                 </div>
                 <div className="col-6">
