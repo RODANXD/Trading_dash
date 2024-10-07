@@ -31,7 +31,7 @@ const DateRangePicker = React.forwardRef(({ className, ...props }, ref) => {
   }, []);
 
   return (
-    <div className="p-4">
+    <div>
       <input 
         type="text" 
         name="datetimes" 

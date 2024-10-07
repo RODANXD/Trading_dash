@@ -130,8 +130,9 @@ function Custom() {
   
   const [selectedOption, setSelectedOption] = useState('')
   const [instruction, setinstruction] = useState('')
-  const [Comboopen, setComboOpen] = React.useState(false)
+  const [Comboopen, setComboOpen] = useState(false)
   const [Combovalue, setComboValue] = React.useState("")
+  const [Comsymbols, setComSymbols] = React.useState([])
 
 console.log(selectedOption,'selectedOption')
 
@@ -164,36 +165,20 @@ const   handlecallput = (type)=>{
   }
   }
 
-  const frameworks = [
-    {
-      value: "next.js",
-      label: "Next.js",
-    },
-    {
-      value: "sveltekit",
-      label: "SvelteKit",
-    },
-    {
-      value: "nuxt.js",
-      label: "Nuxt.js",
-    },
-    {
-      value: "remix",
-      label: "Remix",
-    },
-    {
-      value: "astro",
-      label: "Astro",
-    },
-  ]
+  
 
   const handleSelectSymbol = (currentValue) => {
-    setValue(currentValue === value ? "" : currentValue)
-    setOpen(false)
-    if (onSymbolSelect) {
-      onSymbolSelect(currentValue)
+    setComboValue(currentValue === value ? "" : currentValue)
+    setComboOpen(false)
+    if (setComSymbols) {
+      setComSymbols(currentValue)
     }
   }
+  const handleSelectExpiry = (currentValue) => {
+    setExpiry(currentValue)
+    setComboOpen(false)
+  }
+  
 
   const getButtonColor = (buttonType) => {
     if (buttonType === 'Call') {
@@ -318,6 +303,12 @@ const   handlecallput = (type)=>{
     };
     fetchData();
 
+    useEffect(() => {
+      if (selectVertical && segment && Symbol) {
+        fetchData();
+      }
+    }, [selectVertical, segment, Symbol])
+
 
 
 
@@ -337,6 +328,8 @@ const   handlecallput = (type)=>{
 // 
 // 
   // },[])
+
+  
   
   
   
@@ -412,6 +405,7 @@ const   handlecallput = (type)=>{
           }
         );
         const data = await response.json();
+       
 
         console.log(data,'expiry')
         const removeDuplicates = [...new Set(data.message.Expiry)];
@@ -812,23 +806,25 @@ const   handlecallput = (type)=>{
 
      {addtrade?( <div className=' flex flex-col gap-4'>
       <div className="mt-2">
-        <div className="row">
+        <div className="flex gap-24 w-full">
           <div className="col-lg-6 mt-3">
-            <div className="row">
+            <div className="flex gap-24">
               <div className="col-4">
+           <label className="text-white">Trade Validity</label>
                 {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender(!showCalender), setShowCalender2(false))}>Trade Validity <i className="fa fa-angle-down" /></button> */}
                 <DatePicker
-                className="bg-white text-black"
+                className="bg-white text-black p-2 rounded-lg"
           selected={tradevalidity}
           onChange={(date) => Settradevalidity(date)}
           
           dateFormat="MMMM d, yyyy h:mm aa"
-          customInput={<button className="btn btn-outline-secondary w-100">Trade Validity</button>}
+          
         />
               </div>
 
               
-              <div className="col-4">
+              <div className="col-4 ml-5">
+                <label className="text-white">Tradetype</label>
               <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
                     <option value="">Select Tradetype</option>
                     <option value="Intrday">Intrday</option>
@@ -840,6 +836,7 @@ const   handlecallput = (type)=>{
               </div>
               
               <div className="col-4">
+                <lable className="text-white">No Trade zone</lable>
               
                 <DateRangePicker className=" bg-white"/>
               {/* <DatePicker
@@ -867,14 +864,7 @@ const   handlecallput = (type)=>{
 
              : <></>}</div>
           </div>
-          <div className="col-lg-6 mt-3">
-            <div className="row">
-              <div className="col-lg-4 col-sm-6 col-7 offset-lg-4">
-              </div>
-              <div className="col-lg-4 col-sm-6 col-5">
-              </div>
-            </div>
-          </div>
+          
         </div>
       </div>
 
@@ -945,7 +935,7 @@ const   handlecallput = (type)=>{
                           <CommandItem value="select-symbol" onSelect={() => handleSelectSymbol("")}>
                             Select Symbol
                           </CommandItem>
-                          {Symbol.map((symbol, index) => (
+                          {Comsymbols.map((symbol, index) => (
                             <CommandItem
                               key={index}
                               value={symbol}
@@ -953,7 +943,7 @@ const   handlecallput = (type)=>{
                             >
                               <Check
                                 className={`mr-2 h-4 w-4 ${
-                                  comboValue === symbol ? "opacity-100" : "opacity-0"
+                                  Combovalue === symbol ? "opacity-100" : "opacity-0"
                                 }`}
                               />
                               {symbol}
@@ -985,7 +975,7 @@ const   handlecallput = (type)=>{
                       aria-expanded={Comboopen}
                       className="w-[200px] justify-between"
                     >
-                      {Combovalue || "Select Symbol"}
+                      {expiry || "Select Expiry"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
@@ -1006,7 +996,7 @@ const   handlecallput = (type)=>{
                             >
                               <Check
                                 className={`mr-2 h-4 w-4 ${
-                                  Comboopen === symbol ? "opacity-100" : "opacity-0"
+                                  expiry === symbol ? "opacity-100" : "opacity-0"
                                 }`}
                               />
                               {symbol}
@@ -1026,7 +1016,7 @@ const   handlecallput = (type)=>{
                       aria-expanded={Comboopen}
                       className="w-[200px] justify-between"
                     >
-                      {Combovalue || "Select Expiry"}
+                      {expiry || "Select Expiry"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
