@@ -423,6 +423,7 @@ const   handlecallput = (type)=>{
         setExpiries(removeDuplicates);
         setsymbol(removeDuplicatsymbol);
         setStrikePrices(removeDuplicatesstrike);
+        console.log(removeDuplicatsymbol,'symbol')
         // setDefaultStrikePrices(response.message.underlyingValue)
         setLoading(false)
       } catch (error) {
@@ -938,7 +939,7 @@ const   handlecallput = (type)=>{
                   </PopoverTrigger>
                   <PopoverContent className="w-[200px] p-0">
                     <Command>
-                      <CommandInput placeholder="Search symbol..." />
+                      <CommandInput  placeholder="Search symbol..." />
                       <CommandList>
                         <CommandEmpty>No symbol found.</CommandEmpty>
                         <CommandGroup>
