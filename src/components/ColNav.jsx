@@ -11,7 +11,7 @@ import { Menu } from "lucide-react"
 
 const NavLink = ({ to, icon: Icon, children, isActive, onClick }) => (
   <Link to={to} onClick={onClick} className="w-full">
-    <li className={`hover:text-cyan-500 cursor-pointer flex items-center gap-3 duration-500 p-2 rounded-md ${isActive ? 'bg-cyan-700 text-white' : ''}`}>
+    <li className={`hover:text-sky-500 cursor-pointer flex items-center gap-3 duration-500 p-2 rounded-md ${isActive ? 'bg-cyan-700 text-white' : ''}`}>
       <Icon className="size-5" />
       <span className=" md:inline">{children}</span>
     </li>
@@ -34,7 +34,7 @@ const NavContent = ({ className = "" }) => {
       />
     </Link>
     <div className="w-full h-[2px] bg-[var(--color-border-subtle,#303034)]" />
-    <NavLink to="/home" icon={MdDashboard} isActive={activeLink === '/home'} onClick={() => handleLinkClick('/home')}>Dashboard</NavLink>
+    <NavLink to="/home" icon={MdDashboard} isActive={activeLink === '/home'}  onClick={() => handleLinkClick('/home')}>Dashboard</NavLink>
     <NavLink to="/Strategy" icon={BsBoxSeamFill} isActive={activeLink === '/strategy'} onClick={() => handleLinkClick('/strategy')}>Trade Tool</NavLink>
     <NavLink to="/Strategy2" icon={CiDeliveryTruck} isActive={activeLink === '/strategy2'}
           onClick={() => handleLinkClick('/strategy2')}>Index Scalping</NavLink>

@@ -3,14 +3,12 @@ import * as React from "react";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useEffect, useState, useRef } from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import { DatePickerInput } from '@mantine/dates';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Addleg from "./Addleg";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
-import TimeRangePicker from "shadcn-time-range-picker";
+import { TimePicker } from 'antd';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -20,7 +18,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils"
+
 import {
   Command,
   CommandDialog,
@@ -35,12 +33,12 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react"
 
 import { ChevronDown } from "lucide-react"
-import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
 import 'react-clock/dist/Clock.css';
 
 
 import DateRangePicker from "./ui/Datetimepicker";
+import { TimePicker } from "antd";
 
 
 import DropdownMenuCheckboxes from './ui/dropdown'
@@ -107,7 +105,7 @@ function Custom() {
   const[live,setLive]= useState(false)
   const [targetleg,setTargetleg]=useState(0)
   const [isContentDisabled,setisContentDisabled]= useState(false)
-  const [isContentDisabledEXP,setisContentDisabledEXP]= useState(false)
+  const [isContentDisabledEXP,setisContentDisabledEXP]= useState(true)
   const [lockleg,setLockleg]=useState(0)
   const [overallTARGET,setoverallTARGET]=useState(0)
   const [overallActive,setoverallActive]=useState(0)
@@ -118,7 +116,6 @@ function Custom() {
   const [rentry,setReentry]= useState(0)
   const [correction,setcorrection]= useState(0)
   const [Symbol,setsymbol]= useState([])
-  const [optionlabel,setoptionlabel]= useState('')
   const [call,setcall]= useState('')
   const [put,setput]= useState('')
   const [value, onChange] = useState('10:00');
@@ -128,57 +125,73 @@ function Custom() {
   // new usestate
   
   
-  const [selectedOption, setSelectedOption] = useState('')
+  const [selectedOption, setSelectedOption] = useState(null)
   const [instruction, setinstruction] = useState('')
   const [Comboopen, setComboOpen] = useState(false)
   const [Combovalue, setComboValue] = useState(false)
   const [Comsymbols, setComSymbols] = useState(false)
+  const [market,setmarket]=useState(false)
+  const [paper1, setpaper1]= useState(false)
+  
+
 
 console.log(selectedOption,'selectedOption')
 
+const handleOptionSelect = (option) => {
+  setSelectedOption(option);
+  if (option === 'Call') {
+    setput('');
+  } else {
+    setcall('');
+  }
+};
 
 
-const   handlecallput = (type)=>{
+
+
+const  handlecallput = (type)=>{
   
-  if (optionlabel==='Call'){
-    setcall(type)
-    
-    setoptionlabel('')
+  if (selectedOption==='Call'){
+    setcall(type)    
   }
   
-  if (optionlabel==='Put'){
+  if (selectedOption==='Put'){
     setput(type)
-    setoptionlabel('')
   }
   if (fno==='EQ'){
     setinstruction(type)
-    setoptionlabel('')
+   
   }
   
   if (fno==='FUTIDX'){
     setinstruction(type)
-    setoptionlabel('')
+   
   }
   if (fno==='STXIDX'){
     setinstruction(type)
-    setoptionlabel('')
+    
   }
   }
 
   
 
-  const getButtonColor = (buttonType) => {
-    if (buttonType === 'Call') {
-      return optionlabel === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200';
-    } else if (buttonType === 'Put') {
-      return optionlabel === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200';
-    } else if (buttonType === 'Buy') {
-      return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200';
-    } else if (buttonType === 'Sell') {
-      return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200';
-    }
-    return 'bg-gray-200';
-  };
+ const getButtonColor = (buttonType) => {
+  switch (buttonType) {
+    case 'Call':
+      return selectedOption === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
+    case 'Put':
+      return selectedOption === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
+    case 'Buy':
+      return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
+    case 'Sell':
+      return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
+    default:
+      return 'bg-gray-200 text-black';
+  }
+};
+
+
+
 
   // const handleOptionClick = (option) => {
   //   if (option !== optionlabel) {
@@ -324,6 +337,7 @@ const   handlecallput = (type)=>{
       setshowsymbol(true)
       setisContentDisabled(true)
       setSelectVertical('stock')
+      setisContentDisabledEXP(true)
    
     }
 
@@ -332,6 +346,7 @@ const   handlecallput = (type)=>{
       setshowsymbol(true)
       setSelectVertical('stock')
       setisContentDisabled(false)
+      setisContentDisabledEXP(true)
     
 
 }
@@ -339,16 +354,18 @@ const   handlecallput = (type)=>{
    if  (e.target.value==='FUTIDX'){
       setisContentDisabled(true)
       setshowsymbol(false)
+      setisContentDisabledEXP(true)
  
       }
     
    if (e.target.value==='OPTIDX'){
       setisContentDisabled(false)
+      setisContentDisabledEXP(true)
       setshowsymbol(false)
     
     }
    if (e.target.value==='EQ'){
-      setisContentDisabledEXP(true)
+      setisContentDisabledEXP(false)
      
       setisContentDisabled(true)
       
@@ -359,13 +376,14 @@ const   handlecallput = (type)=>{
    if (e.target.value === 'SLEFNO'){
       setisContentDisabled(true)
       setshowsymbol(true)
+      setisContentDisabledEXP(true)
      
 
     }
-    else {
-      setisContentDisabledEXP(false);
-      
-    }
+      // else {
+      //   setisContentDisabledEXP(false);
+        
+      // }
   
 
     const sdd = localStorage.getItem("token");
@@ -462,7 +480,11 @@ const   handlecallput = (type)=>{
 
   
   
-  
+  const handlemode2 = () =>{
+    setpaper1(!paper1)
+    setisContentDisabled(!isContentDisabled)
+    
+  }
 
   
 
@@ -535,7 +557,12 @@ const   handlecallput = (type)=>{
     SetSegment(e.target.value)
   }
   const handleTradeadvice= (e)=>{
-    Setadvice(e.target.value)
+    Setadvice(e.target.value);
+    if(e.target.value === 'Market'){
+      setmarket(true)
+    }
+    
+
   }
 
   const Addform = () => {
@@ -788,68 +815,82 @@ const   handlecallput = (type)=>{
     )}
 
      {addtrade?( <div className=' flex flex-col gap-4'>
-      <div className="mt-2">
-        <div className="flex gap-24 w-full">
-          <div className="col-lg-6 mt-3">
-            <div className="flex gap-24">
-              <div className="col-4">
-           <label className="text-white">Trade Validity</label>
-                {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender(!showCalender), setShowCalender2(false))}>Trade Validity <i className="fa fa-angle-down" /></button> */}
-                <DatePicker
-                className="bg-white text-black p-2 rounded-lg"
-          selected={tradevalidity}
-          onChange={(date) => Settradevalidity(date)}
+      <div className="container mt-2">
+  <div className="row g-3">
+    <div className="col-lg-10 col-md-12">
+      <div className="row ">
+        <div className="col-12 row col-md-4">
+        <style>
+        {`
+          .react-datepicker-time__input input{
+          background-color: #8e9eab;
+          border-radius: 0.2rem;
+          color: black;
+          padding: 5px
+          }
           
-          dateFormat="MMMM d, yyyy h:mm aa"
-          
-        />
-              </div>
+        `}
+      </style>
+          <label className="text-white text-lg">Trade Validity</label>
+          <DatePicker
+            className="bg-white text-black p-2 rounded-lg w-100"
+            selected={tradevalidity}
+            onChange={(date) => Settradevalidity(date)}
+            showTimeInput
+            dateFormat="MMMM d, yyyy h:mm aa"
+          />
+        </div>
 
-              
-              <div className="col-4 ml-5">
-                <label className="text-white">Tradetype</label>
-              <select id="selectVertical" className='form-select' onChange={(e) => handletradetype(e)} value={tradetype}>
-                    <option value="">Select Tradetype</option>
-                    <option value="Intrday">Intrday</option>
-                    <option value="Carryforward">Carryforward</option>
-                  </select>
+        <div className="col-12 row col-md-4">
+          <label className="text-white text-lg">Tradetype</label>
+          <select
+            id="selectVertical"
+            className='form-select'
+            onChange={(e) => handletradetype(e)}
+            value={tradetype}
+          >
+            <option value="">Select Tradetype</option>
+            <option value="Intrday">Intrday</option>
+            <option value="Carryforward">Carryforward</option>
+          </select>
+        </div>
 
-                  
-                
-              </div>
-              
-              <div className="col-4">
-                <lable className="text-white">No Trade zone</lable>
-              
-                <DateRangePicker className=" bg-white"/>
-              {/* <DatePicker
-              className="bg-white text-black"
-
-          selected={Notradingzone}
-          onChange={(date) => SetNotradingzone(date)}
-          showTimeSelect
-          dateFormat="MMMM d, yyyy h:mm aa"
-          customInput={<button className="btn btn-outline-secondary w-100">No Trading Zone</button>}
-
-        /> */}
-        
-                {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender2(!showCalender2), setShowCalender(false))}>No Trading Zone <i className="fa fa-angle-down" /></button> */}
-              </div>
-            </div>
-            {showCalender ? 
-                // <div style={{ position: 'absolute', zIndex: '999' }}><Calendar onChange={onChange} value={value} /></div>
-                
-          <div style={{ position: 'absolute', zIndex: '999' }}><input  onChange={(e)=>handledatecahnge(e)} className =" bg-white w-2/3 rounded-sm mt-2"value={tradevalidity} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
-          : <></>}
-            <div className='d-flex justify-content-end' style={{ position: 'relative' }}>
-              {showCalender2 ?
-          <div style={{ position: 'absolute', zIndex: '999', right: "-40px" }}><input className=' bg-white w-2/3 rounded-sm mt-2'  onChange={(e)=>handledatecahnge1(e)} value={Notradingzone} type="datetime-local" name="date" min="1994-01-01T00:00"/></div>
-
-             : <></>}</div>
-          </div>
-          
+        <div className="col-12 row col-md-4">
+          <label className="text-white text-lg">No Trade Zone</label>
+          <DateRangePicker className="bg-white w-100 mt-2" />
         </div>
       </div>
+
+      {showCalender && (
+        <div style={{ position: 'absolute', zIndex: '999' }}>
+          <input
+            onChange={(e) => handledatecahnge(e)}
+            className="bg-white w-100 rounded-sm mt-2"
+            value={tradevalidity}
+            type="datetime-local"
+            name="date"
+            min="1994-01-01T00:00"
+          />
+        </div>
+      )}
+
+      <div className='d-flex justify-content-end' style={{ position: 'relative' }}>
+        {showCalender2 && (
+          <div style={{ position: 'absolute', zIndex: '999', right: "-40px" }}>
+            <input
+              className='bg-white w-100 rounded-sm mt-2'
+              onChange={(e) => handledatecahnge1(e)}
+              value={Notradingzone}
+              type="datetime-local"
+              name="date"
+              min="1994-01-01T00:00"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
 
       <div className="mt-2">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -964,7 +1005,7 @@ const   handlecallput = (type)=>{
                   </PopoverTrigger>
                   <PopoverContent className="w-[200px] p-0">
                     <Command>
-                      <CommandInput placeholder="Search symbol..." />
+                      <CommandInput placeholder="Search expiry..." />
                       <CommandList>
                         <CommandEmpty>No symbol found.</CommandEmpty>
                         <CommandGroup>
@@ -988,7 +1029,7 @@ const   handlecallput = (type)=>{
                         </CommandGroup>
                       </CommandList>
                     </Command>
-                  </PopoverContent>
+                   </PopoverContent>
                 </Popover>
                   :
                   <Popover open={Comsymbols} onOpenChange={setComSymbols}>
@@ -1043,10 +1084,23 @@ const   handlecallput = (type)=>{
                       <option value="SPOT">Spot </option>
                       <option value="SQUENCE">Sequnce </option>
                       <option value="COVER">cover </option>
+                      <option value="Market">Market </option>
                       </select> 
                       </div>
                   <div className="col-4">
+                    
                     <input type="number" className="form-control"  onChange={(e)=>setspotprice(e.target.value)} placeholder='Spot Price' />
+                  </div>
+                  
+                  <div className={`col-4 ${market? '':'hidden'}`}>
+                    {market?
+                  <DatePicker
+            className="bg-white text-black p-2 rounded-lg w-100"
+            selected={tradevalidity}
+            onChange={(date) => Settradevalidity(date)}
+            showTimeInput
+            dateFormat="MMMM d, yyyy h:mm aa"
+          />:<></>}
                   </div>
                   {(advice === 'cover' || advice === 'sequence') && (
                       <DropdownMenu>
@@ -1159,10 +1213,13 @@ const   handlecallput = (type)=>{
               <div className="row">
                 <div className="col-6">
                 <button  onClick={() => {
-              setoptionlabel('Call');
-              setput('');
+              handleOptionSelect('Call')
+             
             }}
-            type="button"  className={`px-4 text-black  py-2 rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Call')}`}>Call</button>
+            type="button"  
+            className={`px-4 text-black  py-2 rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} 
+            ${getButtonColor('Call')}`}>Call
+              </button>
                 </div>
                 
                 <div className="col-6">
@@ -1177,8 +1234,8 @@ const   handlecallput = (type)=>{
               <div className="row">
                 <div className="col-6">
                 <button onClick={() => {
-              setoptionlabel('Put');
-              setcall('');
+              handleOptionSelect('Put')
+              
             }} type="button"  className={`px-4 py-2 text-black rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Put')}`}>Put</button>
                 </div>
                
@@ -1189,6 +1246,7 @@ const   handlecallput = (type)=>{
                
               </div>
             </div>
+            
             </>
 
             <>
@@ -1212,6 +1270,7 @@ const   handlecallput = (type)=>{
             <div className="col-lg-3 col-sm-6 mt-3">
               <div className="row">
                 <div className="col-6">
+                  <label className="text-white"> SL</label>
                 <select  className='form-select'onChange={(e)=>handlesltype(e)}>
                       <option value=""> SL</option>
                       <option value="SpotPoints">Spot Points </option>
@@ -1228,6 +1287,7 @@ const   handlecallput = (type)=>{
             <div className="col-lg-4 col-sm-6 mt-3">
               <div className="row">
                 <div className="col-6">
+                  <label className="text-white">Trail SL</label>
                 <select  className='form-select'onChange={(e)=>handletsltype(e)}>
                       <option value=""> TRAILSL</option>
                       <option value="Points">Points </option>
@@ -1240,8 +1300,9 @@ const   handlecallput = (type)=>{
               </div>
             </div>
             <div className="col-lg-3 col-sm-6 mt-3 offset-lg-5">
-              <div className="row">
+              <div className="row ">
                 <div className="col-6">
+                  <label className="text-white"> Target</label>
                 <select  className='form-select'onChange={(e)=>handleTargettype(e)}>
                       <option value="">Target</option>  
                       <option value="Points">Spot Points </option>
@@ -1264,6 +1325,7 @@ const   handlecallput = (type)=>{
       <Popover  >
         <PopoverTrigger asChild>
           <div>
+            <label className=" text-white text-center"> Timer</label>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full justify-between">
@@ -1282,7 +1344,7 @@ const   handlecallput = (type)=>{
           </div>
         </PopoverTrigger>
         <PopoverContent className="w-80" >
-          {selectedOption === 'time' && <TimeRangePicker applyButtonText="ok" />}
+          {selectedOption === 'time' && <TimePicker.RangePicker />}
           {selectedOption === 'hours' &&  <TimePicker
         
         
@@ -1297,6 +1359,8 @@ const   handlecallput = (type)=>{
       </Popover>
     </div>
                 <div className="col-6">
+                
+                  
                   <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
@@ -1341,7 +1405,7 @@ const   handlecallput = (type)=>{
               </div>
             </div>
             <div className="col-lg-4 col-sm-6">
-              <div className="row">
+              <div className="row items-center">
                 {/* <div className="col-6 mt-3">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -1366,6 +1430,9 @@ const   handlecallput = (type)=>{
                 <div className="col-6 mt-3">
                 <DropdownMenuCheckboxes stat="1" />
                 </div>
+                <div>
+                </div>
+                <div className="col-6 mt-3"><Button onClick={()=>handlemode2()} className={paper1 ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper1?"Automatic Strike":"Automatic Strike"}</Button></div>
               </div>
             </div>
           </div>

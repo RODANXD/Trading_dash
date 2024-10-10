@@ -29,7 +29,7 @@ export default function Strategy() {
   const [viewall, setviewall]= useState(false)
   const [paper, setpaper]= useState(false)
   const [paper1, setpaper1]= useState(false)
-  const [Automatic_strike, setAutomatic_strike]= useState(0)
+
   const [Tradeblockno,settradeblockno]= useState([])
   const [currentblock,setcurrentblock]= useState('')
   const [isContentDisabled,setisContentDisabled]= useState(false)
@@ -234,7 +234,7 @@ console.log(broker,'broker')
   const handlemode2 = () =>{
     setpaper1(!paper1)
     setisContentDisabled(!isContentDisabled)
-    setAutomatic_strike(true)
+    
   }
   console.log(head,'head')
   const handleheadchange= (id,val)=>{
