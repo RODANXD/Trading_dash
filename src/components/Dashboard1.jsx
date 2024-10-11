@@ -525,7 +525,7 @@ const   handlecallput = (type)=>{
     .then (response=> {
       console.log(response)
 })
-  tradeblocklist()
+  // tradeblocklist()
   
   };
   
@@ -975,7 +975,7 @@ const   handlecallput = (type)=>{
                           {expiries.map((symbol, index) => (
                             <CommandItem
                               key={index}
-                              value={symbol}
+                              value={expiry}
                               onSelect={() => sethandleexpiry(symbol)}
                             >
                               <Check
@@ -1047,7 +1047,7 @@ const   handlecallput = (type)=>{
                       </select> 
                       </div>
                   <div className="col-4">
-                    <input type="number" className="form-control"  onChange={(e)=>setspotprice(e.target.value)} placeholder='Spot Price' />
+                    <input type="number" className="form-control"  onChange={(e)=>setspotprice(e.target.value)} placeholder='Enter Spot Price' />
                   </div>
                   {(advice === 'cover' || advice === 'sequence') && (
                       <DropdownMenu>
@@ -1199,8 +1199,8 @@ const   handlecallput = (type)=>{
             <div className="col-lg-3 col-9 mt-3">
               <div className="row">
                 <div className="col-6">
-                  <button type="button" className="btn btn-light w-100">Quantity</button>
-                  <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Value" type="number"/>
+                  <button type="button" className="btn btn-light w-100">Lot Qty</button>
+                  <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Lot Size" type="number"/>
                 </div>
                 <div className="col-6">
                   <button type="button" className="btn btn-success w-100">AMOUNT</button>
@@ -1208,7 +1208,7 @@ const   handlecallput = (type)=>{
               </div>
             </div>
             <div className="col-lg-2 col-3 mt-3">
-              <input onChange={(e)=>setAmount(e.target.value)} value={Amount}   type="text"  className='form-control'  placeholder='Value'  />
+              <input onChange={(e)=>setAmount(e.target.value)} value={Amount}   type="text"  className='form-control'  placeholder='INR'  />
             </div>
             <div className="col-lg-3 col-sm-6 mt-3">
               <div className="row">
@@ -1232,6 +1232,8 @@ const   handlecallput = (type)=>{
                 <select  className='form-select'onChange={(e)=>handletsltype(e)}>
                       <option value=""> TRAILSL</option>
                       <option value="Points">Points </option>
+                      <option value="value">Value</option>
+
                       <option value="Percentage">%</option>
                       </select>
                       </div>
@@ -1298,7 +1300,7 @@ const   handlecallput = (type)=>{
       </Popover>
     </div>
                 <div className="col-6">
-                  <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='Manual Entry' className='form-control' />
+                  <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='seconds' className='form-control' />
                 </div>
               </div>
             </div>
