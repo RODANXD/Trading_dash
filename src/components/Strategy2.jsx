@@ -44,6 +44,8 @@ export default function TradingForm() {
   const [currentblock, setcurrentblock] = useState("");
   const [scriptData,setscriptdata]=useState([])
   const [headerData,setheaderData]=useState([])
+  const [paper1, setpaper1]= useState(false)
+
 
   const [Tradeblockno, settradeblockno] = useState([]);
   const [head, Sethead] = useState([
@@ -194,6 +196,12 @@ useState(() => {
     setviewall(true);
     setcurrentblock(id);
   };
+
+  const handlemode2 = () =>{
+    setpaper1(!paper1)
+    setisContentDisabled(!isContentDisabled)
+    
+  }
 
   const handleCancelViewAll = () => {
     setviewall(false);
@@ -353,6 +361,7 @@ useState(() => {
                                 size="sm"
                                 className="w-full"
                               >
+                                Cancel
                                 
                               </Button>
                             </td>
@@ -722,6 +731,8 @@ useState(() => {
                       </div>
                       {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
                     </div>
+                <div><Button onClick={()=>handlemode2()} className={paper1 ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper1?"Automatic Strike":"Automatic Strike"}</Button></div>
+                    
                   </div>
                 </div>
               </div>
