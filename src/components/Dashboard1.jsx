@@ -38,7 +38,7 @@ import 'react-clock/dist/Clock.css';
 
 
 import DateRangePicker from "./ui/Datetimepicker";
-import { TimePicker } from "antd";
+ 
 
 
 import DropdownMenuCheckboxes from './ui/dropdown'
@@ -173,6 +173,9 @@ const  handlecallput = (type)=>{
   }
   }
 
+  const handleaccountselect = (selectedAccount)=>{
+    console.log('selectacc : ',selectedAccount)
+  }
   
 
  const getButtonColor = (buttonType) => {
@@ -1428,7 +1431,7 @@ const  handlecallput = (type)=>{
                   </DropdownMenu>
                 </div> */}
                 <div className="col-6 mt-3">
-                <DropdownMenuCheckboxes stat="1" />
+                <DropdownMenuCheckboxes stat="1" onAccountSelect={handleaccountselect}/>
                 </div>
                 <div>
                 </div>

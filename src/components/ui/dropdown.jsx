@@ -17,7 +17,7 @@ import {
 
 
 
-export default function DropdownMenuCheckboxes(stat) {
+export default function DropdownMenuCheckboxes({stat, onAccountSelect}) {
   const [showActivityBar, setShowActivityBar] = React.useState(false)
   const [showPanel, setShowPanel] = React.useState(false)
   
@@ -66,22 +66,38 @@ export default function DropdownMenuCheckboxes(stat) {
 
   }
 
-  const updateUsername = (id, newUsername,newbroker,newaccountnumber) => {
-    setBroker(prevBroker =>
-      prevBroker.map(b =>
-        b.id === id ? { ...b, Username: newUsername, broker:newbroker,accountnumber:newaccountnumber} : b
-      )
-    );
-  };
+  const updatedBroker = broker.find(b => b.id === id);
+    if (updatedBroker) {
+      onAccountSelect({
+        id: updatedBroker.id,
+        Username: updatedBroker.Username,
+        brokername: updatedBroker.brokername,
+        accountnumber: updatedBroker.accountnumber,
+        value: !updatedBroker.value
+      });
+    }
+  
   
 
 
   const showStatusBar= (id,val) =>{
+    const endpoint = "broker"
+    const strategy= 1
+    const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
+      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm, instruction}
+    const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
+    const payload = JSON.stringify({strategy,tradetool,sublegdata})
+    const type = "POST"
+    getbroker(type, payload, endpoint)
+    .then(response => {
+    console.log(response)
+    })
 
     setBroker((prevData) =>
   prevData.map((item) =>
     item.id === id ? { ...item,value:!item.value } : item
   )
+  
 );
 
 
