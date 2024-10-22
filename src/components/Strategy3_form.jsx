@@ -40,6 +40,11 @@ const Strategy3_form = ({ onCancel,blockid }) => {
   const [entryDurationTime, setEntryDurationTime] = useState('')
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
+  const [onAccountSelect,setonAccountSelect]= useState([
+    { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: '', value: true },
+  
+  ])
+  
   const [paper, setpaper]= useState(false)
   const [head,Sethead]= useState([
     {id:1,key: 'Amount',value:0},
@@ -53,6 +58,7 @@ const Strategy3_form = ({ onCancel,blockid }) => {
     {id:9,key: 'Timer',value:0},
 
     ])
+    
 
   const [bodydata,SetBodydata]= useState([
     {id:1,key: 'movementum',value:movement},
@@ -171,7 +177,7 @@ useEffect(() => {
     {
       const endpoint = "saveblock3"
       const strategy= 3
-      const payload = JSON.stringify({head,paper,bodydata,strategy,Blockid})
+      const payload = JSON.stringify({head,paper,bodydata,strategy,Blockid,onAccountSelect})
       const type = "PUT"
       handleexchangerequest(type, payload, endpoint)
       .then(response => {
@@ -373,7 +379,7 @@ useEffect(() => {
               
             </div> */}
             <div className='max-xs:w-3/4'>
-            <DropdownMenuCheckboxes/>
+            <DropdownMenuCheckboxes stat='3' onAccountSelect={setonAccountSelect}/>
               {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
             </div>
             <div>

@@ -80,7 +80,11 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [selectDisable, setSelectDisable] = useState("");
   const [Quantprice,setQuantprice]= useState('')
 
+  const [onAccountSelect,setonAccountSelect]= useState([
+    { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: '', value: true },
 
+  ])
+  
   // const [isOpen, setIsOpen] = React.useState(false)
   // const Addform = () => setIsOpen(!isOpen)
 
@@ -1143,7 +1147,7 @@ useEffect(()=>{
                 
               </div> */}
                <div className=" grid place-items-center mt-8 w-44">
-               <DropdownMenuCheckboxes stat="1" />
+               <DropdownMenuCheckboxes stat="1" onAccountSelect={setonAccountSelect} />
               
             </div> 
               {/* <div className="col-6 mt-3">

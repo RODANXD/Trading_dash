@@ -36,6 +36,11 @@ const Strategy2_form = ({ onCancel,blockid }) => {
   const handlemode = () =>{
     setpaper(!paper)
   }
+  const [onAccountSelect,setonAccountSelect]= useState([
+    { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: '', value: true },
+  
+  ])
+  
   const [head,Sethead]= useState([{id:1,key:'MTime',value:0}, 
     {id:2,key:'MContinuity',value:0},
     {id:3,key: 'Amount',value:0},
@@ -63,7 +68,7 @@ const Strategy2_form = ({ onCancel,blockid }) => {
     {
       const endpoint = "saveblockst2"
       const strategy= 2
-      const payload = JSON.stringify({head,paper,strategy,Blockid})
+      const payload = JSON.stringify({head,paper,strategy,Blockid,onAccountSelect})
       const type = "PUT"
       handleexchangerequest(type, payload, endpoint)
       .then(response => {
@@ -152,7 +157,7 @@ const Strategy2_form = ({ onCancel,blockid }) => {
             </div> */}
             <div><Button className='bg-green-700'>Automatic Strike</Button></div>
             <div>
-            <DropdownMenuCheckboxes/>
+            <DropdownMenuCheckboxes stat='2' onAccountSelect={setonAccountSelect}/>
             </div>
             <div>
                        <Button onClick={()=>handlemode()} variant="outline" className={paper ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper?"Paper":"Live"}</Button>
