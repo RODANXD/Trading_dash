@@ -38,6 +38,7 @@ import 'react-clock/dist/Clock.css';
 
 
 import DateRangePicker from "./ui/Datetimepicker";
+ 
 
 
 import DropdownMenuCheckboxes from './ui/dropdown'
@@ -131,10 +132,12 @@ function Custom() {
   const [Comsymbols, setComSymbols] = useState(false)
   const [market,setmarket]=useState(false)
   const [paper1, setpaper1]= useState(false)
+  const [onAccountSelect,setonAccountSelect]= useState([
+    { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: stat, value: true },
+
+  ])
   
-
-
-console.log(selectedOption,'selectedOption')
+  console.log(onAccountSelect,'selectedOption')
 
 const handleOptionSelect = (option) => {
   setSelectedOption(option);
@@ -172,6 +175,9 @@ const  handlecallput = (type)=>{
   }
   }
 
+  const handleaccountselect = (selectedAccount)=>{
+    console.log('selectacc : ',selectedAccount)
+  }
   
 
  const getButtonColor = (buttonType) => {
@@ -236,11 +242,12 @@ const  handlecallput = (type)=>{
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
       put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm, instruction}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
-    const payload = JSON.stringify({strategy,tradetool,sublegdata})
+    const payload = JSON.stringify({strategy,tradetool,sublegdata,onAccountSelect})
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
     console.log(response)
+    
     })
   }
 
@@ -1430,7 +1437,7 @@ const  handlecallput = (type)=>{
                   </DropdownMenu>
                 </div> */}
                 <div className="col-6 mt-3">
-                <DropdownMenuCheckboxes stat="1" />
+                <DropdownMenuCheckboxes stat="1" onAccountSelect={setonAccountSelect}/>
                 </div>
                 <div>
                 </div>

@@ -47,7 +47,12 @@ export default function Strategy() {
   ])
 
   
+  const [onAccountSelect,setonAccountSelect]= useState([
+    { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy:'' , value: true }]
+  )
 
+
+  console.log(onAccountSelect,'selectedOption')
 
   
 
@@ -151,7 +156,7 @@ tradeblocklist()
     {
       const endpoint = "saveblockst2"
       const strategy= 2
-      const payload = JSON.stringify({head,paper,strategy})
+      const payload = JSON.stringify({head,paper,strategy,onAccountSelect})
       const type = "POST"
       handleexchangerequest(type, payload, endpoint)
       .then(response => {
@@ -216,18 +221,7 @@ const handleviewdetail = ()=>{
 
   }
 
-console.log(broker,'broker')
-  const showStatusBar= (id,val) =>{
-
-          setBroker((prevData) =>
-        prevData.map((item) =>
-          item.id === id ? { ...item,value:!item.value } : item
-        )
-      );
-
-
-  }
-
+  
   const handlemode = () =>{
     setpaper(!paper)
   }
@@ -421,7 +415,7 @@ console.log(broker,'broker')
             
             <div><Button onClick={()=>handlemode2()} className={paper1 ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper1?"Automatic Strike":"Automatic Strike"}</Button></div>
             <div>
-            <DropdownMenuCheckboxes stat="2"/>
+            <DropdownMenuCheckboxes stat="2" onAccountSelect={setonAccountSelect}/>
             </div>
             <div>
             <Button onClick={()=>handlemode()} variant="outline" className={paper ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper?"Paper":"Live"}</Button>

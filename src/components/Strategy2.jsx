@@ -45,6 +45,8 @@ export default function TradingForm() {
   const [scriptData,setscriptdata]=useState([])
   const [headerData,setheaderData]=useState([])
   const [paper1, setpaper1]= useState(false)
+  const [onAccountSelect,setonAccountSelect]= useState([
+    { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy:'' , value: true }])
 
 
   const [Tradeblockno, settradeblockno] = useState([]);
@@ -133,7 +135,7 @@ export default function TradingForm() {
   const savedatta = () => {
     const endpoint = "saveblock3";
     const strategy = 3;
-    const payload = JSON.stringify({ head, paper, bodydata, strategy });
+    const payload = JSON.stringify({ head, paper, bodydata, strategy,onAccountSelect });
     const type = "POST";
     handleexchangerequest(type, payload, endpoint).then((response) => {
       console.log(response);
@@ -206,6 +208,8 @@ useState(() => {
   const handleCancelViewAll = () => {
     setviewall(false);
   };
+
+  
   return (
     <>
       {!viewall && (
@@ -712,7 +716,7 @@ useState(() => {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                     <div className="">
-                      <DropdownMenuCheckboxes stat="3" />
+                      <DropdownMenuCheckboxes stat="3"  onAccountSelect={setonAccountSelect}/>
                       {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
                     </div>
                     <div>
