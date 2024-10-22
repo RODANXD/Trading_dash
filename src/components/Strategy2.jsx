@@ -347,7 +347,7 @@ useState(() => {
                             <td className="py-2 px-4 border-b border-r">
                               <span
                                 className={
-                                  script.pnl.startsWith("+")
+                                  script.pnl
                                     ? "text-green-600 font-semibold"
                                     : ""
                                 }
