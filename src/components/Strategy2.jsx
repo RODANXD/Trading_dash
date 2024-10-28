@@ -55,7 +55,7 @@ export default function TradingForm() {
     { id: 2, key: "Target", value: 0 },
     { id: 3, key: "Strike", value: 0 },
     { id: 4, key: "SL", value: 0 },
-    { id: 5, key: "SLtrail", value: 0 },
+    { id: 5, key: "SLtrail", value: 0 },  
     { id: 6, key: "Active", value: 0 },
     { id: 7, key: "Lock", value: 0 },
     { id: 8, key: "Trail", value: 0 },
@@ -305,10 +305,7 @@ useState(() => {
                           <th className="py-2 px-4 border-b border-r text-left">
                             Status
                           </th>
-                          <th className="py-2 px-4 border-b border-r text-left">
-                            PNL
-                          </th>
-                          <th
+                                                    <th
                             className="py-2 px-4 border-b text-left"
                             colSpan={2}
                           >
@@ -319,7 +316,7 @@ useState(() => {
                       <tbody>
                         { scriptData.map((script, index) => (
                           <tr
-                            key={index}
+                            key={index} 
                             className={
                               index % 2 === 0 ? "bg-gray-50" : "bg-white"
                             }
@@ -348,22 +345,12 @@ useState(() => {
                                 {script.status}
                               </span>
                             </td>
-                            <td className="py-2 px-4 border-b border-r">
-                              <span
-                                className={
-                                  script.pnl
-                                    ? "text-green-600 font-semibold"
-                                    : ""
-                                }
-                              >
-                                {script.pnl}
-                              </span>
-                            </td>
+                            
                             <td className="py-2 px-2 border-b border-r">
                               <Button
                                 variant="destructive"
                                 size="sm"
-                                className="w-full"
+                                className="w-full"  
                               >
                                 Cancel
                                 

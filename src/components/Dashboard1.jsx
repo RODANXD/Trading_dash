@@ -133,7 +133,7 @@ function Custom() {
   const [market,setmarket]=useState(false)
   const [paper1, setpaper1]= useState(false)
   const [onAccountSelect,setonAccountSelect]= useState([
-    { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: stat, value: true },
+    { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: '', value: true },
 
   ])
   

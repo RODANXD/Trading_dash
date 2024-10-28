@@ -65,7 +65,7 @@ const Strategy2_form = ({ onCancel,blockid }) => {
 
   const savedatta = (Blockid=blockid)=>
   
-    {
+    { 
       const endpoint = "saveblockst2"
       const strategy= 2
       const payload = JSON.stringify({head,paper,strategy,Blockid,onAccountSelect})
@@ -79,7 +79,13 @@ const Strategy2_form = ({ onCancel,blockid }) => {
     }
 
 
+    const handleheadchange = (id, val) => {
+      Sethead((prevData) =>
+        prevData.map((item) => (item.id === id ? { ...item, value: val } : item))
+      )}
     
+    
+      console.log(head,'head')
     const handleviewdetail = (Blockid=blockid)=>
   
       {
@@ -98,6 +104,9 @@ const Strategy2_form = ({ onCancel,blockid }) => {
         })
     
       }
+      
+
+      
       useEffect (()=>{
         handleviewdetail()
   

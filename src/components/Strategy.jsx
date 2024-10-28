@@ -346,11 +346,19 @@ const handleviewdetail = ()=>{
 <thead>
   <tr className="bg-gray-300 text-black">
     <th className="border border-gray-300 p-2">ID</th>
-    <th className="border border-gray-300 p-2">Side</th>
-    <th className="border border-gray-300 p-1">LOT</th>
-    <th className="border border-gray-300 p-1">Status</th>
+    <th className="border border-gray-300 p-1">Broker</th>
     <th className="border border-gray-300 p-1">Symbol</th>
-    <th className="border border-gray-300 p-1">Action</th>
+    <th className="border border-gray-300 p-2">buyorderid</th>
+    <th className="border border-gray-300 p-2">LTP</th>
+    <th className="border border-gray-300 p-2">avg_price</th>
+    <th className="border border-gray-300 p-2">Side</th>
+    <th className="border border-gray-300 p-1">QTY</th>
+    <th className="border border-gray-300 p-1">Status</th>
+    <th className="border border-gray-300 p-2">sellorderid</th>
+    <th className="border border-gray-300 p-2">sl</th>
+    <th className="border border-gray-300 p-2">SLHIT</th>
+    <th className="border border-gray-300 p-2">TargetHit</th>
+    <th className="border border-gray-300 p-2">TRAILHIT</th>
     <th className="border border-gray-300 p-1">Action Button</th>
   </tr>
 </thead>
@@ -359,11 +367,22 @@ const handleviewdetail = ()=>{
   {item.orderdata.map((item) => (
     <tr key={item.id} className="text-gray-800 ">
             <td className="border border-gray-300 p-1 text-white">{item.id}</td>
-      <td className="border border-gray-300 p-1 text-white">{item.side}</td>
-      <td className="border border-gray-300 p-1 text-white">{item.quantity}</td>
-      <td className="border border-gray-300 p-1 text-white">{item.status?"ACTIVE":"OFF"}</td>
-      <td className="border border-gray-300 p-1 text-white">{item.tradingsymbol}</td>
-      <td className="border border-gray-300 p-1">
+              
+            <td className="border border-gray-300 p-1 text-white">{item.broker}</td>  
+            <td className="border border-gray-300 p-1 text-white">{item.tradingsymbol}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.buyorderid}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.ltp}</td>
+
+            <td className="border border-gray-300 p-1 text-white">{item.avg_price}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.side}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.quantity}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.status?"ACTIVE":"OFF"}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.sellorderid}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.sl}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.slhit}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.targethit}</td>
+            <td className="border border-gray-300 p-1 text-white">{item.trailhit}</td>
+            <td className="border border-gray-300 p-1">
         <Button className="text-xs p-2">EXIT</Button>  
 
       </td>
