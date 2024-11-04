@@ -40,10 +40,6 @@ export default function Strategy() {
     {NAME:"MIDCAP",VALUE:0, },
     {NAME:"SENSEX",VALUE:0, },
     {NAME:"PNL",VALUE:0, },
-
-
-
-  
   ])
 
   

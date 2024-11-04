@@ -386,10 +386,10 @@ const  handlecallput = (type)=>{
      
 
     }
-      // else {
-      //   setisContentDisabledEXP(false);
+      else {
+        setisContentDisabledEXP(false);
         
-      // }
+      }
   
 
     const sdd = localStorage.getItem("token");
