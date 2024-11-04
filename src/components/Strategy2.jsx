@@ -115,6 +115,7 @@ export default function TradingForm() {
 
   const handlemode = () => {
     setpaper(!paper);
+    window.location.reload();
   };
   const Addform = () => {
     setIsOpen(true);
@@ -130,6 +131,7 @@ export default function TradingForm() {
       console.log(response);
     });
     tradeblocklist();
+    window.location.reload();
   };
 
   const savedatta = () => {
@@ -140,6 +142,7 @@ export default function TradingForm() {
     handleexchangerequest(type, payload, endpoint).then((response) => {
       console.log(response);
     });
+    window.location.reload();
   };
 
   const Deleteblock = (Blockid) => {
@@ -198,11 +201,11 @@ useState(() => {
   const handleviewall = (id) => {
     setviewall(true);
     setcurrentblock(id);
-  };
+    };
 
   const handlemode2 = () =>{
     setpaper1(!paper1)
-    setisContentDisabled(!isContentDisabled)
+    // setisContentDisabled(!isContentDisabled)
     
   }
 

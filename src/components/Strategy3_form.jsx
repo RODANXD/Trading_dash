@@ -12,6 +12,7 @@ import {handleexchangerequest} from '../utility/Api'
 
 
 
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -40,9 +41,13 @@ const Strategy3_form = ({ onCancel,blockid }) => {
   const [entryDurationTime, setEntryDurationTime] = useState('')
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
+  const [headerData,setheaderData]=useState([])
+  const [scriptData,setscriptdata]=useState([])
+  
+
+
   const [onAccountSelect,setonAccountSelect]= useState([
     { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: '', value: true },
-  
   ])
   
   const [paper, setpaper]= useState(false)
@@ -56,7 +61,6 @@ const Strategy3_form = ({ onCancel,blockid }) => {
     {id:7,key: 'Lock',value:0},
     {id:8,key: 'Trail',value:0},
     {id:9,key: 'Timer',value:0},
-
     ])
     
 
@@ -69,7 +73,6 @@ const Strategy3_form = ({ onCancel,blockid }) => {
     {id:6,key: 'monthlyexpiry',value:monthlyExpiryDay},
     {id:7,key: 'candlehighlowtime',value:candleHighLowTime},
     {id:8,key: 'Retracement',value:retracement},
-
     {id:9,key: 'indextime',value:niftyTime},
     {id:10,key: 'Entrytime',value:entryDurationTime},
 
@@ -103,14 +106,6 @@ useEffect(() => {
 
 
 
-  
-  const scriptData = [
-    { name: 'RAMCOCEM', candleHighLow: '826.15', longshort: 'LONG', status: 'EXECUTED', pnl: '+200', cancel: 'CANCEL', exit: 'EXIT' },
-    { name: 'EXIDEIND', candleHighLow: '504.90', longshort: 'SHORT', status: 'PENDING', pnl: '', cancel: 'CANCEL', exit: 'EXIT' },
-    { name: 'HINDALCO', candleHighLow: '687.01', longshort: 'SHORT', status: 'CANCELLED', pnl: '', cancel: 'CANCEL', exit: 'EXIT' },
-    { name: 'BALKRISIND', candleHighLow: '2865.04', longshort: 'LONG', status: 'REJECTED', pnl: '', cancel: 'CANCEL', exit: 'EXIT' },
-    { name: 'AMBUJACE', candleHighLow: '630.32', longshort: 'LONG', status: 'EXECUTED', pnl: '+300', cancel: 'CANCEL', exit: 'EXIT' },
-  ]
 
   const [showStatusBar, setShowStatusBar] = React.useState(true)
   const [showActivityBar, setShowActivityBar] = React.useState(false)
@@ -156,21 +151,14 @@ useEffect(() => {
         if (item.key=="indextime"){
           setNiftyTime(item.value)
         }
-
-
-
-
-
-
-
-
-
       })
+
 
 
   },[setMovement,setToTime,setFromTime,setIoChange,setEntryDurationTime,setSameDirectionDay,
     ,setMonthlyExpiryDay,setCandleHighLowTime,setRetracement,setNiftyTime,bodydata
   ])
+
 
   const savedatta = (Blockid=blockid)=>
   
@@ -209,6 +197,45 @@ useEffect(() => {
       })
   
     }
+    const tradeblocklist = async () => {
+      const endpoint = "tradeblock";
+      const payload = "strategy=3";
+      const type = "GET";
+      // try {}
+      // catch (error){
+      //
+      // }
+  
+      handleexchangerequest(type, payload, endpoint).then((response) => {
+        if (response) {
+          settradeblockno(response);
+          console.log(response, "resposnse");
+        }
+      });
+    };
+    
+    const getindexdata = () => {
+      const endpoint = "momentumdata"
+      const strategy= 2
+      const payload = ''
+      const type = "GET"
+      handleexchangerequest(type, payload, endpoint)
+      .then(response => {
+        console.log(response,'eliminateddata')
+        setscriptdata(response.eliminateddata)
+        setheaderData(response.headerdata)
+    
+    // 
+      })
+    
+    };
+
+useState(() => {
+  tradeblocklist();
+  getindexdata()
+    
+}, []);
+    
     useEffect (()=>{
       handleviewdetail()
 
@@ -234,22 +261,16 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody className="text-white">
-            <tr>
-              <td className="border border-gray-300 p-2">Long side</td>
-              <td className="border border-gray-300 p-2">3</td>
-              <td className="border border-gray-300 p-2">1</td>
-              <td className="border border-gray-300 p-2">2</td>
-              <td className="border border-gray-300 p-2"></td>
-              <td className="border border-gray-300 p-2"></td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2">Short Side</td>
-              <td className="border border-gray-300 p-2">2</td>
-              <td className="border border-gray-300 p-2">1</td>
-              <td className="border border-gray-300 p-2"></td>
-              <td className="border border-gray-300 p-2">1</td>
-              <td className="border border-gray-300 p-2">+500</td>
-            </tr>
+          { headerData.map((script, index) =>(
+            <tr key={index}>
+            <td className="border border-gray-300 p-2">{script.side}</td>
+            <td className="border border-gray-300 p-2">{script.Filteredscript}</td>
+            <td className="border border-gray-300 p-2">{script.pending}</td>
+            <td className="border border-gray-300 p-2">{script.executed}</td>
+            <td className="border border-gray-300 p-2">{script.cancelled}</td>
+            <td className="border border-gray-300 p-2">{script.pnl}</td>
+          </tr>  
+          ))}                       
           </tbody>
         </table>
       </div>
@@ -359,19 +380,19 @@ useEffect(() => {
         <DropdownMenuCheckboxItem
           checked={showStatusBar}
           onCheckedChange={setShowStatusBar}
-        >
+          >
           Angel Broker
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={showActivityBar}
           onCheckedChange={setShowActivityBar}
-        >
+          >
           Zerodha
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={showPanel}
           onCheckedChange={setShowPanel}
-        >
+          >
           Binomo
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
