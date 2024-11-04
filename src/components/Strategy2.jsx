@@ -150,6 +150,7 @@ export default function TradingForm() {
       console.log(response);
       window.location.reload();
     });
+    // window.location.reload()
   };
 
   const tradeblocklist = async () => {
@@ -215,7 +216,7 @@ useState(() => {
       {!viewall && (
         <>
           <div className="container mx-auto px-4 py-8">
-            <div className=" max-xs:w-[80%]">
+            <div className=" max-xs:w-[80%]  max-xs:flex item-center justify-center">
             <div className="max-xs:w-[70%] max-xs:flex">
             <div className="flex flex-col sm:flex-row max-xs:w-[75%] justify-between items-center mb-4 space-y-4 sm:space-y-0">
               {" "}
@@ -289,8 +290,8 @@ useState(() => {
                     </table>
                   </div>
 
-                  <div className="overflow-y-scroll w-full rounded-lg">
-                    <table className="min-w-full border border-gray-300 text-sm bg-white rounded-sm">
+                  <div className="overflow-y-scroll h-72 w-full rounded-lg">
+                    <table className="min-w-full border border-gray-300 text-sm bg-gray-300 rounded-sm">
                       <thead>
                         <tr>
                           <th className="py-2 px-4 border-b border-r text-left">
@@ -318,7 +319,7 @@ useState(() => {
                           <tr
                             key={index} 
                             className={
-                              index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                              index % 2 === 0 ? "bg-slate-400" : " bg-slate-300"
                             }
                           >
                             <td className="py-2 px-4 border-b border-r">
@@ -336,10 +337,10 @@ useState(() => {
                                   script.status === "EXECUTED"
                                     ? "bg-green-200 text-green-800"
                                     : script.status === "PENDING"
-                                    ? "bg-yellow-200 text-yellow-800"
+                                    ? "bg-yellow-200 text-yellow-800 "
                                     : script.status === "CANCELLED"
                                     ? "bg-red-200 text-red-800"
-                                    : "bg-gray-200 text-gray-800"
+                                    : "bg-gray-100  text-gray-800"
                                 }`}
                               >
                                 {script.status}
@@ -497,7 +498,7 @@ useState(() => {
 
           {isOpen && (
             <div className="p-4 max-w-7xl mx-auto">
-              <div className="overflow-x-auto mb-6">
+              <div className="overflow-x-auto mb-6 max-xs:w-[80%]">
                 <table className="w-full border-collapse border border-gray-300">
                   <thead>
                     <tr className="bg-gray-300 text-black">
@@ -510,28 +511,23 @@ useState(() => {
                       <th className="border border-gray-300 p-2">PNL</th>
                     </tr>
                   </thead>
-                  <tbody className="text-white">
-                    <tr>
-                      <td className="border border-gray-300 p-2">Long side</td>
-                      <td className="border border-gray-300 p-2">3</td>
-                      <td className="border border-gray-300 p-2">1</td>
-                      <td className="border border-gray-300 p-2">2</td>
-                      <td className="border border-gray-300 p-2"></td>
-                      <td className="border border-gray-300 p-2"></td>
-                    </tr>
-                    <tr>
-                      <td className="border border-gray-300 p-2">Short Side</td>
-                      <td className="border border-gray-300 p-2">2</td>
-                      <td className="border border-gray-300 p-2">1</td>
-                      <td className="border border-gray-300 p-2"></td>
-                      <td className="border border-gray-300 p-2">1</td>
-                      <td className="border border-gray-300 p-2">+500</td>
-                    </tr>
-                  </tbody>
+                   <tbody className="text-white">
+                      { headerData.map((script, index) =>(
+                         <tr key={index}>
+                          <td className="border border-gray-300 p-2">{script.side}</td>
+                          <td className="border border-gray-300 p-2">{script.Filteredscript}</td>
+                          <td className="border border-gray-300 p-2">{script.pending}</td>
+                          <td className="border border-gray-300 p-2">{script.executed}</td>
+                          <td className="border border-gray-300 p-2">{script.cancelled}</td>
+                          <td className="border border-gray-300 p-2">{script.pnl}</td>
+
+                        </tr>
+                        ))}                       
+                      </tbody>
                 </table>
               </div>
 
-              <div className="space-y-8 max-xs:w-[80%]">
+              <div className="space-y-8 max-xs:w-[65%]">
                 <div className="text-white">
                   <h2 className="text-xl font-semibold mb-4 text-center">
                     Script Selection
@@ -681,6 +677,14 @@ useState(() => {
                       onChange={(e) => setEntryDurationTime(e.target.value)}
                       className="w-full "
                     />
+                  </div>
+                  <div>
+                <select id="selectVertical" className='form-select w-full' multiple="" /*onChange={(e)=>handleSelectdisable(e)} value={fno}*/>
+                <option value="SLEFNO">Select FNO</option>
+                <option value="FUTSTK">STOCK FUTURE</option>
+                <option value="OPTSTK"> STOCK OPTION</option>
+                <option value="EQ"> CASH</option>
+                </select>
                   </div>
                 </div>
 

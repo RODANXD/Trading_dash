@@ -81,7 +81,6 @@ export default function DropdownMenuCheckboxes({ stat, onAccountSelect }) {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel></DropdownMenuLabel>
         <DropdownMenuSeparator />
-
         {broker.map((item) => (
           <DropdownMenuCheckboxItem
             key={item.id}
