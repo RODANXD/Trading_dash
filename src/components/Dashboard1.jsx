@@ -119,6 +119,7 @@ function Custom() {
   const [call,setcall]= useState('')
   const [put,setput]= useState('')
   const [value, onChange] = useState('10:00');
+  const [selectedTime, setSelectedTime] = useState(null);
 
   
   
@@ -136,7 +137,15 @@ function Custom() {
     { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: '', value: true },
 
   ])
-  
+  const formatTime = (time) => {
+    if (!time) return null;
+    if (Array.isArray(time)) {
+      // Format range of times
+      return `${new Date(time[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })} - ${new Date(time[1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    }
+    // Format single time
+    return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
   console.log(onAccountSelect,'selectedOption')
 
 const handleOptionSelect = (option) => {
@@ -180,21 +189,33 @@ const  handlecallput = (type)=>{
   }
   
 
- const getButtonColor = (buttonType) => {
-  switch (buttonType) {
-    case 'Call':
-      return selectedOption === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
-    case 'Put':
-      return selectedOption === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
-    case 'Buy':
-      return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
-    case 'Sell':
-      return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
-    default:
-      return 'bg-gray-200 text-black';
-  }
-};
-
+  const getButtonColor = (buttonType) => {
+    if (isContentDisabled) {
+      // Allow Buy and Sell to change colors independently when Call and Put are disabled
+      switch (buttonType) {
+        case 'Buy':
+          return selectedOption === 'Buy' ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
+        case 'Sell':
+          return selectedOption === 'Sell' ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
+        default:
+          return 'bg-gray-200 text-black';
+      }
+    } else {
+      // Original behavior when Call and Put are enabled
+      switch (buttonType) {
+        case 'Call':
+          return selectedOption === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
+        case 'Put':
+          return selectedOption === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
+        case 'Buy':
+          return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
+        case 'Sell':
+          return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
+        default:
+          return 'bg-gray-200 text-black';
+      }
+    }
+  };
 
 
 
@@ -509,15 +530,24 @@ const  handlecallput = (type)=>{
 
   const handlesetactive= (e)=>{
     setActiveleg(e.target.value)
+    console.log(e.target.value)
+
+    
   }
   const handletslleg= (e)=>{
     setTslleg(e.target.value)
+    console.log(e.target.value)
+
   }
   const handleLegTarget= (e)=>{
     setTargetleg(e.target.value)
+    console.log(e.target.value)
+
   }
   const handlesetlock= (e)=>{
     setLockleg(e.target.value)
+    console.log(e.target.value)
+
   }
   const handleblockactive= (e)=>{
     setoverallActive(e.target.value)
@@ -1023,7 +1053,7 @@ const  handlecallput = (type)=>{
                             <CommandItem
                               key={index}
                               value={expiry}
-                              onSelect={() => sethandleexpiry(symbol)}
+                              onSelect={() => setExpiry(symbol)}
                             >
                               <Check
                                 className={`mr-2 h-4 w-4 ${
@@ -1230,7 +1260,7 @@ const  handlecallput = (type)=>{
                 </div>
                 
                 <div className="col-6">
-                <button  onClick={()=>handlecallput('BUY')} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
+                <button  onClick={()=>{handlecallput('BUY'); setSelectedOption('Buy')}} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
                 </div>
               
               </div>
@@ -1243,11 +1273,11 @@ const  handlecallput = (type)=>{
                 <button onClick={() => {
               handleOptionSelect('Put')
               
-            }} type="button"  className={`px-4 py-2 text-black rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Put')}`}>Put</button>
+            }} type="button"  className={`px-4 py-2 text-black rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Put')} `}>Put</button>
                 </div>
                
                 <div className="col-6">
-                <button  onClick={()=>handlecallput('SELL')} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
+                <button  onClick={()=>{handlecallput('SELL'); setSelectedOption('Sell')}} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
 
                 </div>
                
@@ -1329,44 +1359,52 @@ const  handlecallput = (type)=>{
             <div className="col-lg-4 col-sm-6 mt-3">
               <div className="row">
               <div className="col-6">
+  <Popover>
+    <PopoverTrigger asChild>
+      <div>
+      
+        <label className="text-white text-center"> Timer</label>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className=" p-2 w-full justify-between">
+            {formatTime(selectedTime) || "Timer"} <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onSelect={() => setSelectedOption('time')}>
+              Time
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setSelectedOption('hours')}>
+              Hrs/Min
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </PopoverTrigger>
+    <PopoverContent className="w-80">
+      {selectedOption === 'time' && (
+        <TimePicker.RangePicker 
+        onChange={(time) => setSelectedTime(time)} 
+          className="bg-white"
+          clockIcon={null}
+          disableClock={true}
+          format="HH:mm:ss"
+        />
+      )}
+      {selectedOption === 'hours' && (
+        <TimePicker
 
-            
-      <Popover  >
-        <PopoverTrigger asChild>
-          <div>
-            <label className=" text-white text-center"> Timer</label>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
-                  Timer <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onSelect={() => setSelectedOption('time')}>
-                  Time
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setSelectedOption('hours')}>
-                  Hrs/Min
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </PopoverTrigger>
-        <PopoverContent className="w-80" >
-          {selectedOption === 'time' && <TimePicker.RangePicker />}
-          {selectedOption === 'hours' &&  <TimePicker
-        
-        
-        clearIcon={null}
-        clockIcon={null}
-        disableClock={true}
-        format="HH:mm"
-        className="bg-white"
-      />}
-         
-        </PopoverContent>
-      </Popover>
-    </div>
+        onChange={(time) => setSelectedTime(time)}
+          clockIcon={null}
+          disableClock={true}
+          format="HH:mm"
+          className="bg-white"
+        />
+      )}
+    </PopoverContent>
+  </Popover>
+  
+</div>
                 <div className="col-6">
                 
                   
@@ -1381,7 +1419,7 @@ const  handlecallput = (type)=>{
           
             <div >
               <div className="row">
-                <div className="col-lg col-sm-4 mt-3">
+              <div className="col-lg col-sm-4 mt-3">
                   <input type="number" className='form-control' onchange = {(e)=> handlesetactive(e)} placeholder='Active' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
