@@ -1384,7 +1384,7 @@ const  handlecallput = (type)=>{
     <PopoverContent className="w-80">
       {selectedOption === 'time' && (
         <TimePicker.RangePicker 
-        onChange={(time) => setSelectedTime(time)} 
+        onChange={(time) => {setSelectedTime(time); console.log(time)}} 
           className="bg-white"
           clockIcon={null}
           disableClock={true}
@@ -1394,10 +1394,10 @@ const  handlecallput = (type)=>{
       {selectedOption === 'hours' && (
         <TimePicker
 
-        onChange={(time) => setSelectedTime(time)}
+        onChange={(time) => {setSelectedTime(time); console.log(time)}}
           clockIcon={null}
           disableClock={true}
-          format="HH:mm"
+          format="HH:mm"co
           className="bg-white"
         />
       )}
@@ -1420,16 +1420,16 @@ const  handlecallput = (type)=>{
             <div >
               <div className="row">
               <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onchange = {(e)=> handlesetactive(e)} placeholder='Active' />
+                  <input type="number" className='form-control' onChange = {(e)=> handlesetactive(e)} placeholder='Active' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
                   <input type="number" className='form-control' onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onchange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
+                  <input type="number" className='form-control'  onChange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
                 </div>
                 <div className="col-lg col-sm-6 mt-3">
-                  <input type="number" className='form-control' onchange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
+                  <input type="number" className='form-control' onChange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
                 </div>
                 
               </div>

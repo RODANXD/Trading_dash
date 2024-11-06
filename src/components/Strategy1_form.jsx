@@ -1144,16 +1144,16 @@ useEffect(()=>{
           <div >
           <div className="row">
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onchange = {(e)=> handlesetactive(e)} placeholder='Active' />
+                  <input type="number" className='form-control' onChange = {(e)=> handlesetactive(e)} placeholder='Active' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
                   <input type="number" className='form-control' onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onchange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
+                  <input type="number" className='form-control'  onChange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
                 </div>
                 <div className="col-lg col-sm-6 mt-3">
-                  <input type="number" className='form-control' onchange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
+                  <input type="number" className='form-control' onChange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
                 </div>
                 
               </div>
