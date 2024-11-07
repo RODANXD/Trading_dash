@@ -66,7 +66,7 @@ function Custom() {
 
 
   const [strikeprice,setstrikeprice]= useState('')
-  const [Quantprice,setQuantprice]= useState('')
+  const [quantity,setquantity]= useState('')
 
   const [toggleStatus, setToggleStatus] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
@@ -240,7 +240,7 @@ const  handlecallput = (type)=>{
     const endpoint = "saveblockst1"
     const strategy= 1
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
-      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm, instruction}
+      put,Activeleg,lockleg,targetleg,tslleg,quantity,Amount,nearestatm, instruction}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
     const payload = JSON.stringify({strategy,tradetool,sublegdata,onAccountSelect})
     const type = "POST"
@@ -1023,7 +1023,7 @@ const  handlecallput = (type)=>{
                             <CommandItem
                               key={index}
                               value={expiry}
-                              onSelect={() => sethandleexpiry(symbol)}
+                              onSelect={() => setExpiry(symbol)}
                             >
                               <Check
                                 className={`mr-2 h-4 w-4 ${
@@ -1264,7 +1264,7 @@ const  handlecallput = (type)=>{
               <div className="row">
                 <div className="col-6">
                   <button type="button" className="btn btn-light w-100">Lot Qty</button>
-                  <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Lot Size" type="number"/>
+                  <Input className="mt-1 text-black" onChange={(e)=>setquantity(e.target.value)} value= {quantity} placeholder="Lot Size" type="number"/>
                 </div>
                 <div className="col-6">
                   <button type="button" className="btn btn-success w-100">AMOUNT</button>
