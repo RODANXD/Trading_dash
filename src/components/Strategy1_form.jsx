@@ -142,6 +142,8 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [selectedOption, setSelectedOption] = useState(null)
   const [Amount,setAmount]= useState('')
   const [paper1, setpaper1]= useState(false)
+  const [selectedTime, setSelectedTime] = useState(null);
+
 
 
 
@@ -154,6 +156,15 @@ const Strategy1_form = ({onCancel,blockid}) => {
 
 
 
+  const formatTime = (time) => {
+    if (!time) return null;
+    if (Array.isArray(time)) {
+      // Format range of times
+      return `${new Date(time[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })} - ${new Date(time[1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    }
+    // Format single time
+    return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
 
 
   const handledatecahnge= (e)=>{
@@ -196,17 +207,30 @@ const Strategy1_form = ({onCancel,blockid}) => {
     }
     }
     const getButtonColor = (buttonType) => {
-      switch (buttonType) {
-        case 'Call':
-          return selectedOption === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
-        case 'Put':
-          return selectedOption === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
-        case 'Buy':
-          return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
-        case 'Sell':
-          return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
-        default:
-          return 'bg-gray-200 text-black';
+      if (isContentDisabled) {
+    
+        switch (buttonType) {
+          case 'Buy':
+            return selectedOption === 'Buy' ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
+          case 'Sell':
+            return selectedOption === 'Sell' ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
+          default:
+            return 'bg-gray-200 text-black';
+        }
+      } else {
+    
+        switch (buttonType) {
+          case 'Call':
+            return selectedOption === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
+          case 'Put':
+            return selectedOption === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
+          case 'Buy':
+            return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
+          case 'Sell':
+            return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
+          default:
+            return 'bg-gray-200 text-black';
+        }
       }
     };
     
@@ -972,7 +996,7 @@ useEffect(()=>{
             ${getButtonColor('Call')}`}>Call</button>
                 </div>
                 <div className="col-6">
-                <button  onClick={()=>handlecallput('BUY')} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
+                <button   onClick={()=>{handlecallput('BUY'); setSelectedOption('Buy')}} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
                 </div>
               </div>
             </div>
@@ -985,7 +1009,7 @@ useEffect(()=>{
             }}  type="button"  className={`px-4 py-2 text-black rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Put')}`}>Put</button>
                 </div>
                 <div className="col-6">
-                <button  onClick={()=>handlecallput('SELL')} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
+                <button  onClick={()=>{handlecallput('SELL'); setSelectedOption('Sell')}} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
 
                 </div>
               </div>
@@ -1066,8 +1090,8 @@ useEffect(()=>{
             <label className=" text-white text-center"> Timer</label>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
-                  Timer <ChevronDown className="ml-2 h-4 w-4" />
+                <Button variant="outline" className=" p-2 w-full justify-between">
+                {formatTime(selectedTime) || "Timer"} <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
@@ -1082,9 +1106,25 @@ useEffect(()=>{
           </div>
         </PopoverTrigger>
         <PopoverContent className="w-80" >
-          {selectedOption === 'time' && <TimePicker.RangePicker />}
-          {selectedOption === 'hours' &&  <TimePicker needConfirm
-      />}
+        {selectedOption === 'time' && (
+        <TimePicker.RangePicker 
+        onChange={(time) => setSelectedTime(time)} 
+          className="bg-white"
+          clockIcon={null}
+          disableClock={true}
+          format="HH:mm:ss"
+        />
+      )}
+      {selectedOption === 'hours' && (
+        <TimePicker
+
+        onChange={(time) => setSelectedTime(time)}
+          clockIcon={null}
+          disableClock={true}
+          format="HH:mm"
+          className="bg-white"
+        />
+      )}
          
         </PopoverContent>
       </Popover>
@@ -1104,16 +1144,16 @@ useEffect(()=>{
           <div >
           <div className="row">
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onchange = {(e)=> handlesetactive(e)} placeholder='Active' />
+                  <input type="number" className='form-control' onChange = {(e)=> handlesetactive(e)} placeholder='Active' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
                   <input type="number" className='form-control' onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onchange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
+                  <input type="number" className='form-control'  onChange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
                 </div>
                 <div className="col-lg col-sm-6 mt-3">
-                  <input type="number" className='form-control' onchange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
+                  <input type="number" className='form-control' onChange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
                 </div>
                 
               </div>
