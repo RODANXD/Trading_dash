@@ -772,7 +772,7 @@ useEffect(()=>{
                          <CommandItem
                            key={index}
                            value={symbol}
-                           onSelect={() => sethandleexpiry(symbol)}
+                           onSelect={() => setExpiry(symbol)}
                          >
                            <Check
                              className={`mr-2 h-4 w-4 ${

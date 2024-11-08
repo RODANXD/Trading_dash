@@ -66,7 +66,7 @@ function Custom() {
 
 
   const [strikeprice,setstrikeprice]= useState('')
-  const [Quantprice,setQuantprice]= useState('')
+  const [quantity,setquantity]= useState('')
 
   const [toggleStatus, setToggleStatus] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
@@ -261,14 +261,13 @@ const  handlecallput = (type)=>{
     const endpoint = "saveblockst1"
     const strategy= 1
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
-      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm, instruction,selectedTime,selectedOption}
+      put,Activeleg,lockleg,targetleg,tslleg,quantity,Amount,nearestatm, instruction,selectedTime,selectedOption}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
     const payload = JSON.stringify({strategy,tradetool,sublegdata,onAccountSelect})
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
-    console.log(response)
-    
+    console.log(response) 
     })
   }
 
@@ -1119,8 +1118,8 @@ const  handlecallput = (type)=>{
                   <select  className='form-select' onChange={(e)=>handleTradeadvice(e)}>
                       <option value=""> TRADE ADVICE</option>
                       <option value="SPOT">Spot </option>
-                      <option value="SQUENCE">Sequnce </option>
-                      <option value="COVER">cover </option>
+                      {/* <option value="SQUENCE">Sequnce </option>
+                      <option value="COVER">cover </option> */}
                       <option value="Market">Market </option>
                       </select> 
                       </div>
@@ -1173,6 +1172,7 @@ const  handlecallput = (type)=>{
               </div>
             </div>
           </div>
+          
           <div className=" flex justify-between flex-wrap">
           <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
             <div className="col-lg-6 col-sm-5 col-9 mt-3">
@@ -1274,7 +1274,7 @@ const  handlecallput = (type)=>{
               handleOptionSelect('Put')
               
             }} type="button"  className={`px-4 py-2 text-black rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Put')} `}>Put</button>
-                </div>
+                </div>  
                
                 <div className="col-6">
                 <button  onClick={()=>{handlecallput('SELL'); setSelectedOption('Sell')}} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
@@ -1296,7 +1296,7 @@ const  handlecallput = (type)=>{
                 <lable className="text-white">LOT QUANTITY</lable>
 
                   <button type="button" className="btn btn-light w-100">Lot Qty</button>
-                  <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Lot Size" type="number"/>
+                  <Input className="mt-1 text-black" onChange={(e)=>setquantity(e.target.value)} value= {quantity} placeholder="Lot Size" type="number"/>
                 </div>
                 <div className="col-6">
                 <lable className="text-white">AMOUNT</lable>

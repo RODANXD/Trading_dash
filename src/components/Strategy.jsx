@@ -393,7 +393,7 @@ const handleviewdetail = ()=>{
           </div>
              ))
 
-          
+             
         )}
 
      

@@ -65,13 +65,14 @@ const [expiries, setExpiries] = useState([]);
   const [expiry, setExpiry] = useState("")
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
-  const [Quantprice,setQuantprice]= useState('')
+  const [quantity,setquantity]= useState('')
   const [Amount,setAmount]= useState('')
   const [sl,setsl]=useState(0)
   const [trail,settrail]=useState(0)
   const [target,settarget]=useState('')
   const [timer,settimer]=useState('')
   const [strikeprice,setstrikeprice]= useState('')
+  const [fno,setfno]= useState('')
   const [strikePrices, setStrikePrices] = useState([ 17000,18000]);
 
 
@@ -124,6 +125,7 @@ const [expiries, setExpiries] = useState([]);
     {Blockid:'' ,sublegid:1,checked:false}
   ])
 
+
   const [correction,setcorrection]= useState(0)
   const [blocksl,setblocksl]=useState(0)
   const [blocktrail,setblocktrail]=useState(0)
@@ -137,6 +139,10 @@ const [expiries, setExpiries] = useState([]);
 
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null)
+  const [isContentDisabled,setisContentDisabled]= useState(false)
+  const [showsymbol,setshowsymbol]=useState(false)
+
+
 
 
 
@@ -165,16 +171,31 @@ const [expiries, setExpiries] = useState([]);
   
     }
     const getButtonColor = (buttonType) => {
-      if (buttonType === 'Call') {
-        return optionlabel === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200';
-      } else if (buttonType === 'Put') {
-        return optionlabel === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200';
-      } else if (buttonType === 'Buy') {
-        return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200';
-      } else if (buttonType === 'Sell') {
-        return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200';
+      if (isContentDisabled) {
+        // Allow Buy and Sell to change colors independently when Call and Put are disabled
+        switch (buttonType) {
+          case 'Buy':
+            return selectedOption === 'Buy' ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
+          case 'Sell':
+            return selectedOption === 'Sell' ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
+          default:
+            return 'bg-gray-200 text-black';
+        }
+      } else {
+        // Original behavior when Call and Put are enabled
+        switch (buttonType) {
+          case 'Call':
+            return selectedOption === 'Call' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
+          case 'Put':
+            return selectedOption === 'Put' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black';
+          case 'Buy':
+            return (call === 'BUY' || put === 'BUY') ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
+          case 'Sell':
+            return (call === 'SELL' || put === 'SELL') ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
+          default:
+            return 'bg-gray-200 text-black';
+        }
       }
-      return 'bg-gray-200';
     };
     const handleOptionClick = (option) => {
       if (option !== optionlabel) {
@@ -214,10 +235,37 @@ const [expiries, setExpiries] = useState([]);
     return storedLegPLTs ? JSON.parse(storedLegPLTs) : Array.from({ length: numberOfLegs }, () => 1);
   });
 
-  useEffect(() => {
-    localStorage.setItem('legPLTs', JSON.stringify(legPLTs));
-    localStorage.setItem('numberOfLegs', numberOfLegs.toString());
-  }, [numberOfLegs, legPLTs]);
+  // useEffect(() => {
+  //   localStorage.setItem('legPLTs', JSON.stringify(legPLTs));
+  //   localStorage.setItem('numberOfLegs', numberOfLegs.toString());
+
+  // }, [numberOfLegs, legPLTs]);
+
+useEffect(() => {
+
+  viewlegdata()
+  handleSelectdisable()
+  }, [fno]);
+
+const viewlegdata= async (id=bid)=>{
+  const endpoint = "addleg"
+  const payload = 'Blockid='+id
+  const type = "GET"
+
+  handleexchangerequest(type, payload, endpoint)
+  .then (response=> {
+    if (response){
+      setsublegid(response.legdata)
+      setfno(response.fno)
+      setStrikePrices(response.strikes)
+  console.log(response,'resposnse')
+
+
+    }
+
+  })
+}
+
 
 
   const legadd = (id=bid)=>{
@@ -226,7 +274,7 @@ const [expiries, setExpiries] = useState([]);
     const Blockid= id
     const strategy= 1
     const sublegdata= {advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrice,sltype,blocksl,blocktrail,
-      tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg,call,put,Quantprice,Amount,nearestatm,trail,sl,target,timer,
+      tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg,call,put,quantity,Amount,nearestatm,trail,sl,target,timer,
     }
     console.log(sublegdata)
     const payload = JSON.stringify({sublegdata,Blockid,strategy
@@ -248,10 +296,59 @@ const [expiries, setExpiries] = useState([]);
   
 
   const handleSelectdisable = (e) => {
-    setSelectDisable(e.target.value);
-  };
+   
 
-  const isContentDisabled = selectDisable === "Future";
+  if  (fno==='FUTSTK'){
+      // setshowsymbol(false)
+     
+      setisContentDisabled(true)
+      
+
+   
+    }
+
+   if  (fno==='OPTSTK'){
+      // setshowsymbol(false)
+      setisContentDisabled(false)
+
+    
+
+}
+
+   if  (fno==='FUTIDX'){
+      setisContentDisabled(true)
+
+ 
+      }
+    
+   if (fno==='OPTIDX'){
+      setisContentDisabled(false)
+
+  
+    
+    }
+   if (fno==='EQ'){
+
+     
+      setisContentDisabled(true)
+
+
+    }
+   if (fno === 'SLEFNO'){
+      setisContentDisabled(true)
+
+     
+
+    }
+    console.log(fno,'fno')
+
+
+}
+
+
+
+
+  // const isContentDisabled = selectDisable === "Future";
 
 
   const handleviewall = ()=>{
@@ -272,6 +369,16 @@ const [expiries, setExpiries] = useState([]);
 
 
 }
+
+
+const handleOptionSelect = (option) => {
+  setSelectedOption(option);
+  if (option === 'Call') {
+    setput('');
+  } else {
+    setcall('');
+  }
+};
 
 
  const handledatecahnge= (e)=>{
@@ -405,6 +512,7 @@ const [expiries, setExpiries] = useState([]);
      <Button onClick={onClose}  className="bg-red-600">X</Button>
      </div>
 
+
 <div className="mt-4">
   <div className="flex rounded-sm px-2 max-xs:flex-col " style={{ background: '#CCCCCC' }}>
     <div className="col-lg-6 my-3">
@@ -412,15 +520,15 @@ const [expiries, setExpiries] = useState([]);
         <div className="col-sm-4 col-5">
         <select  className='form-select'  onChange={(e)=>handleTradeadvice(e)}>
             <option value=""> TRADE ADVICE</option>
-            <option value="spot">Spot </option>
-            <option value="sequence">Sequnce </option>
-            <option value="cover">cover </option>
+            <option value="SPOT">Spot </option>
+            <option value="SQUENCE">Sequnce </option>
+            <option value="COVER">COVER </option>
             </select> 
             </div>
         <div className="col-4">
           <input type="number" className="form-control"  onChange={(e)=>setspotpricel1(e.target.value)} placeholder='Spot Price' />
         </div>
-        {(advice === 'cover' || advice === 'sequence') && (
+        {(advice === 'COVER' || advice === 'SQUENCE') && (
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-32 bgreen-600 text-black">Leg No</Button>
@@ -445,7 +553,7 @@ const [expiries, setExpiries] = useState([]);
     <div className="col-lg-6 my-3">
       <div className="row">
 
-      {advice === 'sequence' && (
+      {advice === 'SQUENCE' && (
 <div className="flex w-1/2 gap-3">
 <button className="btn btn-light w-32">Correction</button>
 <input type="text" onChange={(e)=>setcorrection(e.target.value)} placeholder="value" 
@@ -456,18 +564,27 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     </div>        
   </div>
 </div>
-<div className={`flex flex-wrap ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
-  <div className="col-lg-3 col-sm-5 col-9 mt-3">
-    <div className="flex gap-3">
-      <div className="col-6">
-        
-         <Popover open={Combovalue} onOpenChange={setComboValue}>
+
+<div className=" flex justify-between flex-wrap">
+          <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
+            <div className="col-lg-6 col-sm-5 col-9 mt-3">
+              <div className="row">
+                <div className="col-6">
+                  
+                    {/* <select id="strikePriceSelect" className='form-select' onChange={(e) => setstrikeprice(e.target.value)}>
+                      <option>Select Strike Price</option>
+                      {strikePrices.map((Price, index) =>
+                        <option key={index} value={Price}>{Price}</option>
+                      )}
+                    </select> */}
+
+                  <Popover open={Combovalue} onOpenChange={setComboValue}>
                    <PopoverTrigger asChild>
                    <Button
                       variant="outline"
                       role="combobox"
                       aria-expanded={Combovalue}
-                      className="w-[140px] justify-between text-black"
+                      className="w-[200px] justify-between text-black"
                     >
                       {strikeprice || "Select Price"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -501,60 +618,62 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
                     </Command>
                   </PopoverContent>
                 </Popover>
-        
-      </div>
-      <div className="col-6">
-        <button type="button" className="btn btn-success">Automatic</button>
-      </div>
-    </div>
-  </div>
-  <div className="col-lg-2 col-sm-2 col-3 mt-3">
-  <input type="text" className='form-control' value= {strikeprice!=='Select Strike Price'?strikeprice:''} placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
-  </div>
-  <div className="col-lg-3 col-sm-5 mt-3">
-  <input type="number" value={nearestatm} className='form-control' onChange={(e)=>setNearestatm(e.target.value)}  placeholder='Nearest ATM' />
-  </div>
-  <div className="col-lg-2 col-6 mt-3">
-    
-    <div className="row">
-      {/* <div className="col-6"> */}
-        {/* <button type="button" className="btn btn-light w-100">(-)</button> */}
-      {/* </div> */}
-      {/* <div className="col-6"> */}
-        {/* <button type="button" className="btn btn-danger w-100">(+)</button> */}
-      {/* </div> */}
-    </div>
-  </div>
-  <div className="col-lg-2 col-6 mt-3">
-    <div className="row">
-      <div className="col-6">
-      <button  onClick={() => {
-              setoptionlabel('Call');
-              setput('');
+                  
+                </div>
+                <div className="col-6">
+                  <button type="button" className="btn btn-success w-100">Automatic</button>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-3 col-sm-2 col-3 mt-3">
+              <input type="text" className='form-control' value= {strikeprice!=='Select Strike Price'?strikeprice:''} placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
+            </div>
+            <div className="col-lg-3 col-sm-5 mt-3">
+              <input type="number" value={nearestatm} className='form-control' onChange={(e)=>setNearestatm(e.target.value)}  placeholder='Nearest ATM' />
+            </div>
+            </div>
+            
+            
+            
+               
+             
+            
+            <div className="col-lg-2 col-6 mt-3">
+              <div className="row">
+                <div className="col-6">
+                <button  onClick={() => {
+              handleOptionSelect('Call')
+             
             }}
-            type="button"  className={`px-4 text-black py-2 rounded ${getButtonColor('Call')}`}>Call</button>
+            type="button"  
+            className={`px-4 text-black  py-2 rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} 
+            ${getButtonColor('Call')}`}>Call
+              </button>
+                </div>
+                
+                <div className="col-6">
+                <button  onClick={()=>{handlecallput('BUY'); setSelectedOption('Buy')}} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
+                </div>
+              
+              </div>
+            </div>
+            </div>
+            <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
+              <div className="row">
+                <div className="col-6">
+                <button onClick={() => {
+              handleOptionSelect('Put')
+              
+            }} type="button"  className={`px-4 py-2 text-black rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Put')} `}>Put</button>
+                </div>  
+               
+                <div className="col-6">
+                <button  onClick={()=>{handlecallput('SELL'); setSelectedOption('Sell')}} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
 
-      </div>
-      <div className="col-6">
-      <button  onClick={()=>handlecallput('BUY')} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
-      </div>
-    </div>
-  </div>
-  <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
-    <div className="row">
-      <div className="col-6">
-      <button onClick={() => {
-              setoptionlabel('Put');
-              setcall('');
-            }} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Put')}`}>Put</button>
-
-      </div>
-      <div className="col-6">
-      <button  onClick={()=>handlecallput('SELL')} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
-
-      </div>
-    </div>
-  </div>
+                </div>
+               
+              </div>
+            </div>
 </div>
 
 <div className="row">
@@ -562,7 +681,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     <div className="row">
       <div className="col-6">
       <button type="button" className="btn btn-light w-100">Quantity</button>
-      <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Value" type="number"/>
+      <Input className="mt-1 text-black" onChange={(e)=>setquantity(e.target.value)} value= {quantity} placeholder="Value" type="number"/>
 
       </div>
       <div className="col-6">
@@ -699,8 +818,6 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     </div>
   </div>
   </div>
-
-</div>
     </>
   )
 }
