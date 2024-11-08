@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import Addleg from "./Addleg";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
+import { useNavigate } from "react-router-dom";
 import { TimePicker } from 'antd';
 import {
   DropdownMenu,
@@ -45,6 +46,7 @@ import DropdownMenuCheckboxes from './ui/dropdown'
 import Strategy1_form from "./Strategy1_form";
 
 import { Button } from "@/components/ui/button";
+
 
 import {
   Popover,
@@ -146,6 +148,20 @@ function Custom() {
     // Format single time
     return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
+  useEffect(() => {
+    console.log('Selected Option:', selectedOption);
+  }, [selectedOption]);
+
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate('/viewlegtable'); 
+  }
+
+
+
+
+
   console.log(onAccountSelect,'selectedOption')
 
 const handleOptionSelect = (option) => {
@@ -601,6 +617,10 @@ const  handlecallput = (type)=>{
 
   }
 
+  const viewleg = () => {
+    setShowAddleg(true);
+  };
+
   const Addform = () => {
     setIsOpen(true);
   };
@@ -794,7 +814,7 @@ const  handlecallput = (type)=>{
                   </Button>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Button className="btn btn-info w-24" >
+                  <Button className="btn btn-info w-24" onClick={handleButtonClick} >
                     View Leg
                   </Button>
                 
@@ -1380,7 +1400,7 @@ const  handlecallput = (type)=>{
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem onSelect={() => setSelectedOption('time')}>
+            <DropdownMenuItem onSelect={() => {setSelectedOption('time'); console.log(selectedTime,"hellooo im here")}}>
               Time
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => setSelectedOption('hours')}>
