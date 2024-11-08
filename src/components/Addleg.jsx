@@ -200,7 +200,7 @@ const viewlegdata= async (id=bid)=>{
     if (response){
       setsublegid(response.legdata)
       setfno(response.fno)
-      setstrikePrices(response.strikes)
+      setStrikePrices(response.strikes)
   console.log(response,'resposnse')
 
 
@@ -454,7 +454,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
         
           <select id="strikePriceSelect" className='form-select' onChange={() => setStrikePrice(e.target.value)}>
             <option>Select Strike Price</option>
-            {strikePrice.map((Price, index) =>
+            {strikePrices.map((Price, index) =>
               <option key={index} value={Price}>{Price}</option>
             )}
           </select>
