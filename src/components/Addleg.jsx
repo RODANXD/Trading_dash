@@ -680,7 +680,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
   <div className="col-lg-3 col-9 mt-3">
     <div className="row">
       <div className="col-6">
-      <button type="button" className="btn btn-light w-100">Quantity</button>
+      <button type="button" className="btn btn-light w-100">LOTS</button>
       <Input className="mt-1 text-black" onChange={(e)=>setquantity(e.target.value)} value= {quantity} placeholder="Value" type="number"/>
 
       </div>
