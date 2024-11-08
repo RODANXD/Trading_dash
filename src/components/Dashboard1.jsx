@@ -1119,8 +1119,8 @@ const  handlecallput = (type)=>{
                   <select  className='form-select' onChange={(e)=>handleTradeadvice(e)}>
                       <option value=""> TRADE ADVICE</option>
                       <option value="SPOT">Spot </option>
-                      <option value="SQUENCE">Sequnce </option>
-                      <option value="COVER">cover </option>
+                      {/* <option value="SQUENCE">Sequnce </option>
+                      <option value="COVER">cover </option> */}
                       <option value="Market">Market </option>
                       </select> 
                       </div>

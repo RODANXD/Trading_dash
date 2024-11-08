@@ -48,13 +48,16 @@ const [expiries, setExpiries] = useState([]);
   const [expiry, setExpiry] = useState("")
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
-  const [Quantprice,setQuantprice]= useState('')
+  const [quantity,setquantity]= useState('')
   const [Amount,setAmount]= useState('')
   const [sl,setsl]=useState(0)
   const [trail,settrail]=useState(0)
   const [target,settarget]=useState('')
   const [timer,settimer]=useState('')
   const [strikeprice,setstrikeprice]= useState('')
+  const [fno,setfno]= useState('')
+  const [strikePrices, setStrikePrices] = useState([ 17000,18000]);
+
 
 
 
@@ -102,6 +105,7 @@ const [expiries, setExpiries] = useState([]);
   const [sublegid,setsublegid]= useState([
     {Blockid:'' ,sublegid:1,checked:false}
   ])
+
 
   const [correction,setcorrection]= useState(0)
   const [blocksl,setblocksl]=useState(0)
@@ -175,10 +179,36 @@ const [expiries, setExpiries] = useState([]);
     return storedLegPLTs ? JSON.parse(storedLegPLTs) : Array.from({ length: numberOfLegs }, () => 1);
   });
 
-  useEffect(() => {
-    localStorage.setItem('legPLTs', JSON.stringify(legPLTs));
-    localStorage.setItem('numberOfLegs', numberOfLegs.toString());
-  }, [numberOfLegs, legPLTs]);
+  // useEffect(() => {
+  //   localStorage.setItem('legPLTs', JSON.stringify(legPLTs));
+  //   localStorage.setItem('numberOfLegs', numberOfLegs.toString());
+
+  // }, [numberOfLegs, legPLTs]);
+
+useEffect(() => {
+
+  viewlegdata()
+  }, []);
+
+const viewlegdata= async (id=bid)=>{
+  const endpoint = "addleg"
+  const payload = 'Blockid='+id
+  const type = "GET"
+
+  handleexchangerequest(type, payload, endpoint)
+  .then (response=> {
+    if (response){
+      setsublegid(response.legdata)
+      setfno(response.fno)
+      setstrikePrices(response.strikes)
+  console.log(response,'resposnse')
+
+
+    }
+
+  })
+}
+
 
 
   const legadd = (id=bid)=>{
@@ -187,7 +217,7 @@ const [expiries, setExpiries] = useState([]);
     const Blockid= id
     const strategy= 1
     const sublegdata= {advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrice,sltype,blocksl,blocktrail,
-      tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg,call,put,Quantprice,Amount,nearestatm,trail,sl,target,timer,
+      tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg,call,put,quantity,Amount,nearestatm,trail,sl,target,timer,
     }
     console.log(sublegdata)
     const payload = JSON.stringify({sublegdata,Blockid,strategy
@@ -373,15 +403,15 @@ const [expiries, setExpiries] = useState([]);
         <div className="col-sm-4 col-5">
         <select  className='form-select'  onChange={(e)=>handleTradeadvice(e)}>
             <option value=""> TRADE ADVICE</option>
-            <option value="spot">Spot </option>
-            <option value="sequence">Sequnce </option>
-            <option value="cover">cover </option>
+            <option value="SPOT">Spot </option>
+            <option value="SQUENCE">Sequnce </option>
+            <option value="COVER">COVER </option>
             </select> 
             </div>
         <div className="col-4">
           <input type="number" className="form-control"  onChange={(e)=>setspotpricel1(e.target.value)} placeholder='Spot Price' />
         </div>
-        {(advice === 'cover' || advice === 'sequence') && (
+        {(advice === 'COVER' || advice === 'SQUENCE') && (
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-32 bgreen-600 text-black">Leg No</Button>
@@ -406,7 +436,7 @@ const [expiries, setExpiries] = useState([]);
     <div className="col-lg-6 my-3">
       <div className="row">
 
-      {advice === 'sequence' && (
+      {advice === 'SQUENCE' && (
 <div className="flex w-1/2 gap-3">
 <button className="btn btn-light w-32">Correction</button>
 <input type="text" onChange={(e)=>setcorrection(e.target.value)} placeholder="value" 
@@ -493,7 +523,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     <div className="row">
       <div className="col-6">
       <button type="button" className="btn btn-light w-100">Quantity</button>
-      <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Value" type="number"/>
+      <Input className="mt-1 text-black" onChange={(e)=>setquantity(e.target.value)} value= {quantity} placeholder="Value" type="number"/>
 
       </div>
       <div className="col-6">
