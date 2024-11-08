@@ -277,7 +277,7 @@ const Strategy1_form = ({onCancel,blockid}) => {
     }
     if (e.target.value==='CASH'){
       setisContentDisabledEXP(true)
-      setshowsymbolEXP(false)
+      // setshowsymbolEXP(false)
       setshowsymbol(true)
 
     }
@@ -585,7 +585,7 @@ useEffect(()=>{
 
         <div className=' flex flex-col gap-4'>
     <div className="mt-2">
-      <div className="row">
+      <div className="row justify-evenly">
         <div className="col-lg-6 mt-3">
           <div className="row">
               <div className="col-4">
@@ -651,27 +651,7 @@ useEffect(()=>{
 
            : <></>}</div>
         </div>
-        <div className="col-lg-6 mt-3">
-        <div className="col-md-4 col-12 text-center mt-md-0 mt-3">
-          {/* <button type="button" className="btn w-100" style={{ backgroundColor: '#e6e6e9', width: 'fit-content', borderRadius: '5px' }}><b>Terminal ON/OFF</b>&ensp; {toggleStatus ? <i className="fa fa-toggle-on text-primary" style={{ fontSie: '18px' }} onClick={() => setToggleStatus(false)} /> : <i className="fa fa-toggle-off text-primary" style={{ fontSize: '18px' }} onClick={() => setToggleStatus(true)} />}</button> */}
-          <div className="col-lg-6 w-full">
-            <div className="flex flex-nowrap gap-3 w-96 items-center">
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Max Moving High {890}</button>
-              </div>
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Avg Moving</button>
-              </div>
-              <div className="col-lg-4 col-6  mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Max Drawdown</button>
-              </div>
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Up Avg Moving</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
+
       </div>
     </div>
 
@@ -792,7 +772,7 @@ useEffect(()=>{
                          <CommandItem
                            key={index}
                            value={symbol}
-                           onSelect={() => sethandleexpiry(symbol)}
+                           onSelect={() => setExpiry(symbol)}
                          >
                            <Check
                              className={`mr-2 h-4 w-4 ${
@@ -1019,21 +999,27 @@ useEffect(()=>{
           <div className="col-lg-3 col-9 mt-3">
             <div className="row">
             <div className="col-6">
+            <lable className="text-white">LOT QUANTITY</lable>
                   <button type="button" className="btn btn-light w-100">Quantity</button>
                   <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Value" type="number"/>
                 </div>
               <div className="col-6">
+              <lable className="text-white">AMOUNT</lable>
+
                 <button type="button" className="btn btn-success w-100">AMOUNT</button>
               </div>
             </div>
           </div>
           <div className="col-lg-2 col-3 mt-3">
+          <lable className="text-white">Value</lable>
           <input onChange={(e)=>setAmount(e.target.value)} value={Amount}   type="text"  className='form-control'  placeholder='Value'  />
 
           </div>
           <div className="col-lg-3 col-sm-6 mt-3">
             <div className="row">
               <div className="col-6">
+              <lable className="text-white">SL</lable>
+
               <select  className='form-select'onChange={(e)=>handlesltype(e)}>
                       <option value=""> SL</option>
                       <option value="SpotPoints">Spot Points </option>
@@ -1043,6 +1029,7 @@ useEffect(()=>{
                 </select>
                       </div>
               <div className="col-6">
+                <lable className="text-white">Value</lable>
               <input type="text" onChange={(e)=>setsl(e.target.value)} value = {sl} placeholder='Manual Entry' className='form-control' />
               </div>
             </div>
@@ -1058,6 +1045,8 @@ useEffect(()=>{
                     </select>
                     </div>
               <div className="col-6">
+              <lable className="text-white">Value</lable>
+
               <input type="text" onChange={(e)=>settrail(e.target.value)} value = {trail} placeholder='Manual Entry' className='form-control' />
               </div>
             </div>
@@ -1077,6 +1066,8 @@ useEffect(()=>{
 
                 </div>
               <div className="col-6">
+              <lable className="text-white">Value</lable>
+
               <input type="text"  onChange={(e)=>settarget(e.target.value)} value = {target} placeholder='Manual Entry' className='form-control' />
               </div>
             </div>
@@ -1130,6 +1121,7 @@ useEffect(()=>{
       </Popover>
               </div>
               <div className="col-6">
+              <lable className="text-white">Value</lable>
               <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='Manual Entry' className='form-control' />
 
 

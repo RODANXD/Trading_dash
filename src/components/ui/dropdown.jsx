@@ -94,3 +94,4 @@ export default function DropdownMenuCheckboxes({ stat, onAccountSelect }) {
     </DropdownMenu>
   );
 }
+

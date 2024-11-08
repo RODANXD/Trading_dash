@@ -205,7 +205,7 @@ useState(() => {
 
   const handlemode2 = () =>{
     setpaper1(!paper1)
-    // setisContentDisabled(!isContentDisabled)
+    // setisContentDisabled(!isContentDisabled) 
     
   }
 
