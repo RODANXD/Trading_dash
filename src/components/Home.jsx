@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { TrendingUp } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis, Tooltip, ResponsiveContainer } from "recharts"
-
 import {
   Card,
   CardContent,

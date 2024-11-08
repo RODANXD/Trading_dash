@@ -261,7 +261,7 @@ const  handlecallput = (type)=>{
     const endpoint = "saveblockst1"
     const strategy= 1
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
-      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm, instruction}
+      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm, instruction,selectedTime,selectedOption}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
     const payload = JSON.stringify({strategy,tradetool,sublegdata,onAccountSelect})
     const type = "POST"
@@ -1293,15 +1293,21 @@ const  handlecallput = (type)=>{
             <div className="col-lg-3 col-9 mt-3">
               <div className="row">
                 <div className="col-6">
+                <lable className="text-white">LOT QUANTITY</lable>
+
                   <button type="button" className="btn btn-light w-100">Lot Qty</button>
                   <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Lot Size" type="number"/>
                 </div>
                 <div className="col-6">
+                <lable className="text-white">AMOUNT</lable>
+
                   <button type="button" className="btn btn-success w-100">AMOUNT</button>
                 </div>
               </div>
             </div>
             <div className="col-lg-2 col-3 mt-3">
+            <lable className="text-white">Value</lable>
+
               <input onChange={(e)=>setAmount(e.target.value)} value={Amount}   type="text"  className='form-control'  placeholder='INR'  />
             </div>
             <div className="col-lg-3 col-sm-6 mt-3">
@@ -1317,6 +1323,7 @@ const  handlecallput = (type)=>{
                 </select>
                         </div>
                 <div className="col-6">
+                <lable className="text-white">Value</lable>
                   <input type="text" onChange={(e)=>setsl(e.target.value)} value = {sl} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
@@ -1334,6 +1341,7 @@ const  handlecallput = (type)=>{
                       </select>
                       </div>
                 <div className="col-6">
+                <lable className="text-white">Value</lable>
                   <input type="text" onChange={(e)=>settrail(e.target.value)} value = {trail} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
@@ -1352,6 +1360,7 @@ const  handlecallput = (type)=>{
 
                   </div>
                 <div className="col-6">
+                <lable className="text-white">Value</lable>
                   <input type="text"  onChange={(e)=>settarget(e.target.value)} value = {target} placeholder='Manual Entry' className='form-control' />
                 </div>
               </div>
@@ -1390,14 +1399,14 @@ const  handlecallput = (type)=>{
           disableClock={true}
           format="HH:mm:ss"
         />
-      )}
+      )} 
       {selectedOption === 'hours' && (
         <TimePicker
 
         onChange={(time) => {setSelectedTime(time); console.log(time)}}
           clockIcon={null}
           disableClock={true}
-          format="HH:mm"co
+          format="HH:mm"
           className="bg-white"
         />
       )}
@@ -1406,6 +1415,7 @@ const  handlecallput = (type)=>{
   
 </div>
                 <div className="col-6">
+                <lable className="text-white">Value</lable>
                 
                   
                   <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='Manual Entry' className='form-control' />

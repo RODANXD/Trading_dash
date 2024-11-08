@@ -7,6 +7,9 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { DatePickerInput } from '@mantine/dates';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { TimePicker } from 'antd';
+import { ChevronDown } from "lucide-react"
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -14,8 +17,22 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command"
 import DropdownMenuCheckboxes from './ui/dropdown';
+import { Check, ChevronsUpDown } from "lucide-react"
+
 import Strategy1_form from "./Strategy1_form";
 import { Button } from "@/components/ui/button";
 import {
@@ -55,6 +72,8 @@ const [expiries, setExpiries] = useState([]);
   const [target,settarget]=useState('')
   const [timer,settimer]=useState('')
   const [strikeprice,setstrikeprice]= useState('')
+  const [strikePrices, setStrikePrices] = useState([ 17000,18000]);
+
 
 
 
@@ -86,6 +105,8 @@ const [expiries, setExpiries] = useState([]);
   const[live,setLive]= useState(false)
  
   const [targetleg,setTargetleg]=useState('')
+  const [Combovalue, setComboValue] = useState(false)
+  
   
   const [lockleg,setLockleg]=useState('')
   const [targetblock,setTargetblock]=useState('')
@@ -113,6 +134,23 @@ const [expiries, setExpiries] = useState([]);
   const [optionlabel,setoptionlabel]= useState('')
   const [call, setcall] = useState('');
   const [put, setput] = useState('');
+
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null)
+
+
+
+
+
+  const formatTime = (time) => {
+    if (!time) return null;
+    if (Array.isArray(time)) {
+      // Format range of times
+      return `${new Date(time[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })} - ${new Date(time[1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    }
+    // Format single time
+    return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
   const   handlecallput = (type)=>{
   
     if (optionlabel==='Call'){
@@ -164,6 +202,7 @@ const [expiries, setExpiries] = useState([]);
   const [spotpricel1,setspotpricel1]= useState('')
   const[Nearestatml1,setNearestatml1]= useState('')
   const[nearestatm,setNearestatm]= useState(0)
+  
 
   console.log(brokerselect)
   const [numberOfLegs, setNumberOfLegs] = useState(() => {
@@ -422,16 +461,46 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     <div className="flex gap-3">
       <div className="col-6">
         
-          <select id="strikePriceSelect" className='form-select' onChange={() => setStrikePrice(e.target.value)}>
-            <option>Select Strike Price</option>
-            {strikePrice.map((Price, index) =>
-              <option key={index} value={Price}>{Price}</option>
-            )}
-          </select>
-          :
-          <select id="strikePriceSelect" className='form-select'>
-            <option>Select Strike Price</option>
-          </select>
+         <Popover open={Combovalue} onOpenChange={setComboValue}>
+                   <PopoverTrigger asChild>
+                   <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={Combovalue}
+                      className="w-[140px] justify-between text-black"
+                    >
+                      {strikeprice || "Select Price"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search Price..." />
+                      <CommandList>
+                        <CommandEmpty>No symbol found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem value="select-symbol" onChange={(e) => setstrikeprice(e.target.value)}>
+                            Select Price
+                          </CommandItem>
+                          {strikePrices.map((symbol, index) => (
+                            <CommandItem
+                              key={index}
+                              value={symbol}
+                              onSelect={() => setstrikeprice(symbol)}
+                            >
+                              <Check
+                                className={`mr-2 h-4 w-4 ${
+                                  strikeprice === symbol ? "opacity-100" : "opacity-0"
+                                }`}
+                              />
+                              {symbol}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
         
       </div>
       <div className="col-6">
@@ -555,15 +624,50 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
   <div className="col-lg-4 col-sm-6 mt-3">
     <div className="row">
       <div className="col-6">
-        <Dropdown>
-          <Dropdown.Toggle variant="light" id="dropdown-basic" className="w-100">
-            Timer
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {/* <Dropdown.Item href='#'>Point</Dropdown.Item> */}
-            {/* <Dropdown.Item href='#'>Percentage</Dropdown.Item> */}
-          </Dropdown.Menu>
-        </Dropdown>
+      <Popover>
+    <PopoverTrigger asChild>
+      <div>
+      
+        <label className="text-white text-center"> Timer</label>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className=" p-2 w-full justify-between text-black">
+            {formatTime(selectedTime) || "Timer"} <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onSelect={() => setSelectedOption('time')}>
+              Time
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setSelectedOption('hours')}>
+              Hrs/Min
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </PopoverTrigger>
+    <PopoverContent className="w-80">
+      {selectedOption === 'time' && (
+        <TimePicker.RangePicker 
+        onChange={(time) => {setSelectedTime(time); console.log(time)}} 
+          className="bg-white"
+          clockIcon={null}
+          disableClock={true}
+          format="HH:mm:ss"
+        />
+      )}
+      {selectedOption === 'hours' && (
+        <TimePicker
+
+        onChange={(time) => {setSelectedTime(time); console.log(time)}}
+          clockIcon={null}
+          disableClock={true}
+          format="HH:mm"
+          className="bg-white"
+        />
+      )}
+    </PopoverContent>
+  </Popover>
       </div>
       <div className="col-6">
       <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='Manual Entry' className='form-control' />
