@@ -10,6 +10,9 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import { useNavigate } from "react-router-dom";
 import { TimePicker } from 'antd';
+import Viewlegtable from "./Viewlegtable";
+
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -68,7 +71,7 @@ function Custom() {
 
 
   const [strikeprice,setstrikeprice]= useState('')
-  const [quantity,setquantity]= useState('')
+  const [quantity,setquantity]= useState(0)
 
   const [toggleStatus, setToggleStatus] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
@@ -86,7 +89,7 @@ function Custom() {
   // const [value, setValue] = useState<Date | null>(null);
 
   const [showAddleg, setShowAddleg] = useState(false);
-
+  const [showviewleg, setshowviewleg] = useState(false);
 
   const [sltype,setsltype]=useState('')
   const [tsltype,settsltype]=useState('')
@@ -94,7 +97,7 @@ function Custom() {
   const [Activeleg,setActiveleg]=useState(0)
   const [sl,setsl]=useState(0)
   const [trail,settrail]=useState(0)
-  const [target,settarget]=useState('')
+  const [target,settarget]=useState(0)
   const [timer,settimer]=useState('')
   const [showsymbol,setshowsymbol]=useState(false)
   const [selectsymbol,setselectsymbol]=useState('')
@@ -154,12 +157,15 @@ function Custom() {
 
   const navigate = useNavigate();
 
-  const handleButtonClick = () => {
-    navigate('/viewlegtable'); 
+  const handleButtonClick = (id) => {
+    // navigate('/viewlegtable'); 
+    setshowviewleg(true)
+    setcurrentblock(id)
+    console.log(id)
   }
 
 
-
+console.log("hello" , showviewleg)
 
 
   console.log(onAccountSelect,'selectedOption')
@@ -284,6 +290,7 @@ const  handlecallput = (type)=>{
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
     console.log(response) 
+    window.location.reload()
     })
   }
 
@@ -515,7 +522,6 @@ const  handlecallput = (type)=>{
   const handleviewall = (id)=>{
     setcurrentblock(id)
     setviewall(true)
-
   }
   const handleCancelViewAll = () => {
     setviewall(false);
@@ -599,6 +605,7 @@ const  handlecallput = (type)=>{
       console.log(response)
 })
   // tradeblocklist()
+  window.location.reload()
   
   };
   
@@ -814,7 +821,7 @@ const  handlecallput = (type)=>{
                   </Button>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Button className="btn btn-info w-24" onClick={handleButtonClick} >
+                  <Button className="btn btn-info w-24" onClick={()=> handleButtonClick(item.Blockid)} >
                     View Leg
                   </Button>
                 
@@ -824,8 +831,25 @@ const  handlecallput = (type)=>{
             
            { showAddleg && <Addleg onClose={toggleAddleg} Blockid={currentblock} />}
           </div>
+          
+
         </div>
       )}
+
+            
+           {showviewleg && (
+        <div >
+          <div >
+            
+          { showviewleg && <Viewlegtable  blockid={currentblock} />}
+           
+          </div>
+          
+
+        </div>
+      )}
+
+      
                 </div>
               </div>
 
@@ -854,22 +878,22 @@ const  handlecallput = (type)=>{
 
   {item.orderdata.map((item) => (
     <tr key={item.id} className="text-gray-800 ">
-            <td className="border border-gray-300 p-1 text-white">{item.id}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.id}</td>
               
-            <td className="border border-gray-300 p-1 text-white">{item.broker}</td>  
-            <td className="border border-gray-300 p-1 text-white">{item.tradingsymbol}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.buyorderid}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.ltp}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.broker}</td>  
+            <td className="border border-gray-300 p-1 text-white break-all">{item.tradingsymbol}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.buyorderid}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.ltp}</td>
 
-            <td className="border border-gray-300 p-1 text-white">{item.avg_price}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.side}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.quantity}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.status?"ACTIVE":"OFF"}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.sellorderid}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.sl}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.slhit}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.targethit}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.trailhit}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.avg_price}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.side}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.quantity}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.status?"ACTIVE":"OFF"}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.sellorderid}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.sl}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.slhit}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.targethit}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.trailhit}</td>
             <td className="border border-gray-300 p-1">
         <Button className="text-xs p-2">EXIT</Button>  
 
@@ -1475,10 +1499,10 @@ const  handlecallput = (type)=>{
                   <input type="number" className='form-control' onChange = {(e)=> handlesetactive(e)} placeholder='Active' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
+                  <input type="number" className='form-control'  onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onChange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
+                  <input type="number" className='form-control'   onChange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
                 </div>
                 <div className="col-lg col-sm-6 mt-3">
                   <input type="number" className='form-control' onChange={(e)=> handleLegTarget(e)} placeholder='TARGET' />

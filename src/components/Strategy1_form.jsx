@@ -360,6 +360,9 @@ useEffect(()=>{
   const [optiondata,setoptiondata]= useState({type:'',side:''})
   const [Amountblock,setAmountblock]= useState('')
   const [addtrade,setAddtrade]= useState(false)
+  const [spotprice,setspotprice]= useState(0)
+
+
   const [advice,Setadvice]= useState(false)
   const[brokerselect,setbrokerselect]= useState('')
   const [spotpricel1,setspotpricel1]= useState('')
@@ -391,7 +394,7 @@ useEffect(()=>{
   const settings =  ()=>{
     const endpoint = "saveblockst1"
     const strategy= 1
-    const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
+    const sublegdata= {advice,spotprice,correction,sltype,strikeprice,targettype,sl,target,timer,trail,call,
       put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
     const payload = JSON.stringify({strategy,tradetool,sublegdata})
@@ -399,7 +402,10 @@ useEffect(()=>{
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
     console.log(response)
-    })
+    window.location.reload();
+  })
+
+    
   }
 
   
