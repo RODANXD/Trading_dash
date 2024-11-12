@@ -1,4 +1,4 @@
-// import axios from 'axios';
+    // import axios from 'axios';
 import * as React from "react";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -395,7 +395,7 @@ useEffect(()=>{
       put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
     const payload = JSON.stringify({strategy,tradetool,sublegdata})
-    const type = "POST"
+    const type = "PUT"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
     console.log(response)

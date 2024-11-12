@@ -9,6 +9,7 @@ import Addleg from "./Addleg";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import { TimePicker } from 'antd';
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -18,6 +19,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+
 
 import {
   Command,
@@ -847,7 +849,7 @@ const  handlecallput = (type)=>{
             <td className="border border-gray-300 p-1 text-white">{item.status?"ACTIVE":"OFF"}</td>
             <td className="border border-gray-300 p-1 text-white">{item.sellorderid}</td>
             <td className="border border-gray-300 p-1 text-white">{item.sl}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.slhit}</td>
+            <td className="border border-gray-3 00 p-1 text-white">{item.slhit}</td>
             <td className="border border-gray-300 p-1 text-white">{item.targethit}</td>
             <td className="border border-gray-300 p-1 text-white">{item.trailhit}</td>
             <td className="border border-gray-300 p-1">
