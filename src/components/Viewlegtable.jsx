@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLocation } from 'react-router-dom';
 
 import { handleexchangerequest } from "../utility/Api";
 
-
-const Viewlegtable = ({blockid}) => {
-  console.log("teek h", blockid);
+const Viewlegtable = () => {
+  const location = useLocation();
+  const blockid = location.state?.blockid; 
+  console.log("Received blockid:", blockid);
   const [scriptData, setScriptData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
@@ -16,7 +18,7 @@ const Viewlegtable = ({blockid}) => {
   const [data, setData] = useState([]);
   
   const tableheaddata = ["Blockid", "sublegid", "Activeleg", "lockleg", "tslleg", "targetleg", "sl", "trail", "target", "timer", "strikeprice", "advice", "spotprice", "ATM", "call", "put", "correction", "sltype", "tsltype", "targettype", "nearestatm", "Linkleg", "Edit", "Delete"];
-  const tablebodydata = ["name", "candleHighLow", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "longshort", "status"];
+
   useEffect(() => {
     const filteredData = scriptData.filter(script =>
       script.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -26,25 +28,51 @@ const Viewlegtable = ({blockid}) => {
   }, [searchTerm, statusFilter]);
 
   useEffect(() => {
-    viewlegdata();
-  }, []);
+    if (blockid) {
+      viewlegdata(blockid);
+    }
+  }, [blockid]);
 
-  const viewlegdata = async (id=blockid) => {
+  const viewlegdata = async (id = blockid) => {
     const endpoint = "addleg";
-    const payload = 'Blockid='+id; 
+    const payload = 'Blockid=' + id;
     const type = "GET";
 
     try {
       const response = await handleexchangerequest(type, payload, endpoint);
       if (response) {
-        const formattedData = response.legdata.map((item, index) => ({
-          options: tableheaddata[index],
-          current: item[tablebodydata[index]] || 'unknown',
-          new: ''
-        }));
-        setScriptData(response.legdata);
+        console.log("API response data:", response.legdata);
+
+        const formattedData = response.legdata.map((item) => {
+          console.log("Current item in legdata:", item);
+          return{
+          Blockid: id, 
+          sublegid: item.sublegid,
+          Activeleg: item.Activeleg,
+          lockleg: item.lockleg,
+          tslleg: item.tslleg,
+          targetleg: item.targetleg,
+          sl: item.sl,
+          trail: item.trail,
+          target: item.target,
+          timer: item.timer,
+          strikeprice: item.strikeprice,
+          advice: item.advice,
+          spotprice: item.spotprice, 
+          ATM: item.ATM,
+          call: item.call,
+          put: item.put,
+          correction: item.correction,
+          sltype: item.sltype,
+          tsltype: item.tsltype,
+          targettype: item.targettype,
+          nearestatm: item.nearestatm,
+          Linkleg: item.Linkleg,
+          status: item.status,
+        }});
+
         setData(formattedData);
-        console.log(formattedData);
+        console.log("Formatted data for the table:", formattedData);
       }
     } catch (error) {
       console.error("Error fetching data", error);
@@ -54,6 +82,10 @@ const Viewlegtable = ({blockid}) => {
   const handleOpen = () => {
     setIsOpen(true);
   };
+
+  const handleUpdate = ()=>{
+    window.location.reload();
+  }
 
   return (
     <>
@@ -70,7 +102,6 @@ const Viewlegtable = ({blockid}) => {
             />
           </div>
           <div>
-            {/* filter box */}
             <div className="flex flex-col">
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger>
@@ -98,10 +129,10 @@ const Viewlegtable = ({blockid}) => {
                 </tr>
               </thead>
               <tbody>
-                {scriptData.map((script, index) => (
-                  <tr key={index} className={index % 2 === 0 ? "bg-slate-400" : "bg-slate-300"}>
-                    {tablebodydata.map((field) => (
-                      <td key={field} className="p-1 px-4 border-b border-r">{script[field]}</td>
+                {data.map((row, rowIndex) => (
+                  <tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-slate-400" : "bg-slate-300"}>
+                    {tableheaddata.slice(0, -2).map((header, cellIndex) => (
+                      <td key={cellIndex} className="p-1 px-4 border-b border-r">{row[header] || 'N/A'}</td>
                     ))}
                     <td className="p-1 px-4 border-b border-r">
                       <Button size="sm" className="w-full" onClick={handleOpen}>Edit</Button>
@@ -115,32 +146,38 @@ const Viewlegtable = ({blockid}) => {
             </table>
           </div>
         </div>
+
         {isOpen && (
           <div className="small-window text-white bg-blue-950 rounded-md p-3 h-1/2 overflow-hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <button className="float-right text-white" onClick={() => setIsOpen(false)}>X</button>
             <div className='h-4/6 overflow-auto mt-8'>
-              <table className="multi-tablem text-white w-full">
-                <thead className='bg-slate-600'>
-                  <tr className="text-center">
-                    {["OPTIONS", "CURRENT", "NEW"].map((header) => (
-                      <th key={header} className="p-2 border-b border-gray-300 text-center">{header}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-slate-500" : "bg-slate-400"}>
-                      <td className="p-2 border-b border-gray-300 text-center">{item.options}</td>
-                      <td className="p-2 border-b border-gray-300 text-center">{item.current}</td>
-                      <td className="p-2 border-b border-gray-300 text-center">
-                        <input type="text" className="w-44 rounded-md text-white p-1 text-xs font-thin bg-slate-800" />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <table className="multi-tablem text-white w-full">
+  <thead className="bg-slate-600">
+    <tr className="text-center">
+      {["OPTIONS", "CURRENT", "NEW"].map((header) => (
+        <th key={header} className="p-2 border-b border-gray-300 text-center">{header}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {tableheaddata.map((header, index) => (
+      <tr key={index} className={index % 2 === 0 ? "bg-slate-500" : "bg-slate-400"}>
+        <td className="p-2 border-b border-gray-300 text-center">{header}</td>
+        
+        <td className="p-2 border-b border-gray-300 text-center">
+          {data[0]?.[header] || 'N/A'}
+        </td>
+        
+        <td className="p-2 border-b border-gray-300 text-center">
+          <input type="text" className="w-44 rounded-md text-white p-1 text-xs font-thin bg-slate-800" />
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
             </div>
-            <button className="optionbutton bg-green-600 text-white p-2 rounded-md mt-4">
+            <button className="optionbutton bg-green-600 text-white p-2 rounded-md mt-4" onClick={handleUpdate}>
               UPDATE
             </button>
           </div>

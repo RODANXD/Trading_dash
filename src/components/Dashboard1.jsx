@@ -145,10 +145,8 @@ function Custom() {
   const formatTime = (time) => {
     if (!time) return null;
     if (Array.isArray(time)) {
-      // Format range of times
       return `${new Date(time[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })} - ${new Date(time[1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     }
-    // Format single time
     return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
   useEffect(() => {
@@ -158,11 +156,9 @@ function Custom() {
   const navigate = useNavigate();
 
   const handleButtonClick = (id) => {
-    // navigate('/viewlegtable'); 
-    setshowviewleg(true)
-    setcurrentblock(id)
+    navigate('/viewlegtable',{ state: { blockid: id } }); 
     console.log(id)
-  }
+  } 
 
 
 console.log("hello" , showviewleg)
@@ -178,6 +174,7 @@ const handleOptionSelect = (option) => {
     setcall('');
   }
 };
+
 
 
 
@@ -830,19 +827,6 @@ const  handlecallput = (type)=>{
           <div >
             
            { showAddleg && <Addleg onClose={toggleAddleg} Blockid={currentblock} />}
-          </div>
-          
-
-        </div>
-      )}
-
-            
-           {showviewleg && (
-        <div >
-          <div >
-            
-          { showviewleg && <Viewlegtable  blockid={currentblock} />}
-           
           </div>
           
 
