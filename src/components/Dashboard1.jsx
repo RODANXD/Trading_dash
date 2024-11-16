@@ -68,6 +68,7 @@ function Custom() {
   const [Notradingzone, SetNotradingzone] = useState(new Date());
   const [segment,SetSegment]=useState('')
   const [strikePrices, setStrikePrices] = useState([ 17000,18000]);
+  
 
 
   const [strikeprice,setstrikeprice]= useState('')
@@ -110,7 +111,7 @@ function Custom() {
   const[live,setLive]= useState(false)
   const [targetleg,setTargetleg]=useState(0)
   const [isContentDisabled,setisContentDisabled]= useState(false)
-  const [isContentDisabledEXP,setisContentDisabledEXP]= useState(true)
+  const [isContentDisabledEXP,setisContentDisabledEXP]= useState(false)
   const [lockleg,setLockleg]=useState(0)
   const [overallTARGET,setoverallTARGET]=useState(0)
   const [overallActive,setoverallActive]=useState(0)
@@ -129,8 +130,10 @@ function Custom() {
   
   
   // new usestate
-  
-  
+  const [colorbuysell, setcolorbuysell] = useState()
+  const [selectedStartDate, setSelectedStartDate] = useState(new Date());
+  const [selectedEndDate, setSelectedEndDate] = useState(new Date());
+  const [Marketdate,SetMarketdate ] = useState(new Date())
   const [selectedOption, setSelectedOption] = useState(null)
   const [instruction, setinstruction] = useState('')
   const [Comboopen, setComboOpen] = useState(false)
@@ -188,6 +191,8 @@ const  handlecallput = (type)=>{
   if (selectedOption==='Put'){
     setput(type)
   }
+  
+  
   if (fno==='EQ'){
     setinstruction(type)
    
@@ -199,8 +204,9 @@ const  handlecallput = (type)=>{
   }
   if (fno==='STXIDX'){
     setinstruction(type)
-    
+
   }
+  
   }
 
   const handleaccountselect = (selectedAccount)=>{
@@ -210,12 +216,12 @@ const  handlecallput = (type)=>{
 
   const getButtonColor = (buttonType) => {
     if (isContentDisabled) {
-      // Allow Buy and Sell to change colors independently when Call and Put are disabled
+      // Allow Buy and Sell to change colors when Call and Put are disabled
       switch (buttonType) {
         case 'Buy':
-          return selectedOption === 'Buy' ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
+          return colorbuysell === 'Buy' ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
         case 'Sell':
-          return selectedOption === 'Sell' ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
+          return colorbuysell === 'Sell' ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
         default:
           return 'bg-gray-200 text-black';
       }
@@ -280,8 +286,9 @@ const  handlecallput = (type)=>{
     const endpoint = "saveblockst1"
     const strategy= 1
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
-      put,Activeleg,lockleg,targetleg,tslleg,quantity,Amount,nearestatm, instruction,selectedTime,selectedOption}
-    const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol}
+      put,Activeleg,lockleg,targetleg,tslleg,quantity,Amount,nearestatm, instruction,selectedTime,selectedOption,Marketdate}
+    const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,
+                        overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol,selectedStartDate,selectedEndDate}
     const payload = JSON.stringify({strategy,tradetool,sublegdata,onAccountSelect})
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
@@ -412,6 +419,7 @@ const  handlecallput = (type)=>{
     }
    if (e.target.value==='EQ'){
       setisContentDisabledEXP(false)
+      console.log(isContentDisabledEXP,'hloo isContentDisabledEXP')
      
       setisContentDisabled(true)
       
@@ -430,6 +438,46 @@ const  handlecallput = (type)=>{
         setisContentDisabledEXP(false);
         
       }
+
+
+  
+  // switch (e.target.value) {
+  //   case 'FUTSTK':
+  //   case 'OPTSTK':
+  //   case 'SLEFNO':
+  //     setshowsymbol(true);
+  //     setisContentDisabled(true);
+  //     setisContentDisabledEXP(true);
+  //     setSelectVertical('stock');
+  //     break;
+
+  //   case 'FUTIDX':
+  //     setisContentDisabled(true);
+  //     setshowsymbol(false);
+  //     setisContentDisabledEXP(true);
+  //     break;
+
+  //   case 'OPTIDX':
+  //     setisContentDisabled(false);
+  //     setshowsymbol(false);
+  //     setisContentDisabledEXP(true);
+  //     break;
+
+  //   case 'EQ':
+  //     setisContentDisabled(true);
+  //     setisContentDisabledEXP(false);
+  //     console.log(isContentDisabledEXP,'hloo isContentDisabledEXP')
+  //     setSelectVertical('stock');
+  //     setshowsymbol(true);
+  //     break;
+
+  //   default:
+  //     setisContentDisabledEXP(false);
+  //     break;
+  // }
+
+
+
   
 
     const sdd = localStorage.getItem("token");
@@ -534,10 +582,23 @@ const  handlecallput = (type)=>{
 
   
 
-
- const handledatecahnge= (e)=>{
-    Settradevalidity(e.target.value)
+  
+ const handledatecahnge= (date)=>{
+    Settradevalidity(date)
+    console.log(date, "hello date")
   }
+  const handlemarketdate =(date)=>{
+    SetMarketdate(date)
+    console.log(date, "hello market date")
+  }
+  const handleDateRangeApply = ({ startDate, endDate }) => {
+    setSelectedStartDate(startDate);
+    setSelectedEndDate(endDate);
+    console.log("Start Date:", startDate.format('M/DD hh:mm A'));
+    console.log("End Date:", endDate.format('M/DD hh:mm A'));
+    Notradingzone.startDate = startDate.format('M/DD hh:mm A');
+    Notradingzone.endDate = endDate.format('M/DD hh:mm A');
+  };
 
   const handletradetype =(e)=>{
     setTradetype(e.target.value)
@@ -552,6 +613,8 @@ const  handlecallput = (type)=>{
 
     
   }
+  
+
   const handletslleg= (e)=>{
     setTslleg(e.target.value)
     console.log(e.target.value)
@@ -917,14 +980,14 @@ const  handlecallput = (type)=>{
           
         `}
       </style>
-          <label className="text-white text-lg">Trade Validity</label>
-          <DatePicker
-            className="bg-white text-black p-2 rounded-lg w-100"
-            selected={tradevalidity}
-            onChange={(date) => Settradevalidity(date)}
-            showTimeInput
-            dateFormat="MMMM d, yyyy h:mm aa"
-          />
+            <label className="text-white text-lg">Trade Validity</label>
+            <DatePicker
+              className="bg-white text-black p-2 rounded-lg w-100"
+              selected={tradevalidity}
+              onChange={handledatecahnge}
+              showTimeInput
+              dateFormat="MMM d, yyyy h:mm aa"
+            />
         </div>
 
         <div className="col-12 row col-md-4">
@@ -943,7 +1006,9 @@ const  handlecallput = (type)=>{
 
         <div className="col-12 row col-md-4">
           <label className="text-white text-lg">No Trade Zone</label>
-          <DateRangePicker className="bg-white w-100 mt-2" />
+          <DateRangePicker 
+          onApply={handleDateRangeApply}
+          className="bg-white w-100 mt-2" />
         </div>
       </div>
 
@@ -1182,8 +1247,8 @@ const  handlecallput = (type)=>{
                     {market?
                   <DatePicker
             className="bg-white text-black p-2 rounded-lg w-100"
-            selected={tradevalidity}
-            onChange={(date) => Settradevalidity(date)}
+            selected={Marketdate}
+            onChange={handlemarketdate}
             showTimeInput
             dateFormat="MMMM d, yyyy h:mm aa"
           />:<></>}
@@ -1310,7 +1375,8 @@ const  handlecallput = (type)=>{
                 </div>
                 
                 <div className="col-6">
-                <button  onClick={()=>{handlecallput('BUY'); setSelectedOption('Buy')}} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
+                <button  onClick={()=>{handlecallput('BUY'); setcolorbuysell('Buy')}} type="button"  
+                className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
                 </div>
               
               </div>
@@ -1327,7 +1393,8 @@ const  handlecallput = (type)=>{
                 </div>  
                
                 <div className="col-6">
-                <button  onClick={()=>{handlecallput('SELL'); setSelectedOption('Sell')}} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
+                <button  onClick={()=>{handlecallput('SELL'); setcolorbuysell('Sell')}} type="button" 
+                className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
 
                 </div>
                

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const DateRangePicker = React.forwardRef(({ className, ...props }, ref) => {
+const DateRangePicker = React.forwardRef(({ className, onApply, ...props }, ref) => {
   const inputRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -15,6 +15,17 @@ const DateRangePicker = React.forwardRef(({ className, ...props }, ref) => {
             format: 'M/DD hh:mm A'
           }
         });
+
+        // Attach the apply event listener
+        $(inputRef.current).on('apply.daterangepicker', (event, picker) => {
+          if (onApply) {
+            onApply({
+              startDate: picker.startDate,
+              endDate: picker.endDate
+            });
+          }
+        });
+
         setIsLoaded(true);
       } else {
         setTimeout(initializeDateRangePicker, 100);
@@ -28,7 +39,7 @@ const DateRangePicker = React.forwardRef(({ className, ...props }, ref) => {
         $(inputRef.current).daterangepicker('destroy');
       }
     };
-  }, []);
+  }, [onApply]);
 
   return (
     <div>
