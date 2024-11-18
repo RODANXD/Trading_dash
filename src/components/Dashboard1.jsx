@@ -8,7 +8,10 @@ import { Input } from "@/components/ui/input";
 import Addleg from "./Addleg";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
+import { useNavigate } from "react-router-dom";
 import { TimePicker } from 'antd';
+import Viewlegtable from "./Viewlegtable";
+
 
 import {
   DropdownMenu,
@@ -48,6 +51,7 @@ import Strategy1_form from "./Strategy1_form";
 
 import { Button } from "@/components/ui/button";
 
+
 import {
   Popover,
   PopoverContent,
@@ -65,10 +69,10 @@ function Custom() {
   const [Notradingzone, SetNotradingzone] = useState(new Date());
   const [segment,SetSegment]=useState('')
   const [strikePrices, setStrikePrices] = useState([ 17000,18000]);
-
+console.log(Notradingzone,'Notradingzone')
 
   const [strikeprice,setstrikeprice]= useState('')
-  const [quantity,setquantity]= useState('')
+  const [quantity,setquantity]= useState(0)
 
   const [toggleStatus, setToggleStatus] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
@@ -86,7 +90,7 @@ function Custom() {
   // const [value, setValue] = useState<Date | null>(null);
 
   const [showAddleg, setShowAddleg] = useState(false);
-
+  const [showviewleg, setshowviewleg] = useState(false);
 
   const [sltype,setsltype]=useState('')
   const [tsltype,settsltype]=useState('')
@@ -94,7 +98,7 @@ function Custom() {
   const [Activeleg,setActiveleg]=useState(0)
   const [sl,setsl]=useState(0)
   const [trail,settrail]=useState(0)
-  const [target,settarget]=useState('')
+  const [target,settarget]=useState(0)
   const [timer,settimer]=useState('')
   const [showsymbol,setshowsymbol]=useState(false)
   const [selectsymbol,setselectsymbol]=useState('')
@@ -142,12 +146,25 @@ function Custom() {
   const formatTime = (time) => {
     if (!time) return null;
     if (Array.isArray(time)) {
-      // Format range of times
       return `${new Date(time[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })} - ${new Date(time[1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     }
-    // Format single time
     return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
+  useEffect(() => {
+    console.log('Selected Option:', selectedOption);
+  }, [selectedOption]);
+
+  const navigate = useNavigate();
+
+  const handleButtonClick = (id) => {
+    navigate('/viewlegtable',{ state: { blockid: id } }); 
+    console.log(id)
+  } 
+
+
+console.log("hello" , showviewleg)
+
+
   console.log(onAccountSelect,'selectedOption')
 
 const handleOptionSelect = (option) => {
@@ -159,10 +176,25 @@ const handleOptionSelect = (option) => {
   }
 };
 
+const handleAtm=()=>{
+
+  const endpoint = "getatmstrike"
+  const payload = 'option_type='+selectVertical+'&symbol='+selectsymbol
+  const type = "GET"
+
+  handleexchangerequest(type, payload, endpoint)
+  .then (response=> {
+    if (response){
+      setstrikeprice(response.strike)
+      console.log(response.strike,'atm')
+    }
+
+  
+})}
 
 
 
-const  handlecallput = (type)=>{
+const  handlecallput = (type)=>{  
   
   if (selectedOption==='Call'){
     setcall(type)    
@@ -270,6 +302,7 @@ const  handlecallput = (type)=>{
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
     console.log(response) 
+    window.location.reload()
     })
   }
 
@@ -283,6 +316,8 @@ const  handlecallput = (type)=>{
     console.log(response)
     })
   }
+
+
 
 
   const handleselectsymbol = (e) => {
@@ -501,7 +536,6 @@ const  handlecallput = (type)=>{
   const handleviewall = (id)=>{
     setcurrentblock(id)
     setviewall(true)
-
   }
   const handleCancelViewAll = () => {
     setviewall(false);
@@ -526,7 +560,10 @@ const  handlecallput = (type)=>{
     setTradetype(e.target.value)
   }
   const  sethandleexpiry =(e)=>{
+
     setExpiry(e.target.value)
+    
+    
   }
 
   const handlesetactive= (e)=>{
@@ -585,6 +622,7 @@ const  handlecallput = (type)=>{
       console.log(response)
 })
   // tradeblocklist()
+  window.location.reload()
   
   };
   
@@ -602,6 +640,10 @@ const  handlecallput = (type)=>{
     
 
   }
+
+  const viewleg = () => {
+    setShowAddleg(true);
+  };
 
   const Addform = () => {
     setIsOpen(true);
@@ -796,7 +838,7 @@ const  handlecallput = (type)=>{
                   </Button>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Button className="btn btn-info w-24" >
+                  <Button className="btn btn-info w-24" onClick={()=> handleButtonClick(item.Blockid)} >
                     View Leg
                   </Button>
                 
@@ -806,8 +848,12 @@ const  handlecallput = (type)=>{
             
            { showAddleg && <Addleg onClose={toggleAddleg} Blockid={currentblock} />}
           </div>
+          
+
         </div>
       )}
+
+      
                 </div>
               </div>
 
@@ -836,12 +882,12 @@ const  handlecallput = (type)=>{
 
   {item.orderdata.map((item) => (
     <tr key={item.id} className="text-gray-800 ">
-            <td className="border border-gray-300 p-1 text-white">{item.id}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.id}</td>
               
-            <td className="border border-gray-300 p-1 text-white">{item.broker}</td>  
-            <td className="border border-gray-300 p-1 text-white">{item.tradingsymbol}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.buyorderid}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.ltp}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.broker}</td>  
+            <td className="border border-gray-300 p-1 text-white break-all">{item.tradingsymbol}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.buyorderid}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.ltp}</td>
 
             <td className="border border-gray-300 p-1 text-white">{item.avg_price}</td>
             <td className="border border-gray-300 p-1 text-white">{item.side}</td>
@@ -917,7 +963,11 @@ const  handlecallput = (type)=>{
 
         <div className="col-12 row col-md-4">
           <label className="text-white text-lg">No Trade Zone</label>
-          <DateRangePicker className="bg-white w-100 mt-2" />
+          <DateRangePicker 
+          className="bg-white w-100 mt-2"
+          selected={Notradingzone}
+          onChange={(date) => SetNotradingzone(date)}
+          />
         </div>
       </div>
 
@@ -934,21 +984,7 @@ const  handlecallput = (type)=>{
         </div>
       )}
 
-      <div className='d-flex justify-content-end' style={{ position: 'relative' }}>
-        {showCalender2 && (
-          <div style={{ position: 'absolute', zIndex: '999', right: "-40px" }}>
-            <input
-              className='bg-white w-100 rounded-sm mt-2'
-              onChange={(e) => handledatecahnge1(e)}
-              value={Notradingzone}
-              type="datetime-local"
-              name="date"
-              min="1994-01-01T00:00"
-            />
           </div>
-        )}
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1231,6 +1267,7 @@ const  handlecallput = (type)=>{
                           <CommandItem value="select-symbol" onChange={(e) => setstrikeprice(e.target.value)}>
                             Select Price
                           </CommandItem>
+
                           {strikePrices.map((symbol, index) => (
                             <CommandItem
                               key={index}
@@ -1253,7 +1290,7 @@ const  handlecallput = (type)=>{
                   
                 </div>
                 <div className="col-6">
-                  <button type="button" className="btn btn-success w-100">Automatic</button>
+                  <button type="button" onClick={()=>handleAtm()} className="btn btn-success w-100">Automatic</button>
                 </div>
               </div>
             </div>
@@ -1404,7 +1441,7 @@ const  handlecallput = (type)=>{
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem onSelect={() => setSelectedOption('time')}>
+            <DropdownMenuItem onSelect={() => {setSelectedOption('time'); console.log(selectedTime,"hellooo im here")}}>
               Time
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => setSelectedOption('hours')}>
@@ -1457,10 +1494,10 @@ const  handlecallput = (type)=>{
                   <input type="number" className='form-control' onChange = {(e)=> handlesetactive(e)} placeholder='Active' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
+                  <input type="number" className='form-control'  onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
                 </div>
                 <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onChange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
+                  <input type="number" className='form-control'   onChange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
                 </div>
                 <div className="col-lg col-sm-6 mt-3">
                   <input type="number" className='form-control' onChange={(e)=> handleLegTarget(e)} placeholder='TARGET' />

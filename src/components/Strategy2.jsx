@@ -115,7 +115,7 @@ export default function TradingForm() {
 
   const handlemode = () => {
     setpaper(!paper);
-    window.location.reload();
+    // window.location.reload();
   };
   const Addform = () => {
     setIsOpen(true);

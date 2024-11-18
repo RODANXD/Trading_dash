@@ -171,6 +171,7 @@ useEffect(() => {
       .then(response => {
   
       console.log(response)
+      window.location.reload()
       })
   
     }
