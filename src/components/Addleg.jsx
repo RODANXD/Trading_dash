@@ -74,6 +74,7 @@ const [expiries, setExpiries] = useState([]);
   const [strikeprice,setstrikeprice]= useState('')
   const [fno,setfno]= useState('')
   const [strikePrices, setStrikePrices] = useState([ 17000,18000]);
+  const [instruction, setinstruction] = useState('')
 
 
 
@@ -141,7 +142,10 @@ const [expiries, setExpiries] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null)
   const [isContentDisabled,setisContentDisabled]= useState(false)
   const [showsymbol,setshowsymbol]=useState(false)
-
+  const [colorbuysell, setcolorbuysell] = useState()
+  const [selectedStartDate, setSelectedStartDate] = useState(new Date());
+  const [selectedEndDate, setSelectedEndDate] = useState(new Date());
+  const [Marketdate,SetMarketdate ] = useState(new Date())
 
 
 
@@ -157,27 +161,40 @@ const [expiries, setExpiries] = useState([]);
     // Format single time
     return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
-  const   handlecallput = (type)=>{
+  const  handlecallput = (type)=>{
   
-    if (optionlabel==='Call'){
-      setcall(type)
-      setoptionlabel('')
-
-    } 
-    if (optionlabel==='Put'){
-      setput(type)
-      setoptionlabel('')
+    if (selectedOption==='Call'){
+      setcall(type)    
     }
+    
+    if (selectedOption==='Put'){
+      setput(type)
+    }
+    
+    
+    if (fno==='EQ'){
+      setinstruction(type)
+     
+    }
+    
+    if (fno==='FUTIDX'){
+      setinstruction(type)
+     
+    }
+    if (fno==='STXIDX'){
+      setinstruction(type)
   
+    }
+    
     }
     const getButtonColor = (buttonType) => {
       if (isContentDisabled) {
-        // Allow Buy and Sell to change colors independently when Call and Put are disabled
+        // Allow Buy and Sell to change colors when Call and Put are disabled
         switch (buttonType) {
           case 'Buy':
-            return selectedOption === 'Buy' ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
+            return colorbuysell === 'Buy' ? 'bg-green-500 text-white' : 'bg-gray-200 text-black';
           case 'Sell':
-            return selectedOption === 'Sell' ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
+            return colorbuysell === 'Sell' ? 'bg-red-500 text-white' : 'bg-gray-200 text-black';
           default:
             return 'bg-gray-200 text-black';
         }
@@ -195,13 +212,6 @@ const [expiries, setExpiries] = useState([]);
           default:
             return 'bg-gray-200 text-black';
         }
-      }
-    };
-    const handleOptionClick = (option) => {
-      if (option !== optionlabel) {
-        setoptionlabel(option);
-        setcall('');
-        setput('');
       }
     };
 
@@ -652,7 +662,8 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
                 </div>
                 
                 <div className="col-6">
-                <button  onClick={()=>{handlecallput('BUY'); setSelectedOption('Buy')}} type="button"  className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
+                <button  onClick={()=>{handlecallput('BUY'); setcolorbuysell('Buy')}} type="button"  
+                className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
                 </div>
               
               </div>
@@ -668,7 +679,8 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
                 </div>  
                
                 <div className="col-6">
-                <button  onClick={()=>{handlecallput('SELL'); setSelectedOption('Sell')}} type="button" className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
+                <button  onClick={()=>{handlecallput('SELL'); setcolorbuysell('Sell')}} type="button" 
+                className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
 
                 </div>
                
@@ -747,7 +759,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
     <PopoverTrigger asChild>
       <div>
       
-        <label className="text-white text-center"> Timer</label>
+        {/* <label className="text-white text-center"> Timer</label> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className=" p-2 w-full justify-between text-black">
