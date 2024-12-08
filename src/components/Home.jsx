@@ -1,19 +1,20 @@
 import React, { useState, useMemo } from 'react'
-import { TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { Line, LineChart, CartesianGrid, XAxis, ResponsiveContainer } from "recharts"
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card"
-import { Button } from "./ui/button"
+} from "@/components/ui/card"
 import {
   ChartContainer,
+  ChartTooltip,
   ChartTooltipContent,
-} from "./ui/chart"
+} from "@/components/ui/chart"
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+
 
 const rawChartData = [
   { date: "2023-01-01", desktop: 186, mobile: 80 },
@@ -45,6 +46,9 @@ const rawChartData = [
 ]
 
 const chartConfig = {
+  views: {
+    label: "Page Views",
+  },
   desktop: {
     label: "Desktop",
     color: "hsl(var(--chart-1))",
@@ -55,7 +59,8 @@ const chartConfig = {
   },
 }
 
-export function ChartAreaStacked() {
+export function ChartLineInteractive() {
+  const [activeChart, setActiveChart] = useState("desktop")
   const [filter, setFilter] = useState('weekly')
 
   const chartData = useMemo(() => {
@@ -75,106 +80,300 @@ export function ChartAreaStacked() {
       return Object.values(monthlyData)
     }
   }, [filter])
+  const total = useMemo(
+        () => ({
+          desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
+          mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
+        }),
+        [chartData]
+      )
+  
+const navigate = useNavigate()
 
-  //report function display
-  const report = () => {
-    console.log(rawChartData)
-  }
-
+  
   return (
     <>
-    <div className='flex flex-col items-center justify-center gap-7 h-screen w-full'>
-    <Card className = " w-96">
-      <CardHeader>
-        <CardTitle>Area Chart - Stacked</CardTitle>
-        <CardDescription>
-          Showing total visitors for the last 6 months
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="mb-4 flex justify-end space-x-2">
+    <div className=' flex flex-col gap-6'>
+    <div className=' flex flex-col gap-4'>
+    <div className=' flex flex-col gap-4'>
+    <Card className="bg-black text-white">
+      <CardHeader className="flex flex-col items-stretch h-auto space-y-0 border-b p-0 sm:flex-row">
+        <div className="flex flex-1 flex-col justify-center gap-1 px-6 sm:py-6">
+          <CardTitle>Line Chart - Interactive</CardTitle>
+          <CardDescription>
+            Showing total visitors for the last 6 months
+          </CardDescription>
+        </div>
+        <div className=' grid grid-cols-2 gap-4 place-items-center'>
+        <div className="mb-4 flex justify-center space-x-2">
+          <Button className=" text-white"
+            // variant={filter === 'daily' ? 'secondary' : 'outline'}
+            onClick={() => setFilter('daily')}
+          >
+            Daily
+          </Button>
           <Button
-            variant={filter === 'weekly' ? 'default' : 'outline'}
+            // variant={filter === 'weekly' ? 'secondary' : 'outline'}
             onClick={() => setFilter('weekly')}
           >
             Weekly
           </Button>
           <Button
-            variant={filter === 'monthly' ? 'default' : 'outline'}
+            // variant={filter === 'monthly' ? 'secondary' : 'outline'}
             onClick={() => setFilter('monthly')}
           >
             Monthly
           </Button>
         </div>
-        <ChartContainer config={chartConfig}>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart
+        <div className="flex">
+          {["desktop", "mobile"].map((key) => (
+            <button
+              key={key}
+              data-active={activeChart === key}
+              className="flex flex-1 flex-col justify-center gap-1 border-t px-4  py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+              onClick={() => setActiveChart(key)}
+            >
+              <span className="text-xs text-muted-foreground text-white">
+                {chartConfig[key].label}
+              </span>
+              <span className="text-lg font-bold leading-none sm:text-3xl">
+                {total[key].toLocaleString()}
+              </span>
+            </button>
+          ))}
+
+        </div>
+        </div>
+      </CardHeader>
+      <CardContent className="px-2 sm:p-6">
+       
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[250px] w-full"
+        >
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
               data={chartData}
               margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
+                left: 12,
+                right: 12,
               }}
             >
-              <CartesianGrid vertical={false} />
+              <CartesianGrid vertical={false} stroke='#334' />
               <XAxis
                 dataKey="date"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
+                minTickGap={32}
                 tickFormatter={(value) => {
-                  const date = new Date(value)
-                  return filter === 'weekly'
-                    ? `${date.getMonth() + 1}/${date.getDate()}`
-                    : `${date.getMonth() + 1}/${date.getFullYear().toString().substr(-2)}`
+                  const date = new Date(value);
+                  if (filter === 'daily') {
+                    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+                  } else if (filter === 'weekly') {
+                    return `Week ${Math.floor(rawChartData.findIndex(item => item.date === value) / 7) + 1}`;
+                  } else {
+                    return date.toLocaleDateString("en-US", { month: "short" });
+                  }
                 }}
               />
-              <Tooltip
-                content={<ChartTooltipContent indicator="dot" />}
-                labelFormatter={(label) => {
-                  const date = new Date(label)
-                  return filter === 'weekly'
-                    ? date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                    : date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-                }}
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    className="w-[150px]"
+                    nameKey="views"
+                    labelFormatter={(value) => {
+                      const date = new Date(value);
+                      if (filter === 'daily') {
+                        return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+                      } else if (filter === 'weekly') {
+                        const weekIndex = Math.floor(rawChartData.findIndex(item => item.date === value) / 7);
+                        const startDate = new Date(rawChartData[weekIndex * 7].date);
+                        const endDate = new Date(rawChartData[Math.min((weekIndex + 1) * 7 - 1, rawChartData.length - 1)].date);
+                        return `Week ${weekIndex + 1}: ${startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })} - ${endDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
+                      } else {
+                        return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+                      }
+                    }}
+                  />
+                }
               />
-              <Area
+              <Line
+                dataKey={activeChart}
                 type="monotone"
-                dataKey="mobile"
-                stackId="1"
-                stroke="var(--color-mobile)"
-                fill="var(--color-mobile)"
-                fillOpacity={0.4}
+                stroke='#1DA1F2'
+                strokeWidth={2}
+                dot={false}
               />
-              <Area
-                type="monotone"
-                dataKey="desktop"
-                stackId="1"
-                stroke="var(--color-desktop)"
-                fill="var(--color-desktop)"
-                fillOpacity={0.4}
-              />
-            </AreaChart>
+            </LineChart>
           </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this {filter === 'weekly' ? 'week' : 'month'} <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2023
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
-
-    <button className='btn btn-info w-44' onClick={report}>Report</button>
     </div>
+    <div className=' flex flex-col gap-4'>
+    <Card className="bg-black text-white">
+      <CardHeader className="flex flex-col items-stretch h-auto space-y-0 border-b p-0 sm:flex-row">
+        <div className="flex flex-1 flex-col justify-center gap-1 px-6 sm:py-6">
+          <CardTitle>Line Chart - Interactive</CardTitle>
+          <CardDescription>
+            Showing total visitors for the last 6 months
+          </CardDescription>
+        </div>
+        <div className=' grid grid-cols-2 gap-4 place-items-center'>
+        <div className="mb-4 flex justify-center space-x-2">
+          <Button className=" text-white"
+            // variant={filter === 'daily' ? 'secondary' : 'outline'}
+            onClick={() => setFilter('daily')}
+          >
+            Daily
+          </Button>
+          <Button
+            // variant={filter === 'weekly' ? 'secondary' : 'outline'}
+            onClick={() => setFilter('weekly')}
+          >
+            Weekly
+          </Button>
+          <Button
+            // variant={filter === 'monthly' ? 'secondary' : 'outline'}
+            onClick={() => setFilter('monthly')}
+          >
+            Monthly
+          </Button>
+        </div>
+        <div className="flex">
+          {["desktop", "mobile"].map((key) => (
+            <button
+              key={key}
+              data-active={activeChart === key}
+              className="flex flex-1 flex-col justify-center gap-1 border-t px-4  py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+              onClick={() => setActiveChart(key)}
+            >
+              <span className="text-xs text-muted-foreground text-white">
+                {chartConfig[key].label}
+              </span>
+              <span className="text-lg font-bold leading-none sm:text-3xl">
+                {total[key].toLocaleString()}
+              </span>
+            </button>
+          ))}
+
+        </div>
+        </div>
+      </CardHeader>
+      <CardContent className="px-2 sm:p-6">
+       
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[250px] w-full"
+        >
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={chartData}
+              margin={{
+                left: 12,
+                right: 12,
+              }}
+            >
+              <CartesianGrid vertical={false} stroke='#334' />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                minTickGap={32}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  if (filter === 'daily') {
+                    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+                  } else if (filter === 'weekly') {
+                    return `Week ${Math.floor(rawChartData.findIndex(item => item.date === value) / 7) + 1}`;
+                  } else {
+                    return date.toLocaleDateString("en-US", { month: "short" });
+                  }
+                }}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    className="w-[150px]"
+                    nameKey="views"
+                    labelFormatter={(value) => {
+                      const date = new Date(value);
+                      if (filter === 'daily') {
+                        return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+                      } else if (filter === 'weekly') {
+                        const weekIndex = Math.floor(rawChartData.findIndex(item => item.date === value) / 7);
+                        const startDate = new Date(rawChartData[weekIndex * 7].date);
+                        const endDate = new Date(rawChartData[Math.min((weekIndex + 1) * 7 - 1, rawChartData.length - 1)].date);
+                        return `Week ${weekIndex + 1}: ${startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })} - ${endDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
+                      } else {
+                        return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+                      }
+                    }}
+                  />
+                }
+              />
+              <Line
+                dataKey={activeChart}
+                type="monotone"
+                stroke='#1DA1F2'
+                strokeWidth={2}
+                dot={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </ChartContainer>
+      </CardContent>
+    </Card>
+    </div>
+    </div>
+    <div className=' flex space-x-8 '>
+    <table className="w-9/12 border-collapse border border-gray-300 table-fixed">
+                <thead>
+  <tr className="bg-gray-300 text-black text-xs">
+    <th className="border border-gray-300 p-2">ID</th>
+    <th className="border border-gray-300 p-1">Broker</th>
+    <th className="border border-gray-300 p-1">Symbol</th>
+    <th className="border border-gray-300 p-2">buyorderid</th>
+    <th className="border border-gray-300 p-2">LTP</th>
+    <th className="border border-gray-300 p-2">avg_price</th>
+    <th className="border border-gray-300 p-2">Side</th>
+    <th className="border border-gray-300 p-1">QTY</th>
+   
+  </tr>
+</thead>
+<tbody>
+
+  
+    <tr className="text-gray-800 ">
+            <td className="border border-gray-300 p-1 text-white break-all">1</td>
+              
+            <td className="border border-gray-300 p-1 text-white break-all">1</td>  
+            <td className="border border-gray-300 p-1 text-white break-all">11</td>
+            <td className="border border-gray-300 p-1 text-white break-all">12</td>
+            <td className="border border-gray-300 p-1 text-white break-all">44</td>
+
+            <td className="border border-gray-300 p-1 text-white break-all">1</td>
+            <td className="border border-gray-300 p-1 text-white break-all">1</td>
+
+            <td className="border border-gray-300 p-1">
+        <Button className="text-xs p-2">EXIT</Button>  
+
+      </td>
+      </tr>
+</tbody>
+
+                </table>
+
+        <div>
+            <div className=' grid grid-cols-2 gap-4 place-items-center h-full'>
+                <Button  onClick={() => navigate('/dashTable')}>Trade</Button>
+                <Button onClick={() => navigate('/report')}>Report</Button>
+            </div>
+        </div>
+        </div>
+        </div>
     </>
   )
 }
