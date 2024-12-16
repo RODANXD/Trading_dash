@@ -251,11 +251,6 @@ const [expiries, setExpiries] = useState([]);
 
   // }, [numberOfLegs, legPLTs]);
 
-useEffect(() => {
-
-  viewlegdata()
-  handleSelectdisable()
-  }, [fno]);
 
 const viewlegdata= async (id=bid)=>{
   const endpoint = "addleg"
@@ -276,6 +271,11 @@ const viewlegdata= async (id=bid)=>{
   })
 }
 
+useEffect(() => {
+
+  viewlegdata()
+  handleSelectdisable()
+  }, [fno]);
 
 
   const legadd = (id=bid)=>{

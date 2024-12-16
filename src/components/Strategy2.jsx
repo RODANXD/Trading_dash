@@ -44,7 +44,7 @@ export default function TradingForm() {
   const [currentblock, setcurrentblock] = useState("");
   const [scriptData,setscriptdata]=useState([])
   const [headerData,setheaderData]=useState([])
-  const [paper1, setpaper1]= useState(false)
+  const [Automaticstrike, setAutomaticstrike]= useState(false)
   const [onAccountSelect,setonAccountSelect]= useState([
     { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy:'' , value: true }])
 
@@ -74,6 +74,7 @@ export default function TradingForm() {
 
     { id: 9, key: "indextime", value: niftyTime },
     { id: 10, key: "Entrytime", value: entryDurationTime },
+  
   ]);
 
   useEffect(() => {
@@ -137,7 +138,7 @@ export default function TradingForm() {
   const savedatta = () => {
     const endpoint = "saveblock3";
     const strategy = 3;
-    const payload = JSON.stringify({ head, paper, bodydata, strategy,onAccountSelect });
+    const payload = JSON.stringify({ head, paper, bodydata, strategy,onAccountSelect,Automaticstrike });
     const type = "POST";
     handleexchangerequest(type, payload, endpoint).then((response) => {
       console.log(response);
@@ -204,7 +205,7 @@ useState(() => {
     };
 
   const handlemode2 = () =>{
-    setpaper1(!paper1)
+    setAutomaticstrike(!Automaticstrike)
     // setisContentDisabled(!isContentDisabled) 
     
   }
@@ -735,7 +736,7 @@ useState(() => {
                       </div>
                       {/* <input type="text" className="form-input w-full py-2 px-3 text- bg-white rounded-sm" placeholder="Active" /> */}
                     </div>
-                <div><Button onClick={()=>handlemode2()} className={paper1 ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper1?"Automatic Strike":"Automatic Strike"}</Button></div>
+                <div><Button onClick={()=>handlemode2()} className={Automaticstrike ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{Automaticstrike?"Automatic Strike":"Automatic Strike"}</Button></div>
                     
                   </div>
                 </div>
