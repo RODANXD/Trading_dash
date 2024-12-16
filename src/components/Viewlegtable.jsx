@@ -101,7 +101,7 @@ const Viewlegtable = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div>
+          {/* <div>
             <div className="flex flex-col">
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger>
@@ -116,7 +116,7 @@ const Viewlegtable = () => {
                 </SelectContent>
               </Select>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className='w-[64rem]'>
           <div className="overflow-x-auto h-72 w-full rounded-lg">

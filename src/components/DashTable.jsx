@@ -16,8 +16,10 @@ const DashTable = () => {
     const [statusFilter, setStatusFilter] = useState('ALL');
     const [isOpen, setIsOpen] = useState(false);
     const [data, setData] = useState([]);
+    const [Tradeblockno,settradeblockno]= useState([])
     
-    const tableheaddata = ["Blockid", "sublegid", "Activeleg", "lockleg", "tslleg", "targetleg", "sl", "trail", "target", "timer", "strikeprice", "advice", "spotprice", "ATM", "call", "put", "correction", "sltype", "tsltype", "targettype", "nearestatm", "Linkleg", "Edit", "Delete"];
+    
+    const tableheaddata = ["ID",	"Broker",	"Symbol",	"buyorderid",	"LTP",	"avg_price"	,"Side"	,"QTY	Status",	"sellorderid",	"sl",	"SLHIT",	"TargetHit",	"TRAILHIT",	"Action Button"];
     const navigate = useNavigate();
     useEffect(() => {
       const filteredData = scriptData.filter(script =>
@@ -78,6 +80,29 @@ const DashTable = () => {
         console.error("Error fetching data", error);
       }
     };
+
+    const tradeblocklist= async () =>{
+        const endpoint = "tradeblock"
+        const payload = 'strategy=0'
+        const type = "GET"
+    
+        handleexchangerequest(type, payload, endpoint)
+        .then (response=> {
+          if (response){
+            settradeblockno(response)
+        console.log(response,'resposnse')
+    
+    
+          }
+    
+        console.log(response,'resposnse')
+        })
+      }
+      useState(()=>{
+        tradeblocklist()
+    
+      },[])
+    
   
     const handleOpen = () => {
       setIsOpen(true);
@@ -103,7 +128,7 @@ const DashTable = () => {
             </div> */}
             <div>
               <div className="flex flex-col">
-                {/* <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
                   <SelectTrigger>
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
@@ -114,7 +139,7 @@ const DashTable = () => {
                     <SelectItem value="CANCELLED">Cancelled</SelectItem>
                     <SelectItem value="REJECTED">Rejected</SelectItem>
                   </SelectContent>
-                </Select> */}
+                </Select>
               </div>
             </div>
           </div>
@@ -129,11 +154,26 @@ const DashTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((row, rowIndex) => (
-                    <tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-slate-400" : "bg-slate-300"}>
-                      {tableheaddata.slice(0, -2).map((header, cellIndex) => (
-                        <td key={cellIndex} className="p-1 px-4 border-b border-r">{row[header] || 'N/A'}</td>
-                      ))}
+                  {Tradeblockno.map((item) => (
+                  console.log(item,'item'),
+                    <tr key={item.id} className="text-gray-800 bg-slate-500 ">
+                      
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.id}</td>
+                                  
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.broker}</td>  
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.tradingsymbol}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.buyorderid}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.ltp}</td>
+                    
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.avg_price}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.side}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.quantity}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.status?"ACTIVE":"OFF"}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.sellorderid}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.sl}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.slhit}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.targethit}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.trailhit}</td>
                       <td className="p-1 px-4 border-b border-r">
                         <Button size="sm" className="w-full" onClick={handleOpen}>Edit</Button>
                       </td>

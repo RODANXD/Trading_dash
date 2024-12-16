@@ -194,6 +194,13 @@ const navigate = useNavigate()
   return (
     <>
     <div className=' flex flex-col gap-6'>
+<div className=' flex justify-center gap-4  h-full'>
+    <Button className="bg-sky-800 hover:bg-sky-600 duration-500"  onClick={() => navigate('/dashTable')}>Trade</Button>
+    <Button className="bg-green-800  hover:bg-green-600 duration-500" onClick={() => navigate('/report')}>Report</Button>
+</div>
+    <div>
+
+</div>
     <div className=' flex flex-col gap-4'>
     <div className=' flex flex-col gap-4'>
     <Card className="bg-black text-white">
@@ -449,13 +456,7 @@ const navigate = useNavigate()
 
                 </table> */}
 
-        <div>
-
-            <div className=' grid grid-cols-2 gap-4 place-items-center h-full'>
-                <Button  onClick={() => navigate('/dashTable')}>Trade</Button>
-                <Button onClick={() => navigate('/report')}>Report</Button>
-            </div>
-        </div>
+        
         </div>
         </div>
     </>

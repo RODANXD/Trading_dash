@@ -900,8 +900,8 @@ const  handlecallput = (type)=>{
                 </div>
               </div>
 
-              <div className="overflow-y-scroll w-full h-28">
-                <table className="w-full border-collapse border border-gray-300 table-fixed">
+              <div className="overflow-y-scroll w-full h-28 rounded-lg">
+                <table className="w-full border-collapse border border-gray-300  rounded-sm">
                 <thead>
   <tr className="bg-gray-300 text-black">
     <th className="border border-gray-300 p-2">ID</th>
@@ -924,23 +924,23 @@ const  handlecallput = (type)=>{
 <tbody>
 
   {item.orderdata.map((item) => (
-    <tr key={item.id} className="text-gray-800 ">
-            <td className="border border-gray-300 p-1 text-white break-all">{item.id}</td>
+    <tr key={item.id} className="text-gray-800 bg-slate-500 ">
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.id}</td>
               
-            <td className="border border-gray-300 p-1 text-white break-all">{item.broker}</td>  
-            <td className="border border-gray-300 p-1 text-white break-all">{item.tradingsymbol}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.buyorderid}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.ltp}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.broker}</td>  
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.tradingsymbol}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.buyorderid}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.ltp}</td>
 
-            <td className="border border-gray-300 p-1 text-white break-all">{item.avg_price}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.side}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.quantity}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.status?"ACTIVE":"OFF"}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.sellorderid}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.sl}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.slhit}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.targethit}</td>
-            <td className="border border-gray-300 p-1 text-white break-all">{item.trailhit}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.avg_price}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.side}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.quantity}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.status?"ACTIVE":"OFF"}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.sellorderid}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.sl}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.slhit}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.targethit}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.trailhit}</td>
             <td className="border border-gray-300 p-1">
         <Button className="text-xs p-2">EXIT</Button>  
 
