@@ -1345,15 +1345,9 @@ const  handlecallput = (type)=>{
                   
                 </div>
                 <div className="col-6">
-<<<<<<< HEAD
-<<<<<<< HEAD
                   <button type="button" onClick={()=>handleAtm()} className="btn btn-success w-100">Automatic</button>
-=======
                   <button type="button" className="btn btn-success ml-2 w-100">Automatic</button>
->>>>>>> d9bc58b9afa321d5752972fec541d55aace47081
-=======
                   <button type="button" className="btn btn-success ml-2 w-100">Automatic</button>
->>>>>>> fd67c552457b0d28ae02907647a70140cc880be8
                 </div>
               </div>
             </div>
