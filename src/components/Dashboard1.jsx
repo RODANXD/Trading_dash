@@ -23,7 +23,6 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-
 import {
   Command,
   CommandDialog,
@@ -179,25 +178,11 @@ const handleOptionSelect = (option) => {
   }
 };
 
-const handleAtm=()=>{
-
-  const endpoint = "getatmstrike"
-  const payload = 'option_type='+selectVertical+'&symbol='+selectsymbol
-  const type = "GET"
-
-  handleexchangerequest(type, payload, endpoint)
-  .then (response=> {
-    if (response){
-      setstrikeprice(response.strike)
-      console.log(response.strike,'atm')
-    }
-
-  
-})}
 
 
 
-const  handlecallput = (type)=>{  
+
+const  handlecallput = (type)=>{
   
   if (selectedOption==='Call'){
     setcall(type)    
@@ -323,8 +308,6 @@ const  handlecallput = (type)=>{
     console.log(response)
     })
   }
-
-
 
 
   const handleselectsymbol = (e) => {
@@ -621,10 +604,7 @@ const  handlecallput = (type)=>{
     setTradetype(e.target.value)
   }
   const  sethandleexpiry =(e)=>{
-
     setExpiry(e.target.value)
-    
-    
   }
 
   const handlesetactive= (e)=>{
@@ -952,15 +932,15 @@ const  handlecallput = (type)=>{
             <td className="border border-gray-300 p-1 text-white break-all">{item.buyorderid}</td>
             <td className="border border-gray-300 p-1 text-white break-all">{item.ltp}</td>
 
-            <td className="border border-gray-300 p-1 text-white">{item.avg_price}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.side}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.quantity}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.status?"ACTIVE":"OFF"}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.sellorderid}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.sl}</td>
-            <td className="border border-gray-3 00 p-1 text-white">{item.slhit}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.targethit}</td>
-            <td className="border border-gray-300 p-1 text-white">{item.trailhit}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.avg_price}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.side}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.quantity}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.status?"ACTIVE":"OFF"}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.sellorderid}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.sl}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.slhit}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.targethit}</td>
+            <td className="border border-gray-300 p-1 text-white break-all">{item.trailhit}</td>
             <td className="border border-gray-300 p-1">
         <Button className="text-xs p-2">EXIT</Button>  
 
@@ -1045,7 +1025,21 @@ const  handlecallput = (type)=>{
         </div>
       )}
 
+      <div className='d-flex justify-content-end' style={{ position: 'relative' }}>
+        {showCalender2 && (
+          <div style={{ position: 'absolute', zIndex: '999', right: "-40px" }}>
+            <input
+              className='bg-white w-100 rounded-sm mt-2'
+              onChange={(e) => handledatecahnge1(e)}
+              value={Notradingzone}
+              type="datetime-local"
+              name="date"
+              min="1994-01-01T00:00"
+            />
           </div>
+        )}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1328,7 +1322,6 @@ const  handlecallput = (type)=>{
                           <CommandItem value="select-symbol" onChange={(e) => setstrikeprice(e.target.value)}>
                             Select Price
                           </CommandItem>
-
                           {strikePrices.map((symbol, index) => (
                             <CommandItem
                               key={index}
