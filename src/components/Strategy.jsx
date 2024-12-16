@@ -28,7 +28,7 @@ export default function Strategy() {
   const [isActivated, setIsActivated] = useState(false);
   const [viewall, setviewall]= useState(false)
   const [paper, setpaper]= useState(false)
-  const [paper1, setpaper1]= useState(false)
+  const [Automaticstrike, setAutomaticstrike]= useState(false)
 
   const [Tradeblockno,settradeblockno]= useState([])
   const [currentblock,setcurrentblock]= useState('')
@@ -152,7 +152,7 @@ tradeblocklist()
     {
       const endpoint = "saveblockst2"
       const strategy= 2
-      const payload = JSON.stringify({head,paper,strategy,onAccountSelect})
+      const payload = JSON.stringify({head,paper,strategy,onAccountSelect,Automaticstrike})
       const type = "POST"
       handleexchangerequest(type, payload, endpoint)
       .then(response => {
@@ -223,7 +223,7 @@ const handleviewdetail = ()=>{
     setpaper(!paper)
   }
   const handlemode2 = () =>{
-    setpaper1(!paper1)
+    setAutomaticstrike(!Automaticstrike)
     setisContentDisabled(!isContentDisabled)
     
   }
@@ -394,7 +394,7 @@ const handleviewdetail = ()=>{
           </div>
              ))
 
-             
+              
         )}
 
      
@@ -429,7 +429,7 @@ const handleviewdetail = ()=>{
 
 <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
             
-            <div><Button onClick={()=>handlemode2()} className={paper1 ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper1?"Automatic Strike":"Automatic Strike"}</Button></div>
+            <div><Button onClick={()=>handlemode2()} className={Automaticstrike ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{Automaticstrike?"Automatic Strike":"Automatic Strike"}</Button></div>
             <div>
             <DropdownMenuCheckboxes stat="2" onAccountSelect={setonAccountSelect}/>
             </div>

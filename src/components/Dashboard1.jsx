@@ -140,7 +140,7 @@ function Custom() {
   const [Combovalue, setComboValue] = useState(false)
   const [Comsymbols, setComSymbols] = useState(false)
   const [market,setmarket]=useState(false)
-  const [paper1, setpaper1]= useState(false)
+  const [Automaticstrike, setAutomaticstrike]= useState(false)
   const [onAccountSelect,setonAccountSelect]= useState([
     { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: '', value: true },
 
@@ -287,8 +287,9 @@ const  handlecallput = (type)=>{
     const strategy= 1
     const sublegdata= {advice,spotprice,correction,sltype,tsltype,strikeprice,targettype,sl,target,timer,trail,call,
       put,Activeleg,lockleg,targetleg,tslleg,quantity,Amount,nearestatm, instruction,selectedTime,selectedOption,Marketdate}
-    const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,
-                        overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol,selectedStartDate,selectedEndDate}
+    
+      const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,
+                        overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol,selectedStartDate,selectedEndDate,Automaticstrike }
     const payload = JSON.stringify({strategy,tradetool,sublegdata,onAccountSelect})
     const type = "POST"
     handleexchangerequest(type, payload, endpoint)
@@ -575,7 +576,7 @@ const  handlecallput = (type)=>{
   
   
   const handlemode2 = () =>{
-    setpaper1(!paper1)
+    setAutomaticstrike(!Automaticstrike)
     setisContentDisabled(!isContentDisabled)
     
   }
@@ -1344,7 +1345,15 @@ const  handlecallput = (type)=>{
                   
                 </div>
                 <div className="col-6">
+<<<<<<< HEAD
+<<<<<<< HEAD
+                  <button type="button" onClick={()=>handleAtm()} className="btn btn-success w-100">Automatic</button>
+=======
                   <button type="button" className="btn btn-success ml-2 w-100">Automatic</button>
+>>>>>>> d9bc58b9afa321d5752972fec541d55aace47081
+=======
+                  <button type="button" className="btn btn-success ml-2 w-100">Automatic</button>
+>>>>>>> fd67c552457b0d28ae02907647a70140cc880be8
                 </div>
               </div>
             </div>
@@ -1606,7 +1615,7 @@ const  handlecallput = (type)=>{
                 </div>
                 <div>
                 </div>
-                <div className="col-6 mt-3"><Button onClick={()=>handlemode2()} className={paper1 ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper1?"Automatic Strike":"Automatic Strike"}</Button></div>
+                <div className="col-6 mt-3"><Button onClick={()=>handlemode2()} className={Automaticstrike ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{Automaticstrike?"Automatic Strike":"Automatic Strike"}</Button></div>
               </div>
             </div>
           </div>
