@@ -1313,13 +1313,13 @@ const  handlecallput = (type)=>{
                       variant="outline"
                       role="combobox"
                       aria-expanded={Combovalue}
-                      className="w-[200px] justify-between"
+                      className="lg:w-[200px] sm:w-[150px] justify-between"
                     >
                       {strikeprice || "Select Price"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
+                  <PopoverContent className="lg:w-[200px] sm:w-[150px] p-0">
                     <Command>
                       <CommandInput placeholder="Search Price..." />
                       <CommandList>
@@ -1351,7 +1351,7 @@ const  handlecallput = (type)=>{
                   
                 </div>
                 <div className="col-6">
-                  <button type="button" onClick={()=>handleAtm()} className="btn btn-success w-100">Automatic</button>
+                  <button type="button" className="btn btn-success ml-2 w-100">Automatic</button>
                 </div>
               </div>
             </div>
@@ -1425,7 +1425,7 @@ const  handlecallput = (type)=>{
                 <div className="col-6">
                 <lable className="text-white">AMOUNT</lable>
 
-                  <button type="button" className="btn btn-success w-100">AMOUNT</button>
+                  <button type="button" className="btn btn-success sm:text-xs text-wrap break-words w-100">AMOUNT</button>
                 </div>
               </div>
             </div>
