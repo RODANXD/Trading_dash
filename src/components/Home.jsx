@@ -202,7 +202,7 @@ const VertiBarchartConfig = {
 
          {/* pie chart */}
 
-    <Card className="flex flex-col bg-black text-white">
+    <Card className="flex flex-col bg-black text-white border-0">
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Custom Label</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -254,7 +254,7 @@ const VertiBarchartConfig = {
 
 
       {/* horizonal bar graph */}
-    <Card className = " bg-black text-white">
+    <Card className = " bg-black text-white border-0">
       <CardHeader>
         <CardTitle>Bar Chart - Custom Label</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -322,7 +322,7 @@ const VertiBarchartConfig = {
     </div>
     <div className='flex'>
     {/* Vertical bar chart */}
-    <Card className = " bg-black text-white w-1/2">
+    <Card className = " bg-black text-white w-1/2 border-0">
       <CardHeader>
         <CardTitle>Bar Chart - Label</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -372,7 +372,7 @@ const VertiBarchartConfig = {
 
 
     <div className=' flex flex-col gap-4'>
-    <Card className="bg-black text-white">
+    <Card className="bg-black text-white border-0">
       <CardHeader className="flex flex-col items-stretch h-auto space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 sm:py-6">
           <CardTitle>Line Chart - Interactive</CardTitle>
