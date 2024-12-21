@@ -11,12 +11,12 @@ import { useNavigate  } from 'react-router-dom';
 const Design = () => {
   const navigate = useNavigate();
 
-  // const isAuthExpired = handleauth();
-  // console.log(isAuthExpired,'checktimestamp')
+  const isAuthExpired = handleauth();
+  console.log(isAuthExpired,'checktimestamp')
 
-  // {if (isAuthExpired) (
-  //   navigate('/')
-  // )}
+  {if (isAuthExpired) (
+    navigate('/')
+  )}
  
  
  

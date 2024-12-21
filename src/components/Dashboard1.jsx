@@ -581,6 +581,22 @@ const  handlecallput = (type)=>{
     
   }
 
+  const handleAtm=()=>{
+
+    const endpoint = "getatmstrike"
+    const payload = 'option_type='+selectVertical+'&symbol='+selectsymbol
+    const type = "GET"
+  
+    handleexchangerequest(type, payload, endpoint)
+    .then (response=> {
+      if (response){
+        setstrikeprice(response.strike)
+        console.log(response.strike,'atm')
+      }
+  
+    
+  })}
+
   
 
   
@@ -779,7 +795,7 @@ const  handlecallput = (type)=>{
     <>
     {!viewall && (
       <>
-    <div className="container-xl my-3">
+    <div className="container-xl my-3 max-md:w-screen">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         <div className="flex justify-center sm:justify-start">
           <Button 
@@ -905,7 +921,7 @@ const  handlecallput = (type)=>{
                 <table className="w-full border-collapse border border-gray-300  rounded-sm">
                 <thead>
   <tr className="bg-gray-300 text-black">
-    <th className="border border-gray-300 p-2">ID</th>
+    <th className="sticky left-0 z-20 bg-gray-200 border border-gray-300 px-4 py-2">ID</th>
     <th className="border border-gray-300 p-1">Broker</th>
     <th className="border border-gray-300 p-1">Symbol</th>
     <th className="border border-gray-300 p-2">buyorderid</th>
@@ -926,8 +942,7 @@ const  handlecallput = (type)=>{
 
   {item.orderdata.map((item) => (
     <tr key={item.id} className="text-gray-800 bg-slate-500 ">
-            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.id}</td>
-              
+            <td className="sticky left-0 z-10 bg-slate-500 border border-gray-300 px-4 py-2">{item.id}</td>
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.broker}</td>  
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.tradingsymbol}</td>
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.buyorderid}</td>
@@ -1288,19 +1303,12 @@ const  handlecallput = (type)=>{
               </div>
             </div>
           </div>
-          
+          <div>
           <div className=" flex justify-between flex-wrap">
           <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
             <div className="col-lg-6 col-sm-5 col-9 mt-3">
               <div className="row">
                 <div className="col-6">
-                  
-                    {/* <select id="strikePriceSelect" className='form-select' onChange={(e) => setstrikeprice(e.target.value)}>
-                      <option>Select Strike Price</option>
-                      {strikePrices.map((Price, index) =>
-                        <option key={index} value={Price}>{Price}</option>
-                      )}
-                    </select> */}
 
                   <Popover open={Combovalue} onOpenChange={setComboValue}>
                    <PopoverTrigger asChild>
@@ -1346,8 +1354,7 @@ const  handlecallput = (type)=>{
                 </div>
                 <div className="col-6">
                   <button type="button" onClick={()=>handleAtm()} className="btn btn-success w-100">Automatic</button>
-                  <button type="button" className="btn btn-success ml-2 w-100">Automatic</button>
-                  <button type="button" className="btn btn-success ml-2 w-100">Automatic</button>
+                  
                 </div>
               </div>
             </div>
@@ -1358,11 +1365,6 @@ const  handlecallput = (type)=>{
               <input type="number" value={nearestatm} className='form-control' onChange={(e)=>setNearestatm(e.target.value)}  placeholder='Nearest ATM' />
             </div>
             </div>
-            
-            
-            
-               
-             
             
             <div className="col-lg-2 col-6 mt-3">
               <div className="row">
@@ -1386,7 +1388,7 @@ const  handlecallput = (type)=>{
             </div>
             </div>
             
-            <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
+            <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6 {checkflag : md:m-0}">
               <div className="row">
                 <div className="col-6">
                 <button onClick={() => {
@@ -1403,7 +1405,7 @@ const  handlecallput = (type)=>{
                
               </div>
             </div>
-            
+            </div>
             </>
 
             <>

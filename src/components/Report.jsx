@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const Report = () => {
   return (
     <>
-    <div className=' text-white 2xl:text-3xl text-2xl'>Report Page</div>
+    <div className=' text-white 2xl:text-3xl text-2xl '>Report Page</div>
     </>
   )
 }

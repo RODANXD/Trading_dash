@@ -516,7 +516,7 @@ const handleOptionSelect = (option) => {
     <>
 
     
-     <div className=" bg-cyan-900 rounded-md absolute right-14 bottom-10 w-9/12 max-xs:bottom-0 max-xs:h-full p-3 max-xs:overflow-y-scroll">
+     <div className=" bg-cyan-900 rounded-md absolute z-50 right-14 bottom-10 w-9/12 max-xs:bottom-0 max-xs:h-full p-3 max-xs:overflow-y-scroll">
      <div className="w-[98%]">
      <div className=" flex flex-row-reverse">
      <Button onClick={onClose}  className="bg-red-600">X</Button>
