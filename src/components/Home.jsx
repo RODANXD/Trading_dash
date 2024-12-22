@@ -294,7 +294,8 @@ const VertiBarchartConfig = {
   
   return (
     <>
-    <div className=' flex flex-col gap-6'>
+    <div className='max-md:w-screen md:w-full xl:w-screen 2xl:w-full'>
+    <div className=' flex flex-col gap-6 '>
 <div className=' flex justify-center gap-4  h-full'>
     <Button className="bg-sky-800 hover:bg-sky-600 duration-500"  onClick={() => navigate('/dashTable')}>Trade</Button>
     <Button className="bg-green-800  hover:bg-green-600 duration-500" onClick={() => navigate('/report')}>Report</Button>
@@ -304,11 +305,11 @@ const VertiBarchartConfig = {
 </div>
     <div className=' flex flex-col gap-4'>
       
-      <div className=' flex justify-around gap-4'>
+      <div className=' flex justify-around gap-44 flex-wrap max-w-screen-tablet-md tablet-md:justify-center tablet-md:gap-44 '>
 
          {/* pie chart */}
-
-    <Card className="flex flex-col bg-gray-950 text-white backdrop-blur-lg">
+<div>
+    <Card className="flex flex-col bg-gray-950 text-white backdrop-blur-lg h-full">
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Custom Label</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -357,16 +358,18 @@ const VertiBarchartConfig = {
         </div>
       </CardFooter>
     </Card>
-
+    </div>
 
       {/* horizonal bar graph */}
+
+      <div>
     <Card className = " bg-gray-950 text-white">
       <CardHeader>
         <CardTitle>Bar Chart - Custom Label</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={BarchartConfig}>
+        <ChartContainer className="mx-auto aspect-square max-h-[250px] px-0" config={BarchartConfig}>
           <BarChart
             accessibilityLayer
             data={horizontalBar}
@@ -423,7 +426,7 @@ const VertiBarchartConfig = {
         </div>
       </CardFooter>
     </Card>
-    
+    </div>
    
     </div>
     <div>
@@ -516,7 +519,7 @@ const VertiBarchartConfig = {
         </div>
         
         <div className=' grid grid-cols-1 mr-4 gap-4 place-items-center'>
-        <div className="mb-4 flex justify-center space-x-2">
+        <div className="mb-4 flex justify-center flex-wrap space-x-2">
           <Button className=" text-white"
             // variant={filter === 'daily' ? 'secondary' : 'outline'}
             onClick={() => setFilter('daily')}
@@ -647,6 +650,7 @@ const VertiBarchartConfig = {
 
         <div>
         
+        </div>
         </div>
         </div>
         </div>

@@ -56,7 +56,8 @@ export default {
   		},
 		  screens: {
 			'max-xs': {'max': '570px'}, // Add custom breakpoint for max-width 570px
-			'max-md': {'max': '1000px'}, // Add custom breakpoint for max-
+			'max-md': {'max': '1000px'}, // Add custom breakpoint for max-width 1090px
+			'tablet-md': '1090px', // Add custom breakpoint for max-width 1090
 		  },
   	}
 	 

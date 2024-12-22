@@ -11,12 +11,12 @@ import { useNavigate  } from 'react-router-dom';
 const Design = () => {
   const navigate = useNavigate();
 
-  const isAuthExpired = handleauth();
-  console.log(isAuthExpired,'checktimestamp')
+  // const isAuthExpired = handleauth();
+  // console.log(isAuthExpired,'checktimestamp')
 
-  {if (isAuthExpired) (
-    navigate('/')
-  )}
+  // {if (isAuthExpired) (
+  //   navigate('/')
+  // )}
  
  
  
@@ -33,7 +33,7 @@ const Design = () => {
       <ColNav />
       <div className='flex flex-col flex-1'>
         
-        <div className='flex flex-col flex-1 p-4 overflow-auto'>
+        <div className='flex flex-col flex-1 h-screen py-6 max-xs:pt-14 overflow-auto'>
           <Outlet />
         </div>
       </div>

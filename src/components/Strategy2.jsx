@@ -220,8 +220,8 @@ useState(() => {
       {!viewall && (
         <>
           <div className="container mx-auto px-4 py-8">
-            <div className=" max-xs:w-[80%]  max-xs:flex item-center justify-center">
-            <div className="max-xs:w-[70%] max-xs:flex">
+            <div className=" max-xs:w-[80%]  max-xs:flex max-xs:flex-col max-xs:pl-20 item-center justify-center">
+            <div className="max-xs:w-[70%] max-xs:flex max-xs:flex-col ">
             <div className="flex flex-col sm:flex-row max-xs:w-[75%] justify-between items-center mb-4 space-y-4 sm:space-y-0">
               {" "}
               <Button
@@ -257,7 +257,7 @@ useState(() => {
                   <div className="overflow-y-scroll mb-6">
                     <table className="w-full border-collapse border border-gray-300">
                       <thead>
-                        <tr className="bg-gray-300 text-black">
+                        <tr className="sticky left-0 z-10 bg-gray-300 border border-gray-300 text-black">
                           <th
                             className="border border-gray-300 p-2"
                             colSpan={2}
@@ -279,7 +279,7 @@ useState(() => {
                       <tbody className="text-white">
                       { headerData.map((script, index) =>(
                          <tr key={index}>
-                          <td className="border border-gray-300 p-2">{script.side}</td>
+                          <td className="sticky left-0 z-10 bg-slate-500 border border-gray-300 px-4 py-2">{script.side}</td>
                           <td className="border border-gray-300 p-2">{script.Filteredscript}</td>
                           <td className="border border-gray-300 p-2">{script.pending}</td>
                           <td className="border border-gray-300 p-2">{script.executed}</td>
@@ -298,11 +298,11 @@ useState(() => {
                     <table className="min-w-full border border-gray-300 text-sm bg-gray-300 rounded-sm">
                       <thead>
                         <tr>
-                          <th className="py-2 px-4 border-b border-r text-left">
+                          <th className="sticky left-0 z-20 py-2 px-4 border-b border-r text-left">
                             Script Name
                           </th>
                           <th className="py-2 px-4 border-b border-r text-left">
-                            Candle high low
+                            Candle high 
                           </th>
                           <th className="py-2 px-4 border-b border-r text-left">
                             LONG/SHORT
@@ -326,7 +326,7 @@ useState(() => {
                               index % 2 === 0 ? "bg-slate-400" : " bg-slate-300"
                             }
                           >
-                            <td className="py-2 px-4 border-b border-r">
+                            <td className="sticky left-0 z-20 py-2 px-4 border-b border-r">
                               {script.scriptname}
                             </td>
                             <td className="py-2 px-4 border-b border-r">
@@ -444,7 +444,7 @@ useState(() => {
                           <table className="w-full border-collapse border border-gray-300 rounded-sm">
                             <thead>
   <tr className="bg-gray-300 text-black">
-    <th className="border border-gray-300 p-2">ID</th>
+    <th className="border sticky bg-gray-300 left-0 z-20 border-gray-300 p-2">ID</th>
     <th className="border border-gray-300 p-1">Broker</th>
     <th className="border border-gray-300 p-1">Symbol</th>
     <th className="border border-gray-300 p-2">buyorderid</th>
@@ -465,7 +465,7 @@ useState(() => {
 
   {item.orderdata.map((item) => (
     <tr key={item.id} className="text-gray-800 bg-slate-500">
-            <td className="border border-gray-300 p-1 text-slate-950">{item.id}</td>
+            <td className="border sticky left-0 z-10 bg-slate-500 border-gray-300 p-1 text-slate-950">{item.id}</td>
               
             <td className="border border-gray-300 p-1 text-slate-950">{item.broker}</td>  
             <td className="border border-gray-300 p-1 text-slate-950">{item.tradingsymbol}</td>
@@ -506,7 +506,7 @@ useState(() => {
                 <table className="w-full border-collapse border border-gray-300">
                   <thead>
                     <tr className="bg-gray-300 text-black">
-                      <th className="border border-gray-300 p-2" colSpan={2}>
+                      <th className="bg-gray-300 sticky left-0 z-20 border border-gray-300 p-2" colSpan={2}>
                         Filtered Script
                       </th>
                       <th className="border border-gray-300 p-2">Pending</th>
@@ -518,7 +518,7 @@ useState(() => {
                    <tbody className="text-white">
                       { headerData.map((script, index) =>(
                          <tr key={index}>
-                          <td className="border border-gray-300 p-2">{script.side}</td>
+                          <td className="border sticky left-0 z-20 bg-gray-300  border-gray-300 p-2">{script.side}</td>
                           <td className="border border-gray-300 p-2">{script.Filteredscript}</td>
                           <td className="border border-gray-300 p-2">{script.pending}</td>
                           <td className="border border-gray-300 p-2">{script.executed}</td>

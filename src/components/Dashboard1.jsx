@@ -797,7 +797,7 @@ const  handlecallput = (type)=>{
       <>
     <div className="container-xl my-3 max-md:w-screen">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-        <div className="flex justify-center sm:justify-start">
+        <div className="flex justify-center">
           <Button 
             onClick={handleAddTrade} 
             disabled={isExpirySelected || isStrikeSelected}
@@ -840,16 +840,16 @@ const  handlecallput = (type)=>{
             <p className="text-white">{item.Blockid}</p>
             <div className="col-span-1 sm:col-span-2 lg:col-span-1 order-2 sm:order-3 lg:order-2">
           <div className="grid grid-cols-2 place-items-center mb-2 sm:grid-cols-2 gap-2">
-            <Button variant="outline" className="w-1/2 text-xs text-black sm:text-sm">
+            <Button variant="outline" className="w-1/2 max-xs:w-full text-xs text-black sm:text-sm  sm:break-all ">
               Max Moving High {890}
             </Button>
-            <Button variant="outline" className="w-1/2 text-xs text-black sm:text-sm">
+            <Button variant="outline" className="w-1/2 text-xs max-xs:w-full text-black sm:text-sm break-all">
               Avg Moving
             </Button>
-            <Button variant="outline" className="w-1/2 text-xs text-black sm:text-sm">
+            <Button variant="outline" className="w-1/2 text-xs max-xs:w-full text-black sm:text-sm break-all">
               Max Drawdown
             </Button>
-            <Button variant="outline" className="w-1/2 text-xs text-black sm:text-sm">
+            <Button variant="outline" className="w-1/2 text-xs max-xs:w-full text-black sm:text-sm break-all">
               Up Avg Moving
             </Button>
           </div>
@@ -1305,10 +1305,10 @@ const  handlecallput = (type)=>{
           </div>
           <div>
           <div className=" flex justify-between flex-wrap">
-          <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
-            <div className="col-lg-6 col-sm-5 col-9 mt-3">
-              <div className="row">
-                <div className="col-6">
+          <div className={`row max-xs:flex max-xs:flex-col max-xs:w-screen ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
+            <div className="col-lg-6 col-sm-5 col-9 mt-3 max-xs:col-15">
+              <div className="row max-xs:w-screen">
+                <div className="col-6 w-1/2">
 
                   <Popover open={Combovalue} onOpenChange={setComboValue}>
                    <PopoverTrigger asChild>
@@ -1359,7 +1359,7 @@ const  handlecallput = (type)=>{
               </div>
             </div>
             <div className="col-lg-3 col-sm-2 col-3 mt-3">
-              <input type="text" className='form-control' value= {strikeprice!=='Select Strike Price'?strikeprice:''} placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
+              <input type="text" className='form-control max-xs:w-full' value= {strikeprice!=='Select Strike Price'?strikeprice:''} placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
             </div>
             <div className="col-lg-3 col-sm-5 mt-3">
               <input type="number" value={nearestatm} className='form-control' onChange={(e)=>setNearestatm(e.target.value)}  placeholder='Nearest ATM' />
@@ -1388,7 +1388,7 @@ const  handlecallput = (type)=>{
             </div>
             </div>
             
-            <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6 {checkflag : md:m-0}">
+            <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6 max-xs:m-0 {checkflag : md:m-0}">
               <div className="row">
                 <div className="col-6">
                 <button onClick={() => {

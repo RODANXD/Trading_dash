@@ -49,7 +49,7 @@ const ColNav = () => {
   return (
     <div className="flex">
 
-      <div className="hidden md:flex flex-col justify-between h-screen w-16 md:w-60">
+      <div className="hidden tablet-md:flex flex-col justify-between h-screen w-16 md:w-60">
         <NavContent />
         <div className="flex flex-col md:flex-row justify-evenly text-blue-500 p-7 gap-4 items-center">
           <IoIosLogOut className="size-7 cursor-pointer text-white hover:text-cyan-500 duration-500" />
@@ -61,7 +61,7 @@ const ColNav = () => {
 
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="md:hidden fixed top-4 left-4 z-50">
+          <Button variant="outline" size="icon" className="tablet-md:hidden fixed top-4 left-4 z-50">
             <Menu className="h-6 w-6" />
           </Button>
         </SheetTrigger>
