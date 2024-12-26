@@ -114,16 +114,14 @@ const fetchData= async () =>{
     console.log(response.active,'vertical')
 
     // Process time series data if needed
-    const timeSeriesData = {
-      daily: response.netprofit.daily,
-      weekly: response.netprofit.weekly,
-      monthly: response.netprofit.monthly
-    };
-    setTimeSeriesData(timeSeriesData);
+    
+    setTimeSeriesData(response.netprofit);
+    console.log(response.netprofit,'netprofit')
+
+    
 
     return {
       pieData,
-      timeSeriesData,
       rawData: response
     };
     })
@@ -482,7 +480,7 @@ const VertiBarchartConfig = {
         >
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
-              data={chartData}
+              data={timeSeriesData}
               margin={{
                 left: 12,
                 right: 12,
@@ -490,7 +488,7 @@ const VertiBarchartConfig = {
             >
               <CartesianGrid vertical={false} stroke='#334' />
               <XAxis
-                dataKey="date"
+                dataKey="updated_at"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
@@ -500,7 +498,7 @@ const VertiBarchartConfig = {
                   if (filter === 'daily') {
                     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
                   } else if (filter === 'weekly') {
-                    return `Week ${Math.floor(rawChartData.findIndex(item => item.date === value) / 7) + 1}`;
+                    return `Week ${Math.floor(timeSeriesData.findIndex(item => item.updated_at === value) / 7) + 1}`;
                   } else {
                     return date.toLocaleDateString("en-US", { month: "short" });
                   }
@@ -516,9 +514,9 @@ const VertiBarchartConfig = {
                       if (filter === 'daily') {
                         return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
                       } else if (filter === 'weekly') {
-                        const weekIndex = Math.floor(rawChartData.findIndex(item => item.date === value) / 7);
-                        const startDate = new Date(rawChartData[weekIndex * 7].date);
-                        const endDate = new Date(rawChartData[Math.min((weekIndex + 1) * 7 - 1, rawChartData.length - 1)].date);
+                        const weekIndex = Math.floor(timeSeriesData.findIndex(item => item.updated_at === value) / 7);
+                        const startDate = new Date(timeSeriesData[weekIndex * 7].date);
+                        const endDate = new Date(timeSeriesData[Math.min((weekIndex + 1) * 7 - 1, timeSeriesData.length - 1)].date);
                         return `Week ${weekIndex + 1}: ${startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })} - ${endDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
                       } else {
                         return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
@@ -528,7 +526,7 @@ const VertiBarchartConfig = {
                 }
               />
               <Line
-                dataKey={activeChart}
+                dataKey='pnl'
                 type="monotone"
                 stroke='#E76E50'
                 strokeWidth={2}
