@@ -243,9 +243,9 @@ const handleviewdetail = ()=>{
 
       <>
       
-    <div className="container mx-auto px-4 py-8 space-y-8 ">
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-center text-white max-xs:text-sm">Index Price</h2>
+    <div className="container mx-auto px-4 py-8 space-y-8 max-md:flex max-md:justify-center ">
+      <div className="space-y-4 max-md:w-screen max-md:p-10">
+        <h2 className="text-2xl font-bold text-center text-white max-xs:text-sm mb-6">Index Price</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-xs:w-[75%]">
       <div className="flex justify-start">
         <Button 
@@ -274,7 +274,7 @@ const handleviewdetail = ()=>{
       </div>
     </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 max-xs:w-3/4 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 max-xs:w-3/4 lg:grid-cols-6 gap-4 mt-7">
             {indexdata.map((item) => (
               <div key={item} className="flex flex-col items-center gap-2">
                 <Label variant="outline" className="w-full text-teal-50 text-lg">
@@ -342,7 +342,7 @@ const handleviewdetail = ()=>{
 <table className="w-full border-collapse border border-gray-300  rounded-sm">
 <thead>
   <tr className="bg-gray-300 text-black">
-    <th className="border border-gray-300 p-2">ID</th>
+    <th className="sticky left-0 z-20 bg-gray-200 border border-gray-300 px-4 py-2">ID</th>
     <th className="border border-gray-300 p-1">Broker</th>
     <th className="border border-gray-300 p-1">Symbol</th>
     <th className="border border-gray-300 p-2">buyorderid</th>
@@ -363,22 +363,22 @@ const handleviewdetail = ()=>{
 
   {item.orderdata.map((item) => (
     <tr key={item.id} className="text-gray-800  bg-slate-500 ">
-            <td className="border border-gray-300 p-1 text-slate-950">{item.id}</td>
+            <td className="sticky left-0 z-20 bg-gray-200 border border-gray-300 px-4 py-2">{item.id}</td>
               
-            <td className="border border-gray-300 p-1 text-slate-950">{item.broker}</td>  
-            <td className="border border-gray-300 p-1 text-slate-950">{item.tradingsymbol}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.buyorderid}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.ltp}</td>
-
-            <td className="border border-gray-300 p-1 text-slate-950">{item.avg_price}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.side}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.quantity}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.status?"ACTIVE":"OFF"}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.sellorderid}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.sl}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.slhit}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.targethit}</td>
-            <td className="border border-gray-300 p-1 text-slate-950">{item.trailhit}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.broker}</td>  
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.tradingsymbol}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.buyorderid}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.ltp}</td>
+ break-all
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.avg_price}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.side}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.quantity}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.status?"ACTIVE":"OFF"}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.sellorderid}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.sl}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.slhit}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.targethit}</td>
+            <td className="border border-gray-300 p-1 break-all text-slate-950">{item.trailhit}</td>
             <td className="border border-gray-300 p-1">
         <Button className="text-xs p-2">EXIT</Button>  
 
