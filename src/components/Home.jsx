@@ -77,7 +77,7 @@ export function ChartLineInteractive() {
        
         fetchData();
       
-    }, [])
+    }, [setHoriBar])
 
 
 
@@ -105,22 +105,13 @@ const fetchData= async () =>{
     setPiechart(pieData);
     console.log(pieData,'resposnse')
     // Process horizontal bar data
-    const horizontalData = Object.entries(response.brokercount).map(([key, value]) => ({
-      browser: key,
-      visitors: value,
-      fill: getFillColor(key)
-    }));
-    setHoriBar(horizontalData);
-    console.log(horizontalData,'resposnse')
+    
+    setHoriBar(response.brokercount);
+    console.log(response.brokercount,'horizontal')
 
     // Process vertical bar data
-    const verticalData = Object.entries(response.active).map(([key, value]) => ({
-      browser: key,
-      visitors: value,
-      fill: getFillColor(key)
-    }));
-    setVeriBar(verticalData);
-    console.log(verticalData,'resposnse')
+    setVeriBar(response.active);
+    console.log(response.active,'vertical')
 
     // Process time series data if needed
     const timeSeriesData = {
@@ -132,8 +123,6 @@ const fetchData= async () =>{
 
     return {
       pieData,
-      horizontalData,
-      verticalData,
       timeSeriesData,
       rawData: response
     };
@@ -199,14 +188,13 @@ const getFillColor = (key) => {
 };
 
 const chartConfig = {
-  Tradetool: { label: "Trade Tool", color: "hsl(var(--chart-1))" },
-  Indexscalp: { label: "Index Scalp", color: "hsl(var(--chart-2))" },
-  movementum: { label: "Movementum", color: "hsl(var(--chart-3))" },
+  strategy: { label: "strategy", color: "hsl(var(--chart-1))" },
+  count: { label: "count", color: "hsl(var(--chart-2))" },
 };
 const VerchartConfig = {
-  Tradetool: { label: "Trade Tool", color: "hsl(var(--chart-1))" },
-  Indexscalp: { label: "Index Scalp", color: "hsl(var(--chart-2))" },
-  movementum: { label: "Movementum", color: "hsl(var(--chart-3))" },
+  broker: { label: "broker", color: "hsl(var(--chart-1))" },
+  count: { label: "count", color: "hsl(var(--chart-2))" },
+  // movementum: { label: "Movementum", color: "hsl(var(--chart-3))" },
   
 }
 
@@ -314,7 +302,7 @@ const VertiBarchartConfig = {
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer className="mx-auto aspect-square max-h-[250px] px-0" config={chartConfig}>
+        <ChartContainer className="mx-auto aspect-square max-h-[250px] px-0" config={VerchartConfig}>
           <BarChart
             accessibilityLayer
             data={HoriBar}
@@ -328,7 +316,7 @@ const VertiBarchartConfig = {
             
             <CartesianGrid horizontal={false} />
             <YAxis
-              dataKey="month"
+              dataKey="broker"
               type="category"
               tickLine={false}
               tickMargin={10}
@@ -336,26 +324,26 @@ const VertiBarchartConfig = {
               tickFormatter={(value) => value.slice(0, 3)}
               hide
             />
-            <XAxis dataKey="desktop" type="number" hide />
+            <XAxis dataKey="count" type="number" hide />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
             <Bar
-              dataKey="desktop"
+              dataKey="count"
               layout="vertical"
-              fill="var(--color-desktop)"
+              fill="var(--color-count)"
               radius={4}
             >
               <LabelList
-                dataKey="month"
+                dataKey="count"
                 position="insideLeft"
                 offset={8}
                 className="fill-[--color-label]"
                 fontSize={12}
               />
               <LabelList
-                dataKey="desktop"
+                dataKey="broker"
                 position="right"
                 offset={8}
                 className="fill-[#ffffff]"
@@ -407,7 +395,7 @@ const VertiBarchartConfig = {
       </CardHeader>
       <CardContent className="px-2 sm:p-6 ">
         <ChartContainer
-          config={VerchartConfig}
+          config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
           <BarChart
@@ -422,35 +410,29 @@ const VertiBarchartConfig = {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="date"
+              dataKey="strategy"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })
-              }}
+              
+              
             />
+            
             <ChartTooltip
               content={
                 <ChartTooltipContent
                   className="w-[150px]"
                   nameKey="views"
+                  
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })
-                  }}
+                value.slice(0, 3)
+
+                                     }}
                 />
               }
             />
-            <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+            <Bar dataKey='count' fill={`var(--color-strategy)`} />
           </BarChart>
         </ChartContainer>
       </CardContent>
