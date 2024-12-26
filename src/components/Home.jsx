@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo ,useEffect} from 'react'
 import { TrendingUp } from 'lucide-react'
 import { Line, LineChart, CartesianGrid, XAxis, ResponsiveContainer } from "recharts"
 import { Bar, BarChart, LabelList, YAxis } from "recharts"
@@ -164,13 +164,41 @@ const VerchartConfig = {
 export function ChartLineInteractive() {
   const [activeChart, setActiveChart] = useState("desktop")
   const [activeChart2, setActiveChart2] = useState("desktop")
-
-
   const [filter, setFilter] = useState('weekly')
   const [filter2, setFilter2] = useState('weekly')
   const [Piechart, setPiechart] = useState(rawChartData)
   const [HoriBar, setHoriBar] = useState(rawChartData)
   const [VeriBar, setVeriBar] = useState(rawChartData)
+  const [rawChartDatax, setRawchartdatax] = useState([])
+
+
+
+  useEffect(() => {
+       
+        fetchData();
+      
+    }, [])
+
+
+
+const fetchData= async () =>{
+    const endpoint = "dashdata"
+    const type = "GET"
+
+    handleexchangerequest(type, payload, endpoint)
+    .then (response=> {
+      if (response){
+        setRawchartdatax(response)
+    console.log(response,'resposnse')
+
+
+      }
+
+    console.log(response,'resposnse')
+    })
+  }
+
+
 
 
   const chartData = useMemo(() => {
