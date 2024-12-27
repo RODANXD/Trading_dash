@@ -88,7 +88,7 @@ const fetchData= async () =>{
     handleexchangerequest(type, payload, endpoint)
     .then (response=> {
       if (response){
-        setRawchartdatax(response)
+        setRawchartdatax(response.netprofit)
     console.log(response,'resposnse')
 
 
@@ -113,9 +113,7 @@ const fetchData= async () =>{
 
     // Process time series data if needed
     
-    setRawchartdatax(response.netprofit);
-    console.log(response.netprofit,'netprofit')
-
+    setTimeSeriesData(response.netprofit.daily)
     
 
     return {
