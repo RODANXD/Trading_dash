@@ -87,7 +87,7 @@ const Report = () => {
     return (
       <>
         <div className='flex flex-col items-center gap-10'>
-          <div className='text-white'>Open Postions</div>
+          <div className='text-white'>GENRATE ORDER REPORT</div>
           <div className='flex flex-row gap-10'>
             {/* <div>
               <Label htmlFor="search" className="sr-only">Search</Label>

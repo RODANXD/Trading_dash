@@ -930,6 +930,8 @@ const  handlecallput = (type)=>{
     <th className="border border-gray-300 p-2">Side</th>
     <th className="border border-gray-300 p-1">QTY</th>
     <th className="border border-gray-300 p-1">Status</th>
+    <th className="border border-gray-300 p-1">PNL</th>
+
     <th className="border border-gray-300 p-2">sellorderid</th>
     <th className="border border-gray-300 p-2">sl</th>
     <th className="border border-gray-300 p-2">SLHIT</th>
@@ -952,6 +954,8 @@ const  handlecallput = (type)=>{
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.side}</td>
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.quantity}</td>
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.status?"ACTIVE":"OFF"}</td>
+            <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.pnl}</td>
+
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.sellorderid}</td>
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.sl}</td>
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.slhit}</td>

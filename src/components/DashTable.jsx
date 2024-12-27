@@ -18,7 +18,7 @@ const DashTable = () => {
     const [data, setData] = useState([]);
     
     
-    const tableheaddata = ["ID",	"Broker",'strategy',	"Symbol",	"buyorderid",	"LTP",	"avg_price"	,"Side"	,"QTY",	"Status",	"sellorderid",	"sl",	"SLHIT",	"TargetHit",	"TRAILHIT",	"Action"];
+    const tableheaddata = ["ID",	"Broker",'strategy',	"Symbol",	"buyorderid",	"LTP",	"avg_price"	,"Side"	,"QTY",	"Status",	"sellorderid",	"sl",	"SLHIT",	"TargetHit",	"TRAILHIT"];
     const navigate = useNavigate();
     useEffect(() => {
       const filteredData = scriptData.filter(script =>
@@ -87,7 +87,7 @@ const DashTable = () => {
     return (
       <>
         <div className='flex flex-col items-center gap-10'>
-          <div className='text-white'>Open Postions</div>
+          <div className='text-white'>Closed Postions</div>
           <div className='flex flex-row gap-10'>
             {/* <div>
               <Label htmlFor="search" className="sr-only">Search</Label>
@@ -153,7 +153,6 @@ const DashTable = () => {
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.targethit}</td>
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.trailhit}</td>
                       <td className="p-1 px-4 border-b border-r">
-                        <Button size="sm" className="w-full" onClick={handleOpen}>EXIT</Button>
                       </td>
                                           </tr>
                   ))}
