@@ -153,7 +153,6 @@ const Report = () => {
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.targethit}</td>
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.trailhit}</td>
                       <td className="p-1 px-4 border-b border-r">
-                        <Button size="sm" className="w-full" onClick={handleOpen}>EXIT</Button>
                       </td>
                                           </tr>
                   ))}
