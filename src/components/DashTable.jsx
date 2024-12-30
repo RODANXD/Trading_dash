@@ -14,7 +14,6 @@ const DashTable = () => {
     const [scriptData, setScriptData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('ALL');
-    const [isOpen, setIsOpen] = useState(false);
     const [data, setData] = useState([]);
     
     
@@ -76,51 +75,54 @@ const DashTable = () => {
       },[])
     
   
-    const handleOpen = () => {
-      setIsOpen(true);
-    };
-  
     const handleUpdate = ()=>{
       window.location.reload();
     }
+
+    const convertToCSV = (jsonData) => {
+      const keys = Object.keys(jsonData[0] || {});
+      const headerRow = keys.join(',') + '\n';
+      const dataRows = jsonData.map((item) => keys.map((key) => `"${item[key]}"`).join(',')).join('\n');
+   
+      return headerRow + dataRows;
+    };
+  
+    const downloadCSV = (data, filename) => {
+      const blob = new Blob([data], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    };
+  
+    const handleDownload = () => {
+      if (data.length === 0) {
+        console.error("No data to download");
+        return;
+      }
+  
+      const csvData = convertToCSV(data);
+      const fileName = 'table_data.csv';
+      downloadCSV(csvData, fileName);
+    };
   
     return (
       <>
         <div className='flex flex-col items-center gap-10'>
           <div className='text-white'>Closed Postions</div>
           <div className='flex flex-row gap-10'>
-            {/* <div>
-              <Label htmlFor="search" className="sr-only">Search</Label>
-              <Input
-                id="search"
-                placeholder="Search by script name..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div> */}
             <div>
-              {/* <div className="flex flex-col">
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ALL">All Statuses</SelectItem>
-                    <SelectItem value="EXECUTED">Executed</SelectItem>
-                    <SelectItem value="PENDING">Pending</SelectItem>
-                    <SelectItem value="CANCELLED">Cancelled</SelectItem>
-                    <SelectItem value="REJECTED">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-               */}
             </div>
         <Button onClick={() => navigate('/home')}> Back to Dashboard</Button>
+        <Button onClick={handleDownload}> Download Report</Button>
+
 
 
           </div>
-          <div className='w-[64rem]'>
-            <div className="overflow-x-auto h-82 w-full rounded-lg">
+          <div className='w-[70rem]'>
+            <div className="overflow-x-auto h-72 w-full rounded-lg">
               <table className="min-w-full border border-gray-300 text-sm bg-gray-300 rounded-sm">
                 <thead>
                   <tr>
@@ -152,8 +154,7 @@ const DashTable = () => {
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.slhit}</td>
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.targethit}</td>
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.trailhit}</td>
-                      <td className="p-1 px-4 border-b border-r">
-                      </td>
+                      
                                           </tr>
                   ))}
                 </tbody>
