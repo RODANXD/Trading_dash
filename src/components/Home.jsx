@@ -250,7 +250,7 @@ const VertiBarchartConfig = {
         >
           <PieChart>
             <ChartTooltip
-              content={<ChartTooltipContent nameKey="visitors" className=' w-40' form hideLabel />}
+              content={<ChartTooltipContent nameKey="visitors" className=' w-44'  hideLabel />}
             />
             <Pie
               data={Piechart}

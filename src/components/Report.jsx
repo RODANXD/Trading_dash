@@ -5,6 +5,7 @@ import { handleexchangerequest } from "../utility/Api";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import DateRangePicker from "./ui/Datetimepicker";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Report = () => {
@@ -16,6 +17,10 @@ const Report = () => {
     const [statusFilter, setStatusFilter] = useState('ALL');
     const [isOpen, setIsOpen] = useState(false);
     const [data, setData] = useState([]);
+    const [StartDate, setStartDate] = useState(new Date());
+    const [EndDate, setEndDate] = useState(new Date());
+    
+    
     
     
     const tableheaddata = ["ID",	"Broker",'strategy',	"Symbol",	"buyorderid",	"LTP",	"avg_price"	,"Side"	,"QTY",	"Status",	"sellorderid",	"sl",	"SLHIT",	"TargetHit",	"TRAILHIT",	"Action"];
@@ -55,7 +60,7 @@ const Report = () => {
 
     const tradeblocklist= async () =>{
         const endpoint = "tradeblock"
-        const payload = 'strategy=0'
+        const payload = 'strategy=&from'
         const type = "GET"
     
         handleexchangerequest(type, payload, endpoint)
@@ -83,12 +88,18 @@ const Report = () => {
     const handleUpdate = ()=>{
       window.location.reload();
     }
+    const handleDateRangeApply = ({ startDate, endDate }) => {
+      setStartDate(startDate);
+      setEndDate(endDate);
+      console.log("Start Date:", startDate.format('M/DD hh:mm A'));
+      console.log("End Date:", endDate.format('M/DD hh:mm A'));
+    };
   
     return (
       <>
         <div className='flex flex-col items-center gap-10'>
           <div className='text-white'>GENRATE ORDER REPORT</div>
-          <div className='flex flex-row gap-10'>
+          <div className='flex flex-row gap-10 flex-wrap justify-center'>
             {/* <div>
               <Label htmlFor="search" className="sr-only">Search</Label>
               <Input
@@ -115,12 +126,15 @@ const Report = () => {
               </div>
                */}
             </div>
-        <Button onClick={() => navigate('/home')}> Back to Dashboard</Button>
-
+        <Button onClick={() => navigate('/home')} className="bg-blue-500 hover:bg-sky-600"> Back to Dashboard</Button>
+         <DateRangePicker 
+                  onApply={handleDateRangeApply}
+                  className="bg-white w-100" />
+          <Button onClick={Alltrade} type="submit" className="bg-green-800 hover:bg-green-600">Submit</Button>
 
           </div>
           <div className='w-[64rem]'>
-            <div className="overflow-x-auto h-82 w-full rounded-lg">
+            <div className="overflow-x-auto h-72 w-full rounded-lg">
               <table className="min-w-full border border-gray-300 text-sm bg-gray-300 rounded-sm">
                 <thead>
                   <tr>
