@@ -310,6 +310,23 @@ const  handlecallput = (type)=>{
     })
   }
 
+  const closetrade = async (strategy,blockno,ids) => {
+    const endpoint = "positionclose";
+    const payload = JSON.stringify({strategy,blockno,ids})
+    console.log(payload,'payload')
+    const type = "POST";
+
+    try {
+      const response = await handleexchangerequest(type, payload, endpoint);
+      if (response) {
+          
+        
+      }
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  };
+
 
   const handleselectsymbol = (e) => {
     setselectsymbol(e.target.value);
@@ -477,7 +494,7 @@ const  handlecallput = (type)=>{
   //     break;
   // }
 
-
+  
 
   
 
@@ -808,7 +825,7 @@ const  handlecallput = (type)=>{
         </div>
         
         <div className="flex justify-center sm:justify-end gap-3 order-3 sm:order-2 lg:order-3">
-          <Button className="w-full sm:w-auto">Exit All</Button>
+          <Button  onClick={()=>closetrade(1,item.Blockid,0)} className="w-full sm:w-auto">Exit All</Button>
           
           <Popover>
         <PopoverTrigger asChild>
@@ -880,7 +897,7 @@ const  handlecallput = (type)=>{
       </Button>
                 </div>
                 <div className="flex flex-col gap-3">
-                <Button variant="destructive" className="w-full">Exit All</Button>
+                <Button variant="destructive" onClick={()=>closetrade(1,item.Blockid,0)} className="w-full">Exit All</Button>
                   <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="email">PNL</Label>
                     <Input type="number" className=" text-black" placeholder="Value" />
@@ -962,7 +979,7 @@ const  handlecallput = (type)=>{
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.targethit}</td>
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.trailhit}</td>
             <td className="border border-gray-300 p-1">
-        <Button className="text-xs p-2">EXIT</Button>  
+          <Button  onClick={()=>closetrade(1,item.Blockid,item.id)}className="text-xs p-2">EXIT</Button>  
 
       </td>
       </tr>

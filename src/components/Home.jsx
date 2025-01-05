@@ -65,6 +65,7 @@ export function ChartLineInteractive() {
   const [timeSeriesData, setTimeSeriesData] = useState({
     
   })
+  const [multidata,setmultidata ] = useState([])
 
 
 
@@ -111,7 +112,8 @@ const fetchData= async () =>{
 
     // Process time series data if needed
     setTimeSeriesData(response.netprofit.daily)
-    // console.log(response.netprofit.daily,'time series')
+    setmultidata(response.multidata)
+    console.log(response.multidata,'')
     return {
       pieData,
       rawData: response,
@@ -353,7 +355,7 @@ const VertiBarchartConfig = {
         <ChartContainer config={MultilineConfig}>
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={multidata}
             margin={{
               left: 12,
               right: 12,
@@ -361,41 +363,35 @@ const VertiBarchartConfig = {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="updated_at"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
             <Line
-              dataKey="desktop"
+              dataKey="Tradetool"
               type="monotone"
               stroke="var(--color-desktop)"
               strokeWidth={2}
               dot={false}
             />
             <Line
-              dataKey="mobile"
+              dataKey="Indexscalp"
               type="monotone"
               stroke="var(--color-mobile)"
               strokeWidth={2}
               dot={false}
             />
             <Line
-              dataKey="tablet"
+              dataKey="Momentum"
               type="monotone"
               stroke="var(--color-tablet)"
               strokeWidth={2}
               dot={false}
             />
-            <Line
-              dataKey="smartwatch"
-              type="monotone"
-              stroke="var(--color-smartwatch)"
-              strokeWidth={2}
-              dot={false}
-            />
+            
           </LineChart>
         </ChartContainer>
       </CardContent>
