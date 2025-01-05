@@ -113,6 +113,7 @@ const fetchData= async () =>{
     // Process time series data if needed
     setTimeSeriesData(response.netprofit.daily)
     setmultidata(response.multidata)
+    
     console.log(response.multidata,'')
     return {
       pieData,
@@ -221,371 +222,358 @@ const VertiBarchartConfig = {
 
 
 
+
+
   
   return (
     <>
-    <div className='max-md:w-screen md:w-full xl:w-screen 2xl:w-full'>
-    <div className=' flex flex-col gap-6 '>
+    {/* <div className='max-md:w-screen md:w-full xl:w-screen 2xl:w-full'> */}
+    <div className='max-md:w-screen md:w-full xl:w-screen 2xl:w-full edge:container edge:my-3'>
+
+<div className=' flex flex-col gap-6 '>
 <div className=' flex justify-center gap-4  h-full'>
-    <Button className="bg-sky-800 hover:bg-sky-600 duration-500"  onClick={() => navigate('/dashTable')}>Trade</Button>
-    <Button className="bg-green-800  hover:bg-green-600 duration-500" onClick={() => navigate('/report')}>Report</Button>
+<Button className="bg-sky-800 hover:bg-sky-600 duration-500"  onClick={() => navigate('/dashTable')}>Trade</Button>
+<Button className="bg-green-800  hover:bg-green-600 duration-500" onClick={() => navigate('/report')}>Report</Button>
 </div>
-    <div>
 
-</div>
-    <div className=' flex flex-col gap-4'>
-      
-      {/* <div className=' flex justify-evenly flex-wrap max-w-screen-tablet-md tablet-md:justify-center tablet-md:gap-44 '> */}
-      <div className=' grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 mx-5'>
+<div className=' flex flex-col gap-4'>
+  
+  {/* <div className=' flex justify-evenly flex-wrap max-w-screen-tablet-md tablet-md:justify-center tablet-md:gap-44 '> */}
+  <div className=' grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 mx-5'>
 
-         {/* pie chart */}
+     {/* pie chart */}
 <div>
-    <Card className="flex flex-col bg-gray-950 text-white  h-full ">
-      <CardHeader className="items-center pb-0">
-        <CardTitle className='text-[clamp(1rem, 2.5vw, 2rem)]'>Pie Chart - Custom Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px] px-0"
+<Card className="flex flex-col bg-gray-950 text-white  h-full ">
+  <CardHeader className="items-center pb-0">
+    <CardTitle className='text-[clamp(1rem, 2.5vw, 2rem)]'>Pie Chart - Custom Label</CardTitle>
+    <CardDescription>January - June 2024</CardDescription>
+  </CardHeader>
+  <CardContent className="flex-1 pb-0">
+    <ChartContainer
+      config={chartConfig}
+      className="mx-auto aspect-square max-h-[250px] px-0"
+    >
+      <PieChart>
+        <ChartTooltip
+          content={<ChartTooltipContent nameKey="visitors" className=' w-44'  hideLabel />}
+        />
+        <Pie
+          data={Piechart}
+          dataKey="visitors"
+          labelLine={false}
+          
+          nameKey="browser"
+        />
+      </PieChart>
+    </ChartContainer>
+  </CardContent>
+  <CardFooter className="flex-col gap-2 text-sm">
+    <div className="flex items-center gap-2 font-medium leading-none">
+      Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+    </div>
+    <div className="leading-none text-muted-foreground">
+      Showing total visitors for the last 6 months
+    </div>
+  </CardFooter>
+</Card>
+</div>
+
+  {/* horizonal bar graph */}
+
+  <div>
+<Card className = " bg-gray-950 text-white">
+  <CardHeader>
+    <CardTitle>Bar Chart - Custom Label</CardTitle>
+    <CardDescription>January - June 2024</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ChartContainer className="mx-auto aspect-square max-h-[250px] px-0" config={VerchartConfig}>
+      <BarChart
+        accessibilityLayer
+        data={HoriBar}
+        
+        layout="vertical"
+        margin={{
+          right: 16,
+        }}
+        
+      >
+        
+        <CartesianGrid horizontal={false} />
+        <YAxis
+          dataKey="broker"
+          type="category"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) => value.slice(0, 3)}
+          hide
+        />
+        <XAxis dataKey="count" type="number" hide />
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent indicator="line" />}
+        />
+        <Bar
+          dataKey="count"
+          layout="vertical"
+          fill="var(--color-count)"
+          radius={4}
         >
-          <PieChart>
-            <ChartTooltip
-              content={<ChartTooltipContent nameKey="visitors" className=' w-44'  hideLabel />}
-            />
-            <Pie
-              data={Piechart}
-              dataKey="visitors"
-              labelLine={false}
-              
-              nameKey="browser"
-            />
-          </PieChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
+          <LabelList
+            dataKey="count"
+            position="insideLeft"
+            offset={8}
+            className="fill-[--color-label]"
+            fontSize={12}
+          />
+          <LabelList
+            dataKey="broker"
+            position="right"
+            offset={8}
+            className="fill-[#ffffff]"
+            fontSize={12}
+          />
+        </Bar>
+      </BarChart>
+    </ChartContainer>
+  </CardContent>
+  <CardFooter className="flex-col items-start gap-2 text-sm">
+    <div className="flex gap-2 font-medium leading-none">
+      Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+    </div>
+    <div className="leading-none text-muted-foreground">
+      Showing total visitors for the last 6 months
+    </div>
+  </CardFooter>
+</Card>
+</div>
+
+
+<div>
+<Card className=' bg-gray-950 text-white h-full'>
+  <CardHeader>
+    <CardTitle>Line Chart - Multiple</CardTitle>
+    <CardDescription>January - June 2024</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ChartContainer config={MultilineConfig}>
+      <LineChart
+        accessibilityLayer
+        data={multidata}
+        margin={{
+          left: 12,
+          right: 12,
+        }}
+      >
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="updated_at"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          tickFormatter={(value) => value.slice(0, 3)}
+        />
+        <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
+        <Line
+          dataKey="Tradetool"
+          type="monotone"
+          stroke="var(--color-desktop)"
+          strokeWidth={2}
+          dot={false}
+        />
+        <Line
+          dataKey="Indexscalp"
+          type="monotone"
+          stroke="var(--color-mobile)"
+          strokeWidth={2}
+          dot={false}
+        />
+        <Line
+          dataKey="Momentum"
+          type="monotone"
+          stroke="var(--color-tablet)"
+          strokeWidth={2}
+          dot={false}
+        />
+        
+      </LineChart>
+    </ChartContainer>
+  </CardContent>
+  <CardFooter>
+    <div className="flex w-full items-start gap-2 text-sm">
+      <div className="grid gap-2">
         <div className="flex items-center gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+        <div className="flex items-center gap-2 leading-none text-muted-foreground">
+          Showing total visitors for the last 6 months across all devices
         </div>
-      </CardFooter>
-    </Card>
+      </div>
     </div>
+  </CardFooter>
+</Card>
+</div>
 
-      {/* horizonal bar graph */}
-
-      <div>
-    <Card className = " bg-gray-950 text-white">
-      <CardHeader>
-        <CardTitle>Bar Chart - Custom Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer className="mx-auto aspect-square max-h-[250px] px-0" config={VerchartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={HoriBar}
-            
-            layout="vertical"
-            margin={{
-              right: 16,
-            }}
-            
-          >
-            
-            <CartesianGrid horizontal={false} />
-            <YAxis
-              dataKey="broker"
-              type="category"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-              hide
-            />
-            <XAxis dataKey="count" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Bar
-              dataKey="count"
-              layout="vertical"
-              fill="var(--color-count)"
-              radius={4}
-            >
-              <LabelList
-                dataKey="count"
-                position="insideLeft"
-                offset={8}
-                className="fill-[--color-label]"
-                fontSize={12}
-              />
-              <LabelList
-                dataKey="broker"
-                position="right"
-                offset={8}
-                className="fill-[#ffffff]"
-                fontSize={12}
-              />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
-    </Card>
+</div>
+<div>
+{/* Vertical bar chart */}
+<Card className="bg-gray-950 text-white">
+  <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
+    <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+      <CardTitle>Bar Chart - Interactive</CardTitle>
+      <CardDescription>
+        Showing total visitors for the last 3 months
+      </CardDescription>
     </div>
-    <div>
-    <Card className=' bg-gray-950 text-white h-full'>
-      <CardHeader>
-        <CardTitle>Line Chart - Multiple</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={MultilineConfig}>
-          <LineChart
-            accessibilityLayer
-            data={multidata}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="updated_at"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
-            <Line
-              dataKey="Tradetool"
-              type="monotone"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
-            />
-            <Line
-              dataKey="Indexscalp"
-              type="monotone"
-              stroke="var(--color-mobile)"
-              strokeWidth={2}
-              dot={false}
-            />
-            <Line
-              dataKey="Momentum"
-              type="monotone"
-              stroke="var(--color-tablet)"
-              strokeWidth={2}
-              dot={false}
-            />
-            
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              Showing total visitors for the last 6 months across all devices
-            </div>
-          </div>
-        </div>
-      </CardFooter>
-    </Card>
-    </div>
-   
-    </div>
-    <div>
-    {/* Vertical bar chart */}
-    <Card className="bg-gray-950 text-white">
-      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Bar Chart - Interactive</CardTitle>
-          <CardDescription>
-            Showing total visitors for the last 3 months
-          </CardDescription>
-        </div>
-        {/* <div className="flex">
-          {["desktop", "mobile"].map((key) => (
-            <button
-              key={key}
-              data-active={activeChart === key}
-              className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-              onClick={() => setActiveChart(key)}
-            >
-              <span className="text-xs text-muted-foreground">
-                {chartConfig[key].label}
-              </span>
-              <span className="text-lg font-bold leading-none sm:text-3xl">
-                {total[key].toLocaleString()}
-              </span>
-            </button>
-          ))}
-        </div> */}
-      </CardHeader>
-      <CardContent className="px-2 sm:p-6 ">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <BarChart
-           
-            accessibilityLayer
-            data={VeriBar}
-            margin={{
-              left: 12,
-              right: 12,
-
-            }}
-            
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="strategy"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              
-              
-            />
-            
-            <ChartTooltip
-            cursor={false}
-              content={
-                <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="views"
-                  
-                  
-                  labelFormatter={(value) => {
-                value.slice(0, 3)
-
-                                     }}
-                />
-              }
-            />
-            <Bar dataKey='count' fill={`var(--color-strategy)`} />
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
-    </div>
-
-
-    <div className=' flex flex-col gap-4'>
-    <Card className="bg-gray-950 text-white">
-      <CardHeader className="flex flex-col items-stretch h-auto space-y-0 border-b p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 sm:py-6">
-          <CardTitle>Line Chart - Interactive</CardTitle>
-          <CardDescription>
-            Showing total visitors for the last 6 months
-          </CardDescription>
-        </div>
-        
-        <div className=' grid grid-cols-1 mr-4 gap-4 place-items-center'>
-        <div className="mb-4 flex justify-center flex-wrap space-x-2">
-          <Button className=" text-white"
-            // variant={filter === 'daily' ? 'secondary' : 'outline'}
-            onClick={() => handlefilter('daily')}
->
-            Daily
-          </Button>
-          <Button
-            // variant={filter === 'weekly' ? 'secondary' : 'outline'}
-            onClick={() => handlefilter('weekly')}
-          >
-            Weekly
-          </Button>
-          <Button
-            // variant={filter === 'monthly' ? 'secondary' : 'outline'}
-            onClick={() => handlefilter('monthly')}
-          >
-            Monthly
-          </Button>
-        </div>
-
-        </div>
-      </CardHeader>
-      <CardContent className="px-2 sm:p-6">
+  </CardHeader>
+  <CardContent className="px-2 sm:p-6 ">
+    <ChartContainer
+      config={chartConfig}
+      className="aspect-auto h-[250px] w-full"
+    >
+      <BarChart
        
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={timeSeriesData}
+        accessibilityLayer
+        data={VeriBar}
+        margin={{
+          left: 12,
+          right: 12,
 
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-            >
-              <CartesianGrid vertical={false} stroke='#334' />
-              <XAxis
-  dataKey="updated_at"
-  tickLine={false}
-  axisLine={false}
-  tickMargin={8}
-  minTickGap={32}
-  tickFormatter={(value) => {
-    const date = new Date(value);
-    return date.toISOString().split('T')[0]; // This will format the date as YYYY-MM-DD
-  }}
-/>
-              <ChartTooltip
-                content={
-                  <ChartTooltipContent
-                    className="w-[150px]"
-                    nameKey="views"
-                    labelFormatter={(value) => {
-      
-                                           }}
-      
-                    
-                  />
-                }
-              />
-              <Line
-                dataKey='pnl'
-                type="monotone"
-                stroke='#E76E50'
-                strokeWidth={2}
-                dot={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+        }}
+        
+      >
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="strategy"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          minTickGap={32}
+          
+          
+        />
+        
+        <ChartTooltip
+        cursor={false}
+          content={
+            <ChartTooltipContent
+              className="w-[150px]"
+              nameKey="views"
+              
+              
+              labelFormatter={(value) => {
+            value.slice(0, 3)
+
+                                 }}
+            />
+          }
+        />
+        <Bar dataKey='count' fill={`var(--color-strategy)`} />
+      </BarChart>
+    </ChartContainer>
+  </CardContent>
+</Card>
+</div>
+
+
+<div className=' flex flex-col gap-4'>
+<Card className="bg-gray-950 text-white">
+  <CardHeader className="flex flex-col items-stretch h-auto space-y-0 border-b p-0 sm:flex-row">
+    <div className="flex flex-1 flex-col justify-center gap-1 px-6 sm:py-6">
+      <CardTitle>Line Chart - Interactive</CardTitle>
+      <CardDescription>
+        Showing total visitors for the last 6 months
+      </CardDescription>
     </div>
     
+    <div className=' grid grid-cols-1 mr-4 gap-4 place-items-center'>
+    <div className="mb-4 flex justify-center flex-wrap space-x-2">
+      <Button className=" text-white"
+        // variant={filter === 'daily' ? 'secondary' : 'outline'}
+        onClick={() => handlefilter('daily')}
+>
+        Daily
+      </Button>
+      <Button
+        // variant={filter === 'weekly' ? 'secondary' : 'outline'}
+        onClick={() => handlefilter('weekly')}
+      >
+        Weekly
+      </Button>
+      <Button
+        // variant={filter === 'monthly' ? 'secondary' : 'outline'}
+        onClick={() => handlefilter('monthly')}
+      >
+        Monthly
+      </Button>
     </div>
-    <div className=' grid grid-flow-row place-items-center '>
 
-        <div>
-        
-        </div>
-        </div>
-        </div>
-        </div>
-    </>
+    </div>
+  </CardHeader>
+  <CardContent className="px-2 sm:p-6">
+   
+    <ChartContainer
+      config={chartConfig}
+      className="aspect-auto h-[250px] w-full"
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          data={timeSeriesData}
+
+          margin={{
+            left: 12,
+            right: 12,
+          }}
+        >
+          <CartesianGrid vertical={false} stroke='#334' />
+          <XAxis
+dataKey="updated_at"
+tickLine={false}
+axisLine={false}
+tickMargin={8}
+minTickGap={32}
+tickFormatter={(value) => {
+const date = new Date(value);
+return date.toISOString().split('T')[0]; // This will format the date as YYYY-MM-DD
+}}
+/>
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                className="w-[150px]"
+                nameKey="views"
+                labelFormatter={(value) => {
+  
+                                       }}
+  
+                
+              />
+            }
+          />
+          <Line
+            dataKey='pnl'
+            type="monotone"
+            stroke='#E76E50'
+            strokeWidth={2}
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </ChartContainer>
+  </CardContent>
+</Card>
+</div>
+
+</div>
+<div className=' grid grid-flow-row place-items-center '>
+
+    <div>
+    
+    </div>
+    </div>
+    </div>
+    </div>
+</>
   )
 }
