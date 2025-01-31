@@ -232,7 +232,7 @@ const VertiBarchartConfig = {
 
 <div className=' flex flex-col gap-6 '>
 <div className=' flex justify-center gap-4  h-full'>
-<Button className="bg-sky-800 hover:bg-sky-600 duration-500"  onClick={() => navigate('/dashTable')}>Trade</Button>
+<Button className="bg-sky-800 hover:bg-sky-600 duration-500"  onClick={() => navigate('/dashTable')}>Closed Trade</Button>
 <Button className="bg-green-800  hover:bg-green-600 duration-500" onClick={() => navigate('/report')}>Report</Button>
 </div>
 

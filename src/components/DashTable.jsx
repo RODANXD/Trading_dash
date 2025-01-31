@@ -148,7 +148,7 @@ const DashTable = () => {
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.avg_price}</td>
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.side}</td>
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.quantity}</td>
-                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.status?"ACTIVE":"OFF"}</td>
+                                <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.status?"ACTIVE":"CLOSED"}</td>
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.sellorderid}</td>
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.sl}</td>
                                 <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.slhit}</td>

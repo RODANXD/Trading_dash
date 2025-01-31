@@ -175,6 +175,12 @@ useEffect(() => {
       })
   
     }
+    const handleheadchange = (id, val) => {
+      Sethead((prevData) =>
+        prevData.map((item) => (item.id === id ? { ...item, value: val } : item))
+      );
+    };
+  
   
 
   const handleviewdetail = (Blockid=blockid)=>

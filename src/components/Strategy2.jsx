@@ -45,6 +45,8 @@ export default function TradingForm() {
   const [scriptData,setscriptdata]=useState([])
   const [headerData,setheaderData]=useState([])
   const [Automaticstrike, setAutomaticstrike]= useState(false)
+  const [fno, setfno]= useState('')
+
   const [onAccountSelect,setonAccountSelect]= useState([
     { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy:'' , value: true }])
 
@@ -74,6 +76,8 @@ export default function TradingForm() {
 
     { id: 9, key: "indextime", value: niftyTime },
     { id: 10, key: "Entrytime", value: entryDurationTime },
+    { id: 10, key: "fno", value: fno },
+
   
   ]);
 
@@ -89,6 +93,8 @@ export default function TradingForm() {
       { id: 8, key: "Retracement", value: retracement },
       { id: 9, key: "indextime", value: niftyTime },
       { id: 10, key: "Entrytime", value: entryDurationTime },
+      { id: 10, key: "fno", value: fno },
+
     ]);
   }, [
     movement,
@@ -101,6 +107,7 @@ export default function TradingForm() {
     retracement,
     niftyTime,
     entryDurationTime,
+    fno
   ]);
 
 
@@ -688,7 +695,7 @@ useState(() => {
                     />
                   </div>
                   <div>
-                <select id="selectVertical" className='form-select w-full' multiple="" /*onChange={(e)=>handleSelectdisable(e)} value={fno}*/>
+                <select id="selectVertical" className='form-select w-full' multiple="" onChange={(e)=>setfno(e.target.value)} value={fno}>
                 <option value="SLEFNO">Select FNO</option>
                 <option value="FUTSTK">STOCK FUTURE</option>
                 <option value="OPTSTK"> STOCK OPTION</option>
