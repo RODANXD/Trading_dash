@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import { useNavigate } from "react-router-dom";
 import { TimePicker } from 'antd';
 import Viewlegtable from "./Viewlegtable";
-
+import { Specificdelete } from "../utility/Api";
 
 import {
   DropdownMenu,
@@ -818,7 +818,10 @@ const  handlecallput = (type)=>{
           <div className="grid place-items-center gap-4">
             <div className="space-y-2 flex flex-col sm:flex-row items-center gap-3">
               <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  onClick={() => Deleteblock(0)}>confirm</Button>
+              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  
+              // onClick={() => Deleteblock(0)}
+               onClick={() => Specificdelete(0,Deleteblock)}
+               >confirm</Button>
             </div>
           </div>
         </PopoverContent>
@@ -866,7 +869,10 @@ const  handlecallput = (type)=>{
                       <div className="grid place-items-center gap-4">
                         <div className="space-y-2 flex items-center gap-3">
                           <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-                          <Button variant="destructive" className="w-full sm:w-32"  onClick={()=>Deleteblock(item.Blockid)}>confirm</Button>
+                          <Button variant="destructive" className="w-full sm:w-32"  
+                          // onClick={()=>Deleteblock(item.Blockid)}
+                           onClick={() => Specificdelete(item,Deleteblock)}
+                          >confirm</Button>
                         </div>
                       </div>
                     </PopoverContent>

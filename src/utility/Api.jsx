@@ -1,3 +1,26 @@
+export const Specificdelete = (item, deleteFunction) => {
+
+  if (item === 0 || item === null){
+    deleteFunction(0);
+    return;
+  }
+  if (!item || !item.orderdata) {
+    deleteFunction(item.Blockid);
+    return;
+  }
+
+  if (item.orderdata.length === 0) {
+   
+    deleteFunction(item.Blockid);
+    return;
+  }
+  else {
+    alert("This block contains order data. Are you sure you want to delete it?");
+    
+    
+  }
+}
+
 
 export const handleexchangerequest = async (type, payload, endpoint) => {
 

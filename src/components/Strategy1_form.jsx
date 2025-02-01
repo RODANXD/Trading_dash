@@ -600,7 +600,7 @@ useEffect(()=>{
     setAddtrade(!addtrade)}
 
   const handleCheckboxChange = (id) => {
-      setbrokerselect((prevData) =>
+      setbrokerselect((prevData) => 
         prevData.map((item) =>
           item.id === id ? { ...item, value: !item.value } : item
         )

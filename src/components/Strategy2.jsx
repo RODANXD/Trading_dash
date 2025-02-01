@@ -9,6 +9,7 @@ import DropdownMenuCheckboxes from "./ui/dropdown";
 import { Label } from "@/components/ui/label";
 import Strategy3_form from "./Strategy3_form";
 import { handleexchangerequest } from "../utility/Api";
+import { Specificdelete } from "../utility/Api";
 
 
 import {
@@ -25,6 +26,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { data } from "autoprefixer";
 
 export default function TradingForm() {
   const [movement, setMovement] = useState("");
@@ -242,7 +244,8 @@ useState(() => {
           <div className="grid place-items-center gap-4">
             <div className="space-y-2 flex flex-col sm:flex-row items-center gap-3">
               <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
-              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  onClick={()=>Deleteblock(0)}>confirm</Button>
+              <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"   onClick={() => Specificdelete(0,Deleteblock)}
+                >confirm</Button>
             </div>
           </div>
         </PopoverContent>
@@ -370,6 +373,7 @@ useState(() => {
                 </>
 
                 {Tradeblockno.map((item) => (
+                  
                   <div>
                     <div className="h-full mt-3 flex flex-col gap-3">
                       <div className="w-full max-xs:w-[90%] border border-white rounded-sm p-2 text-xs text-white">
@@ -394,7 +398,8 @@ useState(() => {
                                     <Button
                                       variant="destructive"
                                       className="w-full sm:w-32"
-                                      onClick={() => Deleteblock(item.Blockid)}
+                                      // onClick={() => Deleteblock(item.Blockid)}
+                                      onClick={() => Specificdelete(item,Deleteblock)}
                                     >
                                       confirm
                                     </Button>
