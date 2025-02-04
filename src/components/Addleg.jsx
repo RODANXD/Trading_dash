@@ -65,11 +65,11 @@ const [expiries, setExpiries] = useState([]);
   const [expiry, setExpiry] = useState("")
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
-  const [quantity,setquantity]= useState('')
-  const [Amount,setAmount]= useState('')
+  const [quantity,setquantity]= useState(0)
+  const [Amount,setAmount]= useState(0)
   const [sl,setsl]=useState(0)
   const [trail,settrail]=useState(0)
-  const [target,settarget]=useState('')
+  const [target,settarget]=useState(0)
   const [timer,settimer]=useState('')
   const [strikeprice,setstrikeprice]= useState('')
   const [fno,setfno]= useState('')
@@ -279,14 +279,12 @@ useEffect(() => {
 
 
   const legadd = (id=bid)=>{
-    console.log(bid,'bid')
     const endpoint = 'addleg'
     const Blockid= id
     const strategy= 1
-    const sublegdata= {advice,spotpricel1,Nearestatml1, sublegid, correction,strikePrice,sltype,blocksl,blocktrail,
+    const sublegdata= {advice,spotpricel1,Nearestatml1, sublegid, correction,strikeprice,sltype,blocksl,blocktrail,
       tsltype,targettype,blocktarget,blocktimer,Activeleg,lockleg,tslleg,targetleg,call,put,quantity,Amount,nearestatm,trail,sl,target,timer,
     }
-    console.log(sublegdata)
     const payload = JSON.stringify({sublegdata,Blockid,strategy
       })
 
@@ -299,7 +297,9 @@ useEffect(() => {
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
     console.log(response)
+
     })
+    window.location.reload()
   }
 
 
@@ -461,53 +461,27 @@ const handleOptionSelect = (option) => {
   const handleTargettype= (e)=>{
       settargettype(e.target.value)}
 
+const handleAtm=(id=bid)=>{
+
+    const endpoint = "getatmstrike"
+    const payload = 'Blockid='+id+"&Automatic=1"
+    const type = "GET"
+  
+    handleexchangerequest(type, payload, endpoint)  
+    .then (response=> {
+      if (response){
+        setstrikeprice(response.strike)
+        console.log(response.strike,'atm')
+      }
+  
+    
+  })}
 
   
-  const handleAddTrade= ()=>{
-    const endpoint = "addblock"
-    const strategy= 1
-    const payload = JSON.stringify({strategy})
-    const type = "POST"
-    handleexchangerequest(type, payload, endpoint)
-    .then(response => {
-    setAddtrade(!addtrade)
-
-    console.log(response)
-    })
-  }
-
-  const handleCheckboxChange = (id) => {
-      setbrokerselect((prevData) =>
-        prevData.map((item) =>
-          item.id === id ? { ...item, value: !item.value } : item
-        )
-      )}
-  // const handleAddTrade = () => {
-    // setLegPLTs(prev => [...prev, 1]);
-    // setNumberOfLegs(prev => prev + 1);
-  // };
-
-  const handleAddPLT = (legIndex) => {
-    setLegPLTs(prev => {
-      const updatedPLTs = [...prev];
-      updatedPLTs[legIndex] += 1;
-      return updatedPLTs;
-    });
-  };
-
-  const  handlenearestatm=(e)=>{
-    const strikenear= e.target.value
-    setstrikeprice(defaultstrikePrices+strikenear)
-
-  }
-  const brokerstatus= (id,val) =>{
-
-    setBroker((prevData) =>
-  prevData.map((item) =>
-    item.id === id ? { ...item,value:!item.value } : item
-  )
-);}
-
+  
+ 
+  
+  
 
 
   
@@ -631,7 +605,7 @@ className="bg-white w-32 text-black rounded-sm px-1"/>
                   
                 </div>
                 <div className="col-6">
-                  <button type="button" className="btn btn-success w-100">Automatic</button>
+                  <button type="button" onClick={()=>handleAtm()} className="btn btn-success w-100">Automatic</button>
                 </div>
               </div>
             </div>

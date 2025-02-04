@@ -12,15 +12,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function DropdownMenuCheckboxes({ stat, onAccountSelect }) {
+export default function DropdownMenuCheckboxes({ stat, onAccountSelect}) {
   const [broker, setBroker] = useState([
     { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: stat, value: true },
     { id: 2, Username: "Xyz", brokername: "Angel", accountnumber: "123456", strategy: stat, value: true },
     { id: 3, Username: "Xyz", brokername: "Dhan", accountnumber: "123456", strategy: stat, value: true },
   ]);
 
+
   useEffect(() => {
     getBroker();
+    
   }, []);
 
   const getBroker = async () => {

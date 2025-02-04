@@ -76,6 +76,7 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isActivated, setIsActivated] = useState(false);
   const [fno, setFno] = useState("");
+  const [Automaticstrike, setAutomaticstrike]= useState(false)
 
   const [selectDisable, setSelectDisable] = useState("");
   const [Quantprice,setQuantprice]= useState('')
@@ -98,9 +99,8 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [targettype,settargettype]=useState('')
   const [Activeleg,setActiveleg]=useState('')
   const [tslleg,setTslleg]=useState('')
-  const [Paper,setPaper]= useState(false)
+  const [paper,setPaper]= useState(false)
   const[live,setLive]= useState(false)
-  console.log(live,Paper)
   const [targetleg,setTargetleg]=useState('')
   
   const [lockleg,setLockleg]=useState('')
@@ -109,8 +109,8 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [tslblock,setTslblock]=useState('')
   const [pnlblock,setpnlblock]= useState('')
   const [lockblock,setlockblock]=useState('')
-  const[lossblock,setLossblock]= useState('')
-  const [rentry,setReentry]= useState('')
+  const[overallloss,setoverallloss]= useState(0)
+  const [rentry,setRentry]= useState(0)
   const [showStatusBar, setShowStatusBar] = React.useState(true);
   const [showActivityBar, setShowActivityBar] = React.useState(false);
   const [showPanel, setShowPanel] = React.useState(false);
@@ -148,6 +148,11 @@ const Strategy1_form = ({onCancel,blockid}) => {
   const [paper1, setpaper1]= useState(false)
   const [selectedTime, setSelectedTime] = useState(null);
 
+  const [overallTARGET,setoverallTARGET]=useState(0)
+  const [overallActive,setoverallActive]=useState(0)
+  const [overallTrailprofit,setoverallTrailprofit]=useState(0)
+  const [overallpnl,setoverallpnl]= useState(0)
+  const [overallLock,setoverallLock]=useState(0)
 
 
 
@@ -395,15 +400,27 @@ const Strategy1_form = ({onCancel,blockid}) => {
 
 useEffect(()=>{
   head.map((item)=>{
-    console.log(item,'value1')
-    SetDatevalue(item.tradevalidity)
-    SetDatevalue1(item.Notradingzone)
+    console.log(item.rentry,'value1')
+    Settradevalidity(item.tradevalidity)
+    SetNotradingzone(item.Notradingzone)
     setTradetype(item.tradetype)
     SetSegment(item.segment)
     setSelectVertical(item.selectVertical)
-    setSelectDisable(item.fno)
-
+    setFno(item.fno)
+    setExpiry(item.expiry)
     setDefaultStrikePrices(item.ATM)
+    Setadvice(item.advice)
+    setoverallActive(item.overallActive)
+    setoverallTARGET(item.overallTARGET)
+    setoverallLock(item.overallLock)
+    setoverallpnl(item.overallpnl)
+    setoverallTrailprofit(item.overallTrailprofit)
+    setoverallloss(item.overallloss)
+    setPaper(item.paper)
+    setRentry(item.rentry)
+    setAutomaticstrike(item.Automaticstrike)
+    
+
     // setTargetblock(item.blocktarget)
     // setTslblock(item.blocksl)
 
@@ -412,7 +429,7 @@ useEffect(()=>{
 
   })
 
-},[head,SetDatevalue,SetDatevalue1,setTradetype,,SetSegment,setSelectVertical,setSelectDisable,
+},[head,SetDatevalue,SetDatevalue1,setTradetype,,SetSegment,setSelectVertical,
   setDefaultStrikePrices])
 
 
@@ -454,13 +471,11 @@ useEffect(()=>{
       window.open(response)
     })
   }
-  const settings =  ()=>{
+  const settings =  (Blockid=blockid)=>{
     const endpoint = "saveblockst1"
     const strategy= 1
-    const sublegdata= {advice,spotprice,correction,sltype,strikeprice,targettype,sl,target,timer,trail,call,
-      put,Activeleg,lockleg,targetleg,tslleg,Quantprice,Amount,nearestatm,Marketdate}
     const tradetool=   {tradevalidity,Notradingzone,tradetype,segment,selectVertical,fno,expiry,paper,rentry,overallActive,overallloss,overallLock,overallTARGET,overallTrailprofit,overallpnl,selectsymbol,selectedStartDate,selectedEndDate}
-    const payload = JSON.stringify({strategy,tradetool,sublegdata})
+    const payload = JSON.stringify({strategy,tradetool,onAccountSelect,Blockid,Automaticstrike})
     const type = "PUT"
     handleexchangerequest(type, payload, endpoint)
     .then(response => {
@@ -483,7 +498,7 @@ useEffect(()=>{
       .then(response => {
         if (response.length!=0){
 
-        Sethead(response)
+        Sethead(response.tool)
         
       }
 
@@ -496,16 +511,16 @@ useEffect(()=>{
     },[])
 
 
-  const legadd = ()=>{
-    const endpoint = "SpotLeg"
-    const payload = JSON.stringify({advice,spotpricel1,Nearestatml1,segment,selectVertical,
-      brokerselect,Paper,live,rentry,lossblock,Activeblock,pnlblock,lossblock,lockblock,targetblock,tslblock,pnlblock})
-    const type = "POST"
-    handleexchangerequest(type, payload, endpoint)
-    .then(response => {
-    console.log(response)
-    })
-  }
+  // const legadd = ()=>{
+  //   const endpoint = "SpotLeg"
+  //   const payload = JSON.stringify({advice,spotpricel1,Nearestatml1,segment,selectVertical,
+  //     brokerselect,Paper,live,rentry,lossblock,Activeblock,pnlblock,lossblock,lockblock,targetblock,tslblock,pnlblock})
+  //   const type = "POST"
+  //   handleexchangerequest(type, payload, endpoint)
+  //   .then(response => {
+  //   console.log(response)
+  //   })
+  // }
 
   
 
@@ -548,27 +563,28 @@ useEffect(()=>{
     setLockleg(e.target.value)
   }
   const handleblockactive= (e)=>{
-    setActiveblock(e.target.value)
+    setoverallActive(e.target.value)
   }
   const handlebloctsl= (e)=>{
-    setTslblock(e.target.value)
+    setoverallTrailprofit(e.target.value)
   }
   const handleblockTarget= (e)=>{
-    setTargetblock(e.target.value)
+    setoverallTARGET(e.target.value)
   }
   const handleblockLock= (e)=>{
-    setlockblock(e.target.value)
+    setoverallLock(e.target.value)
   }
   const handleBlockpnl= (e)=>{
-    setpnlblock(e.target.value)
+    setoverallpnl(e.target.value)
   }
+  
     
   const toggleActivation = () => {
     setIsActivated(!isActivated);
   };
 
   const handledatecahnge1= (e)=>{
-    SetDatevalue1(e.target.value)
+    SetNotradingzone(e.target.value)
   }
   const handlesegment= (e)=>{
     SetSegment(e.target.value)
@@ -620,6 +636,12 @@ useEffect(()=>{
 
   
 
+  const handlemode2 = () =>{
+    setAutomaticstrike(!Automaticstrike)
+    setisContentDisabled(!isContentDisabled)
+    
+  }
+
   const handleSelectChange = async (event) => {
     setSelectVertical(event.target.value)
     setLoading(true)
@@ -652,20 +674,7 @@ useEffect(()=>{
     <>
               <div className="col-lg-6 w-full">
                 
-            <div className="flex flex-wrap gap-3 w-96">
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Max Moving High {890}</button>
-              </div>
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Avg Moving</button>       
-              </div>
-              <div className="col-lg-4 col-6  mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Max Drawdown</button>
-              </div>
-              <div className="col-lg-4 col-6 mt-2">
-                <button type="button" className="btn btn-light w-100 text-sm">Up Avg Moving</button>
-              </div>
-            </div>
+            
           </div>
 
         <div className=' flex flex-col gap-4'>
@@ -705,7 +714,7 @@ useEffect(()=>{
             value={tradetype}
           >
             <option value="">Select Tradetype</option>
-            <option value="Intrday">Intrday</option>
+            <option value="Intraday">Intraday</option>
             <option value="Carryforward">Carryforward</option>
           </select>
 
@@ -747,6 +756,7 @@ useEffect(()=>{
             <div className="col-4">
             <select
                   className='form-select w-full'
+                  value={segment}
                   onChange={(e)=>handlesegment(e)}
                 >
                   <option value=""> select segment</option>
@@ -913,331 +923,7 @@ useEffect(()=>{
    
     
       <>
-        <div className="mt-4">
-          <div className="row" style={{ background: '#CCCCCC' }}>
-            <div className="col-lg-6 my-3">
-              <div className="row">
-                <div className="col-sm-4 col-5">
-                <select  className='form-select' onChange={(e)=>handleTradeadvice(e)}>
-                    <option value=""> TRADE ADVICE</option>
-                    <option value="spot">Spot </option>
-                    <option value="sequence">Sequnce </option>
-                    <option value="cover">cover </option>
-                    <option value="Market">Market </option>
-
-                    </select> 
-                    </div>
-                <div className="col-4">
-                  <input type="number" className="form-control"  onChange={(e)=>setspotpricel1(e.target.value)} placeholder='Spot Price' />
-                </div>
-                <div className={`col-4 ${market? '':'hidden'}`}>
-                    {market?
-                  <DatePicker
-                  className="bg-white text-black p-2 rounded-lg w-100"
-                  selected={Marketdate}
-                  onChange={handlemarketdate}
-                  showTimeInput
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                />:<></>}
-                  </div>
-                {(advice === 'cover' || advice === 'sequence') && (
-                    <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" className="w-32 bgreen-600 text-black">Leg No</Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56">
-                      <DropdownMenuLabel>Leg</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      {sublegid.map((Item)=>
-                      <DropdownMenuCheckboxItem
-                      checked={Item.checked}
-                     onCheckedChange={()=>handlelegselect(Item.sublegid)}>
-                      {Item.sublegid}
-                      </DropdownMenuCheckboxItem>
-                      
-
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  )}
-              </div>
-            </div>
-            <div className="col-lg-6 my-3">
-              <div className="row">
-              {advice === 'sequence' && (
-            <div className="flex w-1/2 gap-3">
-            <button className="btn btn-light w-32">Correction</button>
-            <input type="text" placeholder="value" onChange={(e)=>setcorrection(e.target.value)} className="bg-white w-32 text-black rounded-sm px-1"/>
-    </div>
-              )}
-                {/* <div className="col-lg-3 col-6">
-                  <button type="button" className="btn btn-light w-100">PNL</button>
-                </div>
-                <div className="col-lg-3 col-6">
-                  <button type="button" className="btn btn-light w-100">❌ Exit All</button>
-                </div> */}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className=" flex justify-between flex-wrap">
-
-        <div className={`row ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
-          <div className="col-lg-6 col-sm-5 col-9 mt-3">
-            <div className="row">
-            <div className="col-6">
-                  
-                  {/* <select id="strikePriceSelect" className='form-select' onChange={(e) => setstrikeprice(e.target.value)}>
-                    <option>Select Strike Price</option>
-                    {strikePrices.map((Price, index) =>
-                      <option key={index} value={Price}>{Price}</option>
-                    )}
-                  </select> */}
-                <Popover open={Combovalue} onOpenChange={setComboValue}>
-                   <PopoverTrigger asChild>
-                   <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={Combovalue}
-                      className="w-[200px] justify-between"
-                    >
-                      {strikeprice || "Select Price"}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput placeholder="Search Price..." />
-                      <CommandList>
-                        <CommandEmpty>No symbol found.</CommandEmpty>
-                        <CommandGroup>
-                          <CommandItem value="select-symbol" onChange={(e) => setstrikeprice(e.target.value)}>
-                            Select Price
-                          </CommandItem>
-                          {strikePrices.map((symbol, index) => (
-                            <CommandItem
-                              key={index}
-                              value={symbol}
-                              onSelect={() => setstrikeprice(symbol)}
-                            >
-                              <Check
-                                className={`mr-2 h-4 w-4 ${
-                                  strikeprice === symbol ? "opacity-100" : "opacity-0"
-                                }`}
-                              />
-                              {symbol}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </div>
-              <div className="col-6">
-                <button type="button" className="btn btn-success w-100">Automatic</button>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-2 col-sm-2 col-3 mt-3">
-          <input type="text" className='form-control' value= {strikeprice!=='Select Strike Price'?strikeprice:''} placeholder='Strike Price' defaultValue={defaultstrikePrices} disabled />
-
-          </div>
-          <div className="col-lg-3 col-sm-5 mt-3">
-          <input type="number" value={nearestatm} className='form-control' onChange={(e)=>setNearestatm(e.target.value)}  placeholder='Nearest ATM' />
-          </div>
-
-          </div>
-
-          
-          <div className="col-lg-2 col-6 mt-3">
-              <div className="row">
-                <div className="col-6">
-                <button  onClick={() => {
-                  handleOptionSelect('Call')
-
-            }}
-            type="button"  className={`px-4 text-black  py-2 rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} 
-            ${getButtonColor('Call')}`}>Call</button>
-                </div>
-                <div className="col-6">
-                <button  onClick={()=>{handlecallput('BUY'); setcolorbuysell('Buy')}} type="button"  
-                className={`px-4 py-2 text-black rounded ${getButtonColor('Buy')}`}>Buy</button>
-                </div>
-              </div>
-            </div>
-            </div>
-            <div className="col-lg-2 col-6 mt-3 offset-lg-10 offset-6">
-              <div className="row">
-                <div className="col-6">
-                <button onClick={() => {
-              handleOptionSelect('Put')
-            }}  type="button"  className={`px-4 py-2 text-black rounded ${isContentDisabled ? 'opacity-50 pointer-events-none' : ''} ${getButtonColor('Put')}`}>Put</button>
-                </div>
-                <div className="col-6">
-                <button  onClick={()=>{handlecallput('SELL'); setcolorbuysell('Sell')}} type="button" 
-                className={`px-4 py-2 text-black rounded ${getButtonColor('Sell')}`}>Sell</button>
-
-                </div>
-              </div>
-            </div>
-        
-        <div className="row">
-          <div className="col-lg-3 col-9 mt-3">
-            <div className="row">
-            <div className="col-6">
-            <lable className="text-white">LOT QUANTITY</lable>
-                  <button type="button" className="btn btn-light w-100">Quantity</button>
-                  <Input className="mt-1 text-black" onChange={(e)=>setQuantprice(e.target.value)} value= {Quantprice} placeholder="Value" type="number"/>
-                </div>
-              <div className="col-6">
-              <lable className="text-white">AMOUNT</lable>
-
-                <button type="button" className="btn btn-success w-100">AMOUNT</button>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-2 col-3 mt-3">
-          <lable className="text-white">Value</lable>
-          <input onChange={(e)=>setAmount(e.target.value)} value={Amount}   type="text"  className='form-control'  placeholder='Value'  />
-
-          </div>
-          <div className="col-lg-3 col-sm-6 mt-3">
-            <div className="row">
-              <div className="col-6">
-              <lable className="text-white">SL</lable>
-
-              <select  className='form-select'onChange={(e)=>handlesltype(e)}>
-                      <option value=""> SL</option>
-                      <option value="SpotPoints">Spot Points </option>
-                      <option value="Points">Points</option>
-                      <option value="value">Value</option>
-                      <option value="Percentage">%</option>
-                </select>
-                      </div>
-              <div className="col-6">
-                <lable className="text-white">Value</lable>
-              <input type="text" onChange={(e)=>setsl(e.target.value)} value = {sl} placeholder='Manual Entry' className='form-control' />
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-4 col-sm-6 mt-3">
-            <div className="row">
-              <div className="col-6">
-              <label className="text-white"> SL</label>
-              <select  className='form-select'onChange={(e)=>handletsltype(e)}>
-                    <option value=""> TRAILSL</option>
-                    <option value="Points">Points </option>
-                    <option value="Percentage">%</option>
-                    </select>
-                    </div>
-              <div className="col-6">
-              <lable className="text-white">Value</lable>
-
-              <input type="text" onChange={(e)=>settrail(e.target.value)} value = {trail} placeholder='Manual Entry' className='form-control' />
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-3 col-sm-6 mt-3 offset-lg-5">
-            <div className="row">
-              <div className="col-6">
-              <label className="text-white"> Target</label>
-
-              <select  className='form-select'onChange={(e)=>handleTargettype(e)}>
-                    <option value="">Target</option>
-                    <option value="Points">Spot Points </option>
-                    <option value="Percentage">Points</option>
-                    <option value="Percentage">Value</option>
-                    <option value="">%</option>
-              </select>
-
-                </div>
-              <div className="col-6">
-              <lable className="text-white">Value</lable>
-
-              <input type="text"  onChange={(e)=>settarget(e.target.value)} value = {target} placeholder='Manual Entry' className='form-control' />
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-4 col-sm-6 mt-3">
-            <div className="row">
-              <div className="col-6">
-              <Popover  >
-        <PopoverTrigger asChild>
-          <div>
-            <label className=" text-white text-center"> Timer</label>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className=" p-2 w-full justify-between">
-                {formatTime(selectedTime) || "Timer"} <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onSelect={() => setSelectedOption('time')}>
-                  Time
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setSelectedOption('hours')}>
-                  Hrs/Min
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </PopoverTrigger>
-        <PopoverContent className="w-80" >
-        {selectedOption === 'time' && (
-        <TimePicker.RangePicker 
-        onChange={(time) => setSelectedTime(time)} 
-          className="bg-white"
-          clockIcon={null}
-          disableClock={true}
-          format="HH:mm:ss"
-        />
-      )}
-      {selectedOption === 'hours' && (
-        <TimePicker
-
-        onChange={(time) => setSelectedTime(time)}
-          clockIcon={null}
-          disableClock={true}
-          format="HH:mm"
-          className="bg-white"
-        />
-      )}
-         
-        </PopoverContent>
-      </Popover>
-              </div>
-              <div className="col-6">
-              <lable className="text-white">Value</lable>
-              <input type="text" onChange={(e)=>settimer(e.target.value)} value = {timer} placeholder='Manual Entry' className='form-control' />
-
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <h2 className="mt-5 text-danger">
-          Profit Lock and Trail
-        </h2>
-        
-          <div >
-          <div className="row">
-                <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onChange = {(e)=> handlesetactive(e)} placeholder='Active' />
-                </div>
-                <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control' onChange={(e)=> handlesetlock(e)} placeholder='Lock' />
-                </div>
-                <div className="col-lg col-sm-4 mt-3">
-                  <input type="number" className='form-control'  onChange= {(e)=> handletslleg(e)} placeholder='Trail Profit' />
-                </div>
-                <div className="col-lg col-sm-6 mt-3">
-                  <input type="number" className='form-control' onChange={(e)=> handleLegTarget(e)} placeholder='TARGET' />
-                </div>
-                
-              </div>
-          </div>
-      
+             
       </>
       <>
       <div className="mt-4">
@@ -1247,7 +933,7 @@ useEffect(()=>{
             <div className="row items-center">
                <h2>Block settings </h2>
               <div className="col-6 mt-3">
-                <button onClick={()=>{setPaper(true),setLive(false)}} type="button" className= {Paper?"btn btn-success w-100":"btn btn-light w-100"}>Paper</button>
+                <button onClick={()=>{setPaper(true),setLive(false)}} type="button" className= {paper?"btn btn-success w-100":"btn btn-light w-100"}>Paper</button>
               </div>
               <div className="col-6 mt-3">
                 <button  onClick={()=>{setLive(true),setPaper(false)}}type="button" className={live?"btn btn-success w-100":"btn btn-light w-100"}>Live</button>
@@ -1273,7 +959,7 @@ useEffect(()=>{
                 <input type="number" className=' bg-white text-black p-2 rounded-sm' value={Amountblock} onChange= {(e)=>setAmountblock(e.target.value)} placeholder='Amount'></input>
                 
               </div> */}
-                <div className="col-6 mt-3"><Button onClick={()=>handlemode2()} className={paper1 ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{paper1?"Automatic Strike":"Automatic Strike"}</Button></div>
+                <div className="col-6 mt-3"><Button onClick={()=>handlemode2()} className={Automaticstrike ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}>{Automaticstrike?"Automatic Strike":"Automatic Strike"}</Button></div>
 
             </div>
           </div>
@@ -1284,11 +970,12 @@ useEffect(()=>{
             <button type="button"  className="btn btn-secondary w-100">Re Entry</button>
           </div>
           <div className="col-lg-2 col-sm-4 mt-3">
-          <input type="number" onchange={(e)=>setReentry(e.target.value)} className='w-100 form-control' />
+          
+          <input type="number" value= {rentry} onChange={(e)=> setRentry(e.target.value)} className='w-100 form-control' />
 
           </div>
           <div className="col-lg-2 col-sm-4 mt-3">
-            <input type="number" onChange={(e)=>setLossblock(e.target.value)} className='w-100 form-control' placeholder='Overall Loss' />
+            <input type="number"  value= {overallloss} onChange={(e)=>setoverallloss(e.target.value)} className='w-100 form-control' placeholder='Overall Loss' />
           </div>
         </div>
 
@@ -1298,19 +985,19 @@ useEffect(()=>{
 
         <div className="row">
             <div className="col-lg col-sm-4 mt-3">
-              <input type="text"  onChange={(e)=> handleblockactive(e)} className='form-control' placeholder='Active' />
+              <input type="text"  value={overallActive} onChange={(e)=> handleblockactive(e)} className='form-control' placeholder='Active' />
             </div>
             <div className="col-lg col-sm-4 mt-3">
-              <input type="number"  onChange={(e)=>handleblockLock(e)} className='form-control' placeholder='Lock' />
+              <input type="number"   value={overallLock} onChange={(e)=>handleblockLock(e)} className='form-control' placeholder='Lock' />
             </div>
             <div className="col-lg col-sm-4 mt-3">
-              <input type="number"  onChange={(e)=>handlebloctsl(e)} className='form-control' placeholder='Trail Profit' />
+              <input type="number"  value={overallTrailprofit}  onChange={(e)=>handlebloctsl(e)} className='form-control' placeholder='Trail Profit' />
             </div>
             <div className="col-lg col-sm-6 mt-3">
-              <input type="number"  onChange={(e)=>handleblockTarget(e)}  className='form-control' placeholder='Overall TARGET' />
+              <input type="number"  value={overallTARGET}  onChange={(e)=>handleblockTarget(e)}  className='form-control' placeholder='Overall TARGET' />
             </div>
             <div className="col-lg col-sm-6 mt-3">
-              <input  onChange={(e)=>handleBlockpnl(e)} type="text" className='form-control' placeholder='Overall PNL' />
+              <input  value={overallpnl}  onChange={(e)=>handleBlockpnl(e)} type="text" className='form-control' placeholder='Overall PNL' />
             </div>
           </div>
         

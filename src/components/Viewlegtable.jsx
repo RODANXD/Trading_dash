@@ -15,6 +15,8 @@ const Viewlegtable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [sublegid, setsublegid] = useState(null);
+  const [Blockid, setBlockid] = useState(null);
 
   const tableheaddata = ["Blockid", "sublegid", "Activeleg", "lockleg", "tslleg", "targetleg", "sl", "trail", "target", "timer", "strikeprice", "advice", "spotprice", "call", "put", "correction", "sltype", "tsltype", "targettype", "nearestatm", "Linkleg", "Edit", "Delete"];
   const updatetable = ["Activeleg", "lockleg", "tslleg", "targetleg", "sl", "trail", "target", "timer", "strikeprice", "spotprice", "call", "put", "correction", "nearestatm", "Linkleg"];
@@ -62,14 +64,29 @@ const Viewlegtable = () => {
     }
   };
 
-  const handleOpen = (rowIndex) => {
+  const handleOpen = (rowIndex,id,blkid) => {
     setSelectedRow(rowIndex);
+    setsublegid(id)
     setIsOpen(true);
+    setBlockid(blkid)
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (Blockid,sublegid) => {
     console.log("Updated data:", data);
-    window.location.reload(); // Placeholder, replace with actual update logic
+    const endpoint = "addleg"
+    const payload = JSON.stringify({data,Blockid,sublegid})
+    const type = "PUT"
+    
+      handleexchangerequest(type, payload, endpoint)
+      .then (response=> {
+        if (response){
+      console.log(response,'resposnse')
+    
+    
+        }
+    
+      })
+
   };
 
   return (
@@ -105,7 +122,7 @@ const Viewlegtable = () => {
                       <td key={cellIndex} className="p-1 px-4 border-b border-r">{row[header] || 'N/A'}</td>
                     ))}
                     <td className="p-1 px-4 border-b border-r">
-                      <Button size="sm" className="w-full" onClick={() => handleOpen(rowIndex)}>Edit</Button>
+                      <Button size="sm" className="w-full" onClick={() => handleOpen(rowIndex,row.sublegid,row.Blockid)}>Edit</Button>
                     </td>
                     <td className="p-1 px-4 border-b border-r">
                       <Button variant="destructive" size="sm" className="w-full">Delete</Button>
@@ -140,7 +157,7 @@ const Viewlegtable = () => {
                         {data[selectedRow]?.[header] || "N/A"}
                       </td>
                       <td className="p-2 border-b border-gray-300 text-center">
-                        {header === "call"?(
+                        {header === "call"||header === "put"?(
                           <select onChange ={(e) => handleInputChange(header, e.target.value)}
                            className="w-44 rounded-md text-white p-1 text-xs font-thin bg-slate-800">
                             <option value="Buy">BUY</option>
@@ -155,6 +172,7 @@ const Viewlegtable = () => {
                           
                         )}
                         
+                        
                         {/* <input
                           type="number"
                           onChange={(e) => handleInputChange(header, e.target.value)}
@@ -166,7 +184,7 @@ const Viewlegtable = () => {
                 </tbody>
               </table>
             </div>
-            <button className="bg-green-600 text-white p-2 rounded-md mt-4" onClick={handleUpdate}>
+            <button className="bg-green-600 text-white p-2 rounded-md mt-4" onClick={()=>handleUpdate(blockid,sublegid)}>
               UPDATE
             </button>
           </div>

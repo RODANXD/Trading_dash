@@ -105,7 +105,7 @@ function Custom() {
 
   
 
-
+      
   const [tslleg,setTslleg]=useState(0)
   const [paper,setPaper]= useState(false)
   const[live,setLive]= useState(false)
@@ -140,6 +140,8 @@ function Custom() {
   const [Combovalue, setComboValue] = useState(false)
   const [Comsymbols, setComSymbols] = useState(false)
   const [market,setmarket]=useState(false)
+  const [Movingdata,setMovingdata]=useState([])
+
   const [Automaticstrike, setAutomaticstrike]= useState(false)
   const [onAccountSelect,setonAccountSelect]= useState([
     { id: 1, Username: "Xyz", brokername: "Shoonya", accountnumber: "123456", strategy: '', value: true },
@@ -261,7 +263,7 @@ const  handlecallput = (type)=>{
     {Blockid:'' ,sublegid:1,checked:false}
   ])
 
-  const [Amount,setAmount]= useState('')
+  const [Amount,setAmount]= useState(0)
   const [addtrade,setAddtrade]= useState(false)
   const [advice,Setadvice]= useState('')
   const[brokerselect,setbrokerselect]= useState('')
@@ -309,6 +311,23 @@ const  handlecallput = (type)=>{
     console.log(response)
     })
   }
+
+  const closetrade = async (strategy,blockno,ids) => {
+    const endpoint = "positionclose";
+    const payload = JSON.stringify({strategy,blockno,ids})
+    console.log(payload,'payload')
+    const type = "POST";
+
+    try {
+      const response = await handleexchangerequest(type, payload, endpoint);
+      if (response) {
+          
+        
+      }
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  };
 
 
   const handleselectsymbol = (e) => {
@@ -477,7 +496,7 @@ const  handlecallput = (type)=>{
   //     break;
   // }
 
-
+  
 
   
 
@@ -581,10 +600,10 @@ const  handlecallput = (type)=>{
     
   }
 
-  const handleAtm=()=>{
+  const handleAtm=()=>{   
 
     const endpoint = "getatmstrike"
-    const payload = 'option_type='+selectVertical+'&symbol='+selectsymbol
+    const payload = 'option_type='+selectVertical+'&symbol='+selectsymbol+"&Automatic=0"
     const type = "GET"
   
     handleexchangerequest(type, payload, endpoint)
@@ -683,6 +702,22 @@ const  handlecallput = (type)=>{
 })
   // tradeblocklist()
   window.location.reload()
+  
+  };
+  const   handlegetmvdata= (id,ac) => {
+    const endpoint = "fetchdatamv"
+    const Blockid= id
+    const strategy= 1
+    const Activate= ac
+    const payload = "blockid="+id
+    const type = "GET"
+    handleexchangerequest(type, payload, endpoint)
+    .then (response=> {
+      setMovingdata(response)
+      console.log(response)
+})
+  // tradeblocklist()
+  // window.location.reload()
   
   };
   
@@ -808,7 +843,7 @@ const  handlecallput = (type)=>{
         </div>
         
         <div className="flex justify-center sm:justify-end gap-3 order-3 sm:order-2 lg:order-3">
-          <Button className="w-full sm:w-auto">Exit All</Button>
+          <Button  onClick={()=>closetrade(1,item.Blockid,0)} className="w-full sm:w-auto">Exit All</Button>
           
           <Popover>
         <PopoverTrigger asChild>
@@ -837,23 +872,32 @@ const  handlecallput = (type)=>{
      
      <div>
      <div className="h-full mt-3 flex flex-col gap-3">
-      
+        
       
             <div className="w-full border border-white rounded-sm p-2 text-xs text-white">
             <p className="text-white">{item.Blockid}</p>
             <div className="col-span-1 sm:col-span-2 lg:col-span-1 order-2 sm:order-3 lg:order-2">
+            <div className="grid grid-cols-2 place-items-center mb-2 sm:grid-cols-2 gap-2">
+
+            <Button onClick={()=>{handlegetmvdata(item.Blockid)}} >
+              Refresh 
+            </Button>
+            </div>
           <div className="grid grid-cols-2 place-items-center mb-2 sm:grid-cols-2 gap-2">
             <Button variant="outline" className="w-1/2 max-xs:w-full text-xs text-black sm:text-sm  sm:break-all ">
-              Max Moving High {890}
+              Max Moving High {Movingdata.movinghigh}
             </Button>
             <Button variant="outline" className="w-1/2 text-xs max-xs:w-full text-black sm:text-sm break-all">
-              Avg Moving
+              down Avg Moving {Movingdata.movingdown}
+            </Button>
+            
+            
+            <Button variant="outline" className="w-1/2 text-xs max-xs:w-full text-black sm:text-sm break-all">
+              Max Drawdown {Movingdata.movinglow}
+
             </Button>
             <Button variant="outline" className="w-1/2 text-xs max-xs:w-full text-black sm:text-sm break-all">
-              Max Drawdown
-            </Button>
-            <Button variant="outline" className="w-1/2 text-xs max-xs:w-full text-black sm:text-sm break-all">
-              Up Avg Moving
+              Up Avg Moving {Movingdata.movingup}
             </Button>
           </div>
         </div>
@@ -886,7 +930,7 @@ const  handlecallput = (type)=>{
       </Button>
                 </div>
                 <div className="flex flex-col gap-3">
-                <Button variant="destructive" className="w-full">Exit All</Button>
+                <Button variant="destructive" onClick={()=>closetrade(1,item.Blockid,0)} className="w-full">Exit All</Button>
                   <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="email">PNL</Label>
                     <Input type="number" className=" text-black" placeholder="Value" />
@@ -968,7 +1012,7 @@ const  handlecallput = (type)=>{
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.targethit}</td>
             <td className="border border-gray-300 p-1 text-slate-950 break-all">{item.trailhit}</td>
             <td className="border border-gray-300 p-1">
-        <Button className="text-xs p-2">EXIT</Button>  
+          <Button  onClick={()=>closetrade(1,item.Blockid,item.id)}className="text-xs p-2">EXIT</Button>  
 
       </td>
       </tr>

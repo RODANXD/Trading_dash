@@ -127,8 +127,11 @@ const getindexdata = () => {
     handleexchangerequest(type, payload, endpoint)
     .then (response=> {
       console.log(response)
+  
 })
 tradeblocklist()
+window.location.reload();
+
 
   
   };
@@ -360,7 +363,6 @@ const handleviewdetail = ()=>{
     <th className="border border-gray-300 p-1">QTY</th>
     <th className="border border-gray-300 p-1">Status</th>
     <th className="border border-gray-300 p-1">PNL</th>
-
     <th className="border border-gray-300 p-2">sellorderid</th>
     <th className="border border-gray-300 p-2">sl</th>
     <th className="border border-gray-300 p-2">SLHIT</th>
@@ -379,7 +381,6 @@ const handleviewdetail = ()=>{
             <td className="border border-gray-300 p-1 break-all text-slate-950">{item.tradingsymbol}</td>
             <td className="border border-gray-300 p-1 break-all text-slate-950">{item.buyorderid}</td>
             <td className="border border-gray-300 p-1 break-all text-slate-950">{item.ltp}</td>
- break-all
             <td className="border border-gray-300 p-1 break-all text-slate-950">{item.avg_price}</td>
             <td className="border border-gray-300 p-1 break-all text-slate-950">{item.side}</td>
             <td className="border border-gray-300 p-1 break-all text-slate-950">{item.quantity}</td>
@@ -391,10 +392,7 @@ const handleviewdetail = ()=>{
             <td className="border border-gray-300 p-1 break-all text-slate-950">{item.slhit}</td>
             <td className="border border-gray-300 p-1 break-all text-slate-950">{item.targethit}</td>
             <td className="border border-gray-300 p-1 break-all text-slate-950">{item.trailhit}</td>
-            <td className="border border-gray-300 p-1">
-        <Button className="text-xs p-2">EXIT</Button>  
-
-      </td>
+            <td className="border border-gray-300 p-1"><Button className="text-xs p-2">EXIT</Button>  </td>
       </tr>
   ))}
 </tbody>
