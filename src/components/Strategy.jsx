@@ -272,7 +272,7 @@ const handleviewdetail = ()=>{
               <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
               <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  
               // onClick={()=>Deleteblock(0)}
-               onClick={() => Specificdelete(0,Deleteblock)}
+               onClick={() => Specificdelete(true,Tradeblockno,Tradeblockno,Deleteblock)}
               
               >confirm</Button>
             </div>
@@ -319,7 +319,7 @@ const handleviewdetail = ()=>{
               <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
               <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  
               // onClick={()=>Deleteblock(item.Blockid)}
-              onClick={() => Specificdelete(item,Deleteblock,0)}
+                           onClick={() => Specificdelete(false,item.orderdata.length,item.Blockid,Deleteblock)}
                 >confirm hona</Button>
             </div>
           </div>

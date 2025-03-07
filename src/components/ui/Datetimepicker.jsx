@@ -28,10 +28,12 @@ const DateRangePicker = React.forwardRef(({ className, onApply, ...props }, ref)
           $(inputRef.current).val(`${picker.startDate.format("M/DD hh:mm A")} - ${picker.endDate.format("M/DD hh:mm A")}`);
 
           if (onApply) {
-            onApply({
-              startDate: picker.startDate,
-              endDate: picker.endDate,
-            });
+            onApply(picker.startDate,picker.endDate)
+            console.log( 'applied')
+            // onApply({
+            //   startDate: picker.startDate,
+            //   endDate: picker.endDate
+            // });
           }
         });
 
@@ -48,7 +50,7 @@ const DateRangePicker = React.forwardRef(({ className, onApply, ...props }, ref)
         $(inputRef.current).daterangepicker("destroy");
       }
     };
-  }, [onApply]);
+  }, []);
 
   return (
     <div>

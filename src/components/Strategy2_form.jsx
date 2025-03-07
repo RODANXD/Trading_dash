@@ -74,7 +74,6 @@ const Strategy2_form = ({ onCancel,blockid }) => {
       .then(response => {
   
       console.log(response)
-      window.location.reload()
       })
   
     }

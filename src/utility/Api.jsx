@@ -1,21 +1,30 @@
-export const Specificdelete = (item, deleteFunction) => {
+export const Specificdelete = (All,item,blockid, deleteFunction) => {
 
-  if (item === 0 || item === null){
-    deleteFunction(0);
-    return;
-  }
-  if (!item || !item.orderdata) {
-    deleteFunction(item.Blockid);
-    return;
-  }
+  if (All){
+    let totalLength=0
+    item.forEach(keys => {
+      if (keys.orderdata) {
+        totalLength += keys.orderdata.length;
+      }
+    });
+    if (totalLength<1){
+    deleteFunction(0);}
+    else {
+      alert("Please exit the open position to delete block ");
 
-  if (item.orderdata.length === 0) {
+    }
+    console.log('you are all delete')
+    return;
+
+  }
+  else if (item === 0 && !All) {
+    console.log('you are not all delete')
    
-    deleteFunction(item.Blockid);
+    deleteFunction(blockid);
     return;
   }
   else {
-    alert("This block contains order data. Are you sure you want to delete it?");
+    alert("Please exit the open position to delete block ");
     
     
   }

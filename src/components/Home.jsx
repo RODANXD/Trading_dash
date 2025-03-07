@@ -245,8 +245,8 @@ const VertiBarchartConfig = {
 <div>
 <Card className="flex flex-col bg-gray-950 text-white  h-full ">
   <CardHeader className="items-center pb-0">
-    <CardTitle className='text-[clamp(1rem, 2.5vw, 2rem)]'>Pie Chart - Custom Label</CardTitle>
-    <CardDescription>January - June 2024</CardDescription>
+    <CardTitle className='text-[clamp(1rem, 2.5vw, 2rem)]'>Current Pnl</CardTitle>
+    <CardDescription></CardDescription>
   </CardHeader>
   <CardContent className="flex-1 pb-0">
     <ChartContainer
@@ -269,10 +269,10 @@ const VertiBarchartConfig = {
   </CardContent>
   <CardFooter className="flex-col gap-2 text-sm">
     <div className="flex items-center gap-2 font-medium leading-none">
-      Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+      {/* Trending up by 5.2% this month <TrendingUp className="h-4 w-4" /> */}
     </div>
     <div className="leading-none text-muted-foreground">
-      Showing total visitors for the last 6 months
+ Showing total records for the last 3 months
     </div>
   </CardFooter>
 </Card>
@@ -283,8 +283,8 @@ const VertiBarchartConfig = {
   <div>
 <Card className = " bg-gray-950 text-white">
   <CardHeader>
-    <CardTitle>Bar Chart - Custom Label</CardTitle>
-    <CardDescription>January - June 2024</CardDescription>
+    <CardTitle>Broker Assigned </CardTitle>
+    <CardDescription></CardDescription>
   </CardHeader>
   <CardContent>
     <ChartContainer className="mx-auto aspect-square max-h-[250px] px-0" config={VerchartConfig}>
@@ -340,10 +340,10 @@ const VertiBarchartConfig = {
   </CardContent>
   <CardFooter className="flex-col items-start gap-2 text-sm">
     <div className="flex gap-2 font-medium leading-none">
-      Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+      {/* Trending up by 5.2% this month <TrendingUp className="h-4 w-4" /> */}
     </div>
     <div className="leading-none text-muted-foreground">
-      Showing total visitors for the last 6 months
+ Showing total records for the last 3 months
     </div>
   </CardFooter>
 </Card>
@@ -353,15 +353,15 @@ const VertiBarchartConfig = {
 <div>
 <Card className=' bg-gray-950 text-white h-full'>
   <CardHeader>
-    <CardTitle>Line Chart - Multiple</CardTitle>
-    <CardDescription>January - June 2024</CardDescription>
+    <CardTitle>Total Pnl Strategy wise</CardTitle>
+    <CardDescription></CardDescription>
   </CardHeader>
   <CardContent>
     <ChartContainer config={MultilineConfig}>
       <LineChart
         accessibilityLayer
         data={multidata}
-        margin={{
+        margin={{ 
           left: 12,
           right: 12,
         }}
@@ -483,7 +483,7 @@ const VertiBarchartConfig = {
     <div className="flex flex-1 flex-col justify-center gap-1 px-6 sm:py-6">
       <CardTitle>Line Chart - Interactive</CardTitle>
       <CardDescription>
-        Showing total visitors for the last 6 months
+   Showing total records for the last 3 months
       </CardDescription>
     </div>
     
