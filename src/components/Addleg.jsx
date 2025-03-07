@@ -504,7 +504,7 @@ const handleAtm=(id=bid)=>{
         <div className="col-sm-4 col-5">
         <select  className='form-select'  onChange={(e)=>handleTradeadvice(e)}>
             <option value=""> TRADE ADVICE</option>
-            <option value="SPOT">Spot </option>
+            {/* <option value="SPOT">Spot </option> */}
             <option value="SQUENCE">Sequnce </option>
             <option value="COVER">COVER </option>
             </select> 

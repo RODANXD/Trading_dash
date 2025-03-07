@@ -627,7 +627,7 @@ const  handlecallput = (type)=>{
     SetMarketdate(date)
     console.log(date, "hello market date")
   }
-  const handleDateRangeApply = ({ startDate, endDate }) => {
+  const handleDateRangeApply = ( startDate, endDate ) => {
     setSelectedStartDate(startDate);
     setSelectedEndDate(endDate);
     console.log("Start Date:", startDate.format('M/DD hh:mm A'));
@@ -824,7 +824,7 @@ const  handlecallput = (type)=>{
     console.log(`Selected time range: ${timeRange}`);
   };
 
-  
+  console.log(Tradeblockno,'Tradeblockno')
 
   return (
     <>
@@ -855,7 +855,7 @@ const  handlecallput = (type)=>{
               <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
               <Button variant="destructive" className="w-full sm:w-32 max-xs:text-sm"  
               // onClick={() => Deleteblock(0)}
-               onClick={() => Specificdelete(0,Deleteblock)}
+               onClick={() => Specificdelete(true,Tradeblockno,Tradeblockno,Deleteblock)}
                >confirm</Button>
             </div>
           </div>
@@ -915,7 +915,7 @@ const  handlecallput = (type)=>{
                           <h4 className="font-medium leading-none text-center">Are You really want to Delete</h4>
                           <Button variant="destructive" className="w-full sm:w-32"  
                           // onClick={()=>Deleteblock(item.Blockid)}
-                           onClick={() => Specificdelete(item,Deleteblock)}
+                           onClick={() => Specificdelete(false,item.orderdata.length,item.Blockid,Deleteblock)}
                           >confirm</Button>
                         </div>
                       </div>
@@ -1077,6 +1077,8 @@ const  handlecallput = (type)=>{
         <div className="col-12 row col-md-4">
           <label className="text-white text-lg">No Trade Zone</label>
           <DateRangePicker 
+            // selected={tradevalidity}
+
           onApply={handleDateRangeApply}
           className="bg-white w-100 mt-2" />
         </div>

@@ -723,7 +723,9 @@ useEffect(()=>{
               </div>
               <div className="col-4">
               <label className="text-white text-lg">No Trade Zone</label>
-          <DateRangePicker className="bg-white w-100" />
+          <DateRangePicker 
+                    onApply={handleDateRangeApply}
+                    className="bg-white w-100" />
                 {/* <button type="button" className="btn btn-light w-100" onClick={() => (setShowCalender2(!showCalender2), setShowCalender(false))}>No Trading Zone <i className="fa fa-angle-down" /></button> */}
               </div>
             </div>
