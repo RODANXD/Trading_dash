@@ -58,6 +58,35 @@ const Report = () => {
       }
     };
 
+    const convertToCSV = (jsonData) => {
+      const keys = Object.keys(jsonData[0] || {});
+      const headerRow = keys.join(',') + '\n';
+      const dataRows = jsonData.map((item) => keys.map((key) => `"${item[key]}"`).join(',')).join('\n');
+   
+      return headerRow + dataRows;
+    };
+  
+    const downloadCSV = (data, filename) => {
+      const blob = new Blob([data], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    };
+  
+    const handleDownload = () => {
+      if (data.length === 0) {
+        console.error("No data to download");
+        return;
+      }
+  
+      const csvData = convertToCSV(data);
+      const fileName = 'table_data.csv';
+      downloadCSV(csvData, fileName);
+    };
+
     const tradeblocklist= async () =>{
         const endpoint = "tradeblock"
         const payload = 'strategy=&from'
@@ -94,6 +123,8 @@ const Report = () => {
       console.log("Start Date:", startDate.format('M/DD hh:mm A'));
       console.log("End Date:", endDate.format('M/DD hh:mm A'));
     };
+
+    
   
     return (
       <>
@@ -131,6 +162,7 @@ const Report = () => {
                   onApply={handleDateRangeApply}
                   className="bg-white w-100" />
           <Button onClick={Alltrade} type="submit" className="bg-green-800 hover:bg-green-600">Submit</Button>
+          <Button onClick={handleDownload}> Download Report</Button>
 
           </div>
           <div className='w-[64rem]'>

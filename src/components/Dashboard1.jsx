@@ -65,7 +65,8 @@ function Custom() {
   const [expiries, setExpiries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [tradevalidity, Settradevalidity] = useState(new Date());
-  const [Notradingzone, SetNotradingzone] = useState(new Date());
+  // const [Notradingzone, SetNotradingzone] = useState(new Date());
+  const [Notradingzone, SetNotradingzone] = useState({ startDate: "", endDate: "" });
   const [segment,SetSegment]=useState('')
   const [strikePrices, setStrikePrices] = useState([ 17000,18000]);
   
@@ -131,8 +132,10 @@ function Custom() {
   
   // new usestate
   const [colorbuysell, setcolorbuysell] = useState()
-  const [selectedStartDate, setSelectedStartDate] = useState(new Date());
-  const [selectedEndDate, setSelectedEndDate] = useState(new Date());
+  const [selectedStartDate, setSelectedStartDate] = useState("");
+  // const [selectedStartDate, setSelectedStartDate] = useState(null);
+
+  const [selectedEndDate, setSelectedEndDate] = useState("");
   const [Marketdate,SetMarketdate ] = useState(new Date())
   const [selectedOption, setSelectedOption] = useState(null)
   const [instruction, setinstruction] = useState('')
@@ -627,14 +630,36 @@ const  handlecallput = (type)=>{
     SetMarketdate(date)
     console.log(date, "hello market date")
   }
+  
   const handleDateRangeApply = ({ startDate, endDate }) => {
-    setSelectedStartDate(startDate);
-    setSelectedEndDate(endDate);
+    
+    let start_date = startDate.format('M/DD hh:mm A');
+    let end_date = endDate.format('M/DD hh:mm A');
+    console.log(start_date, end_date);
+    setSelectedStartDate(start_date)
+    console.log(setSelectedStartDate(start_date))
+    setSelectedEndDate(end_date)
     console.log("Start Date:", startDate.format('M/DD hh:mm A'));
     console.log("End Date:", endDate.format('M/DD hh:mm A'));
     Notradingzone.startDate = startDate.format('M/DD hh:mm A');
     Notradingzone.endDate = endDate.format('M/DD hh:mm A');
+    console.log(Notradingzone.startDate, Notradingzone.endDate)
   };
+
+  useEffect(() => {
+    console.log("Updated Selected Start Date:", selectedStartDate);
+  }, [selectedStartDate]);
+  
+  useEffect(() => {
+    console.log("Updated Selected End Date:", selectedEndDate);
+  }, [selectedEndDate]);
+  
+//   useEffect(() => {
+//     console.log("Updated NoTradingZone State:", Notradingzone);
+// }, [Notradingzone]);
+// console.log(Notradingzone);
+
+
 
   const handletradetype =(e)=>{
     setTradetype(e.target.value)
@@ -1076,9 +1101,14 @@ const  handlecallput = (type)=>{
 
         <div className="col-12 row col-md-4">
           <label className="text-white text-lg">No Trade Zone</label>
-          <DateRangePicker 
-          onApply={handleDateRangeApply}
-          className="bg-white w-100 mt-2" />
+          <DateRangePicker
+            
+            onApply={handleDateRangeApply}
+            className="bg-white w-100 mt-2"
+        />
+         <p className="text-white mt-2">
+        Selected Range: {selectedStartDate} - {selectedEndDate}
+      </p>
         </div>
       </div>
 
